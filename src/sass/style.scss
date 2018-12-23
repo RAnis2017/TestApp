@@ -1,0 +1,24 @@
+@import "header";
+@import "home";
+@import "loginForm";
+
+.btn {
+  &-primary {
+    background-color: $accent-color;
+    border-color: $accent-color;
+    &:hover {
+      background-color: $primary-color;
+    }
+  }
+  &-secondary {
+    background-color: $primary-color;
+    border-color: $primary-color;
+    &:hover {
+      background-color: $accent-color;
+    }
+  }
+  &.active {
+    background-color: $secondary-color;
+    border-color: $secondary-color;
+  }
+}

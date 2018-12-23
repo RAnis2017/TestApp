@@ -1,0 +1,13 @@
+.loginFormDiv {
+  background-color: $secondary-color;
+  color: $text-color;
+  padding: 30px;
+  border-radius: 10px;
+  @include shadow;
+}
+.loginChoiceDiv {
+  button {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}

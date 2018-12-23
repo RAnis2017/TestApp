@@ -1,0 +1,25 @@
+.hero-bg {
+  @include fullscreendiv;
+  background-image: url('../images/illustrationHome.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+h1 {
+  color: $text-color;
+}
+.fullview {
+  @include fullscreendiv;
+}
+.heading {
+  &-max{
+    font-size: 4.8em;
+  }
+  &-min{
+    font-size: 1.8em;
+  }
+}
+.font {
+  &-primary{
+    color: $primary-color;
+  }
+}

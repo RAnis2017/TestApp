@@ -1,0 +1,69 @@
+.navbar {
+  background-color: #1A535C !important;
+}
+
+#navbarNav li {
+  margin-left: 1.4em;
+}
+
+.hero-bg {
+  min-height: 100vh;
+  background-image: url("../images/illustrationHome.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+h1 {
+  color: #F7FFF7 !important;
+}
+
+.fullview {
+  min-height: 100vh;
+}
+
+.heading-max {
+  font-size: 4.8em;
+}
+.heading-min {
+  font-size: 1.8em;
+}
+
+.font-primary {
+  color: #1A535C !important;
+}
+
+.loginFormDiv {
+  background-color: #4ECDC4 !important;
+  color: #F7FFF7 !important;
+  padding: 30px;
+  border-radius: 10px;
+  -webkit-box-shadow: 0px 0px 34px 1px rgba(0, 0, 0, 0.7);
+  -moz-box-shadow: 0px 0px 34px 1px rgba(0, 0, 0, 0.7);
+  box-shadow: 0px 0px 34px 1px rgba(0, 0, 0, 0.7);
+}
+
+.loginChoiceDiv button {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.btn-primary {
+  background-color: #FF6B6B !important;
+  border-color: #FF6B6B !important;
+}
+.btn-primary:hover {
+  background-color: #1A535C !important;
+}
+.btn-secondary {
+  background-color: #1A535C !important;
+  border-color: #1A535C !important;
+}
+.btn-secondary:hover {
+  background-color: #FF6B6B !important;
+}
+.btn.active {
+  background-color: #4ECDC4 !important;
+  border-color: #4ECDC4 !important;
+}
+
+/*# sourceMappingURL=style.css.map */
