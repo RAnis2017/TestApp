@@ -3,8 +3,10 @@
     "version": "0.1.0",
     "private": true,
     "dependencies": {
+        "animate.css": "^3.7.0",
         "axios": "^0.18.0",
         "bootstrap": "^4.2.1",
+        "font-awesome": "^4.7.0",
         "immutability-helper": "^2.7.1",
         "jquery": "^3.3.1",
         "popper.js": "^1.14.6",
@@ -15,6 +17,7 @@
         "react-redux": "^6.0.0",
         "react-router-dom": "^4.3.1",
         "react-scripts": "2.1.1",
+        "react-shopping-cart": "^1.8.1",
         "redux": "^4.0.1"
     },
     "scripts": {

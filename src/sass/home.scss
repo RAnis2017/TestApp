@@ -3,6 +3,8 @@
   background-image: url('../images/illustrationHome.png');
   background-repeat: no-repeat;
   background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
 }
 h1 {
   color: $text-color;
@@ -21,5 +23,11 @@ h1 {
 .font {
   &-primary{
     color: $primary-color;
+  }
+  &-secondary{
+    color: $secondary-color;
+  }
+  &-accent{
+    color: $accent-color;
   }
 }

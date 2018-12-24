@@ -12,9 +12,49 @@ box-shadow: 0px 0px 34px 1px rgba(0,0,0,0.7);
 }
 .navbar {
   background-color: $primary-color;
+  @include shadow;
+  button {
+    color: $text-color;
+    &:hover {
+      color: $accent-color;
+    }
+  }
 }
 #navbarNav {
   li {
     margin-left: 1.4em;
+  }
+}
+.cart {
+  position: absolute;
+  left: 59%;
+  background-color: $primary-color;
+  z-index: 1001;
+  max-width: 400px;
+  @include shadow;
+
+  ul {
+    padding: 0;
+  }
+  li {
+    list-style-type: none;
+    border-bottom: 1px solid $accent-color;
+  }
+  &Div {
+    position: relative;
+    padding: 10px;
+  }
+  &Img {
+    max-width: 50px;
+  }
+  &ItemLink {
+    max-width: 350px;
+    padding: 10px;
+  }
+  li:hover{
+    background-color: $secondary-color;
+  }
+  &ItemLink{
+    color: $text-color;
   }
 }

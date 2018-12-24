@@ -12,6 +12,19 @@ export const changeForm = type => {
   }
 };
 
+export const showCart = () => {
+  return {
+    type: InterfaceActionTypes.CART_TOGGLE,
+  };
+};
+
+export const removeCartItem = (id) => {
+  return {
+    type: InterfaceActionTypes.REMOVE_CART_ITEM,
+    id
+  };
+};
+
 export const keyPressedOnForm = (type,e) => {
   if(type === "email"){
     return {

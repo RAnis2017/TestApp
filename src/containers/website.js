@@ -1,7 +1,5 @@
-import React, { Component, PropTypes } from 'react';
-import { bindActionCreators } from 'redux';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as InterfaceActionCreators from '../actions/interface';
 import Header from '../components/Header';
 import Home from '../components/Home';
 
@@ -13,9 +11,6 @@ import {
 class Website extends Component {
 
   render() {
-    const { dispatch, selectedForm, email, password } = this.props;
-    const changeForm = bindActionCreators(InterfaceActionCreators.changeForm, dispatch);
-
     return (
       <BrowserRouter>
         <div className="app">
@@ -29,9 +24,7 @@ class Website extends Component {
 
 const mapStateToProps = state => (
   {
-    selectedForm: state.selectedForm,
-    email: state.email,
-    password: state.password,
+
   }
 );
 
