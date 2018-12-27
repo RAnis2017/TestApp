@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
+import Footer from '../components/Footer';
 import Home from '../components/Home';
+import Courses from '../components/Courses';
 
 import {
   BrowserRouter,
@@ -16,6 +18,8 @@ class Website extends Component {
         <div className="app">
           <Header />
           <Route exact path="/" render={Home} />
+          <Route exact path="/courses" render={Courses} />
+          <Footer />
         </div>
       </BrowserRouter>
     );

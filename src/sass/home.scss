@@ -1,16 +1,28 @@
-.hero-bg {
-  @include fullscreendiv;
-  background-image: url('../images/illustrationHome.png');
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
+.hero {
+  &-bg{
+    @include fullscreendiv;
+    background-image: url('../images/illustrationHome.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+  }
+  &-sm{
+    max-height: 30vh;
+    background-image: url('../images/courses-banner-small.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+  }
 }
 h1 {
   color: $text-color;
 }
 .fullview {
   @include fullscreendiv;
+  &-sm{
+    min-height: 30vh;
+  }
 }
 .heading {
   &-max{

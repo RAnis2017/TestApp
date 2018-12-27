@@ -1,0 +1,12 @@
+.course {
+  &Item{
+    padding: 10px 15px;
+    @include shadow-light;
+    margin-top: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+  }
+  &Img{
+    border-bottom: 1px solid $primary-color;
+  }
+}

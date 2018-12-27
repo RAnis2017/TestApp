@@ -25,6 +25,14 @@ export const removeCartItem = (id) => {
   };
 };
 
+export const addCartItem = (id) => {
+  return {
+    type: InterfaceActionTypes.ADD_CART_ITEM,
+    id
+  };
+};
+
+
 export const keyPressedOnForm = (type,e) => {
   if(type === "email"){
     return {

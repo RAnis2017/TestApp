@@ -1,0 +1,15 @@
+.footer {
+  background-color: $dark-color;
+  position:static;
+  bottom: 0;
+  ul {
+    padding: 0;
+  }
+  li {
+    list-style-type: none;
+    float: left;
+  }
+  .nav-link {
+    color: $text-color;
+  }
+}

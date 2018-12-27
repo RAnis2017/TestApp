@@ -50,6 +50,22 @@
   color: #F7FFF7 !important;
 }
 
+.footer {
+  background-color: #3e3e3e !important;
+  position: static;
+  bottom: 0;
+}
+.footer ul {
+  padding: 0;
+}
+.footer li {
+  list-style-type: none;
+  float: left;
+}
+.footer .nav-link {
+  color: #F7FFF7 !important;
+}
+
 .hero-bg {
   min-height: 100vh;
   background-image: url("../images/illustrationHome.png");
@@ -58,6 +74,13 @@
   background-position: center;
   background-attachment: fixed;
 }
+.hero-sm {
+  max-height: 30vh;
+  background-image: url("../images/courses-banner-small.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
 
 h1 {
   color: #F7FFF7 !important;
@@ -65,6 +88,9 @@ h1 {
 
 .fullview {
   min-height: 100vh;
+}
+.fullview-sm {
+  min-height: 30vh;
 }
 
 .heading-max {
@@ -97,6 +123,19 @@ h1 {
 .loginChoiceDiv button {
   padding-left: 20px;
   padding-right: 20px;
+}
+
+.courseItem {
+  padding: 10px 15px;
+  -webkit-box-shadow: 0px 0px 14px 1px rgba(0, 0, 0, 0.7);
+  -moz-box-shadow: 0px 0px 14px 1px rgba(0, 0, 0, 0.7);
+  box-shadow: 0px 0px 14px 1px rgba(0, 0, 0, 0.7);
+  margin-top: 20px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+.courseImg {
+  border-bottom: 1px solid #1A535C !important;
 }
 
 .btn-primary {

@@ -16,7 +16,7 @@ const initialState = {
       description: "Some long description about this particular course",
       mcqQuantity: 100,
       duration: 3,
-      inCart: true,
+      inCart: false,
       path: "/about",
       imgSrc: "https://gs-post-images.grdp.co/2018/6/gate-img1529910709846-84.png-rs-high-webp.png"
     },
@@ -25,7 +25,7 @@ const initialState = {
       name: "SAT TEST 2018",
       price: "1800",
       currency: "INR",
-      availability: "comingsoon",
+      availability: "released",
       description: "Some long description about this particular course",
       mcqQuantity: 90,
       duration: 2,
@@ -78,7 +78,13 @@ export default function Interface(state=initialState, action) {
     case InterfaceActionTypes.REMOVE_CART_ITEM: {
           return {
             ...state,
-    				courses: state.courses.filter((course)=> course.id !== action.id)
+    				courses: state.courses.map((course)=> (course.id == action.id) ? {...course,inCart:false} : course)
+    		 	};
+	 	}
+    case InterfaceActionTypes.ADD_CART_ITEM: {
+          return {
+            ...state,
+    				courses: state.courses.map((course)=> (course.id == action.id) ? {...course,inCart:true} : course)
     		 	};
 	 	}
     default:
