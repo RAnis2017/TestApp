@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as InterfaceActionCreators from '../actions/interface';
-import { Link } from 'react-router-dom'
 import CartItem from './CartItem';
 
 const Cart = (props) => {
@@ -14,7 +13,7 @@ const Cart = (props) => {
       if(course.inCart){
         return (
           <li key={index}>
-            <Link className="cartItemLink" to={course.path}>
+            <div className="cartItemLink">
               <div className="row m-auto">
                 <div className="col-sm-3">
                   <img src={course.imgSrc} className="cartImg" />
@@ -26,7 +25,7 @@ const Cart = (props) => {
                   <button className="btn btn-danger" onClick={()=>removeCartItem(course.id)}>Remove</button>
                 </div>
               </div>
-            </Link>
+            </div>
           </li>
 
         );

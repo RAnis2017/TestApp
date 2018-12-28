@@ -127,15 +127,20 @@ h1 {
 
 .courseItem {
   padding: 10px 15px;
-  -webkit-box-shadow: 0px 0px 14px 1px rgba(0, 0, 0, 0.7);
-  -moz-box-shadow: 0px 0px 14px 1px rgba(0, 0, 0, 0.7);
-  box-shadow: 0px 0px 14px 1px rgba(0, 0, 0, 0.7);
+  -webkit-box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.4);
+  box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.4);
   margin-top: 20px;
   border-radius: 5px;
   margin-bottom: 20px;
+  background-color: #fff;
 }
 .courseImg {
   border-bottom: 1px solid #1A535C !important;
+}
+
+body {
+  background-color: #eee !important;
 }
 
 .btn-primary {

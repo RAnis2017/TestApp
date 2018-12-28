@@ -4,6 +4,12 @@
 @import "loginForm";
 @import "courses";
 
+$background-color: #eee !important;
+
+body {
+  background-color: $background-color;
+}
+
 .btn {
   &-primary {
     background-color: $accent-color;

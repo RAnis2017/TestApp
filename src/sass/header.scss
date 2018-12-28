@@ -10,9 +10,9 @@ $dark-color: #3e3e3e !important;
 box-shadow: 0px 0px 34px 1px rgba(0,0,0,0.7);
 }
 @mixin shadow-light {
-  -webkit-box-shadow: 0px 0px 14px 1px rgba(0,0,0,0.7);
--moz-box-shadow: 0px 0px 14px 1px rgba(0,0,0,0.7);
-box-shadow: 0px 0px 14px 1px rgba(0,0,0,0.7);
+  -webkit-box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.4);
+-moz-box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.4);
+box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.4);
 }
 @mixin fullscreendiv {
   min-height: 100vh;

@@ -18,6 +18,7 @@ const CourseItems = (props) => {
                 </div>
                 <div className="courseName font-primary">
                   <h4>{course.name}</h4>
+                  <h6>Questions: {course.mcqQuantity} Duration: {course.duration} hrs</h6>
                 </div>
                 <div className="coursePriceCartAdd font-secondary">
                   <h4>{course.price} {course.currency}</h4>
