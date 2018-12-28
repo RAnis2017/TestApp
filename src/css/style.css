@@ -151,6 +151,7 @@ h1 {
 }
 .profile-body .nav {
   background-color: #3F0863 !important;
+  border-radius: 2px;
   -webkit-box-shadow: 0px 0px 34px 1px rgba(0, 0, 0, 0.7);
   -moz-box-shadow: 0px 0px 34px 1px rgba(0, 0, 0, 0.7);
   box-shadow: 0px 0px 34px 1px rgba(0, 0, 0, 0.7);
@@ -166,10 +167,12 @@ h1 {
 }
 .profile-content .tab {
   background-color: #3F0863 !important;
+  border-radius: 2px;
   padding: 20px;
   -webkit-box-shadow: 0px 0px 34px 1px rgba(0, 0, 0, 0.7);
   -moz-box-shadow: 0px 0px 34px 1px rgba(0, 0, 0, 0.7);
   box-shadow: 0px 0px 34px 1px rgba(0, 0, 0, 0.7);
+  color: #D9BF96 !important;
 }
 
 body {

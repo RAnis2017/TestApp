@@ -8,3 +8,7 @@ export const SIGNUP_SUBMIT = 'interface/SIGNUP_SUBMIT';
 export const CART_TOGGLE = 'interface/CART_TOGGLE';
 export const REMOVE_CART_ITEM = 'interface/REMOVE_CART_ITEM';
 export const ADD_CART_ITEM = 'interface/ADD_CART_ITEM';
+export const USER_SETTING_SAVE = 'interface/USER_SETTING_SAVE';
+export const EDIT_TYPING_EMAIL = 'interface/EDIT_TYPING_EMAIL';
+export const EDIT_TYPING_PASSWORD = 'interface/EDIT_TYPING_PASSWORD';
+export const EDIT_TYPING_NAME = 'interface/EDIT_TYPING_NAME';

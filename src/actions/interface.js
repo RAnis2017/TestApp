@@ -25,6 +25,13 @@ export const formSubmit = (e,type) => {
   }
 };
 
+export const userSettingSubmit = (e) => {
+  e.preventDefault();
+  return {
+    type: InterfaceActionTypes.USER_SETTING_SAVE,
+  };
+};
+
 export const showCart = () => {
   return {
     type: InterfaceActionTypes.CART_TOGGLE,
@@ -62,5 +69,20 @@ export const keyPressedOnForm = (type,e) => {
      type: InterfaceActionTypes.TYPING_NAME,
      value: e.target.value
    };
- }
+ } else if(type === "edit-email"){
+   return {
+     type: InterfaceActionTypes.EDIT_TYPING_EMAIL,
+     value: e.target.value
+   };
+ } else if(type === "edit-password") {
+   return {
+     type: InterfaceActionTypes.EDIT_TYPING_PASSWORD,
+     value: e.target.value
+   };
+ } else if(type === "edit-name") {
+  return {
+    type: InterfaceActionTypes.EDIT_TYPING_NAME,
+    value: e.target.value
+  };
+}
 };

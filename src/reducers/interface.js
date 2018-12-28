@@ -71,11 +71,29 @@ export default function Interface(state=initialState, action) {
     				name: action.value
     		 	};
 	 	}
+    case InterfaceActionTypes.EDIT_TYPING_EMAIL: {
+          return {
+            ...state,
+    				loggedInUser: {...state.loggedInUser, email: action.value }
+    		 	};
+	 	}
+    case InterfaceActionTypes.EDIT_TYPING_PASSWORD: {
+          return {
+            ...state,
+    				loggedInUser: {...state.loggedInUser, password: action.value }
+    		 	};
+	 	}
+    case InterfaceActionTypes.EDIT_TYPING_NAME: {
+          return {
+            ...state,
+    				loggedInUser: {...state.loggedInUser, name: action.value }
+    		 	};
+	 	}
     case InterfaceActionTypes.LOGIN_SUBMIT: {
           if(state.email === "abc@gmail.com" && state.password === "abc123"){
             return {
               ...state,
-      				loggedInUser: {email: state.email, name: "Raza Anis", courses: [
+      				loggedInUser: {email: state.email, name: "Raza Anis", password: "abc123", courses: [
                 {
                   id: 1,
                   name: "GET TEST 2018",
@@ -103,6 +121,12 @@ export default function Interface(state=initialState, action) {
         return {
           ...state,
   				signupDone: true
+  		 	};
+	 	}
+    case InterfaceActionTypes.USER_SETTING_SAVE: {
+        return {
+          ...state,
+  				loggedInUser: {...state.loggedInUser, email: state.email, name: state.name, password: state.password}
   		 	};
 	 	}
     case InterfaceActionTypes.CART_TOGGLE: {

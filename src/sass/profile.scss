@@ -8,6 +8,7 @@ $profile-text: #D9BF96 !important;
       background-color: $dark-profile;
       .nav {
         background-color: $dark-profile-1;
+        border-radius: 2px;
         @include shadow;
       }
       a {
@@ -22,7 +23,10 @@ $profile-text: #D9BF96 !important;
   }
   &-content .tab {
     background-color: $dark-profile-1;
+    border-radius: 2px;
     padding: 20px;
     @include shadow;
+    color: $profile-text;
+
   }
 }

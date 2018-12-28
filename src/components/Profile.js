@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom'
 import UserCourses from './UserCourses';
 import UserPerformance from './UserPerformance';
+import UserSettings from './UserSettings';
 
 const Profile = (props) => {
 
@@ -25,7 +26,7 @@ const Profile = (props) => {
             <div className="col col-lg-9">
               <div className="tab">
               {
-                (props.currentTab == 1) ? <UserCourses /> : (props.currentTab == 2) ? <UserPerformance /> : <UserCourses />
+                (props.currentTab == 1) ? <UserCourses /> : (props.currentTab == 2) ? <UserPerformance /> : <UserSettings />
               }
               </div>
             </div>
