@@ -1,0 +1,28 @@
+$dark-profile: #20083B !important;
+$dark-profile-1: #3F0863 !important;
+$dark-profile-2: #4A0B75 !important;
+$profile-text: #D9BF96 !important;
+
+.profile {
+  &-body{
+      background-color: $dark-profile;
+      .nav {
+        background-color: $dark-profile-1;
+        @include shadow;
+      }
+      a {
+        color: $profile-text;
+        &:hover {
+          background-color: $dark-profile-2;
+        }
+      }
+  }
+  &-content {
+    margin-top: 40px;
+  }
+  &-content .tab {
+    background-color: $dark-profile-1;
+    padding: 20px;
+    @include shadow;
+  }
+}

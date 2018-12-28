@@ -13,6 +13,13 @@
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
+    &-profile{
+      max-height: 30vh;
+      background-image: url('../images/profileImg.jpg');
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+    }
   }
 }
 h1 {

@@ -1,22 +1,4 @@
-$primary-color: #1A535C !important;
-$secondary-color: #4ECDC4 !important;
-$accent-color: #FF6B6B !important;
-$text-color: #F7FFF7 !important;
-$dark-color: #3e3e3e !important;
 
-@mixin shadow {
-  -webkit-box-shadow: 0px 0px 34px 1px rgba(0,0,0,0.7);
--moz-box-shadow: 0px 0px 34px 1px rgba(0,0,0,0.7);
-box-shadow: 0px 0px 34px 1px rgba(0,0,0,0.7);
-}
-@mixin shadow-light {
-  -webkit-box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.4);
--moz-box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.4);
-box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.4);
-}
-@mixin fullscreendiv {
-  min-height: 100vh;
-}
 .navbar {
   background-color: $primary-color;
   @include shadow;

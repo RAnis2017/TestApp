@@ -12,6 +12,19 @@ export const changeForm = type => {
   }
 };
 
+export const formSubmit = (e,type) => {
+  e.preventDefault();
+  if(type === "login"){
+    return {
+      type: InterfaceActionTypes.LOGIN_SUBMIT,
+    };
+  } else if(type === "signup") {
+    return {
+      type: InterfaceActionTypes.SIGNUP_SUBMIT,
+    };
+  }
+};
+
 export const showCart = () => {
   return {
     type: InterfaceActionTypes.CART_TOGGLE,

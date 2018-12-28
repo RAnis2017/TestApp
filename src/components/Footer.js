@@ -8,7 +8,7 @@ const Footer = (props) => {
       <div className="footer">
           <div className="row justify-content-center">
             <div className="col-lg-4 align-self-center text-center">
-              <h1 className="heading-max font-secondary">VinodKatrela</h1>
+              <h1 className="font-secondary">VinodKatrela</h1>
             </div>
             <div className="col-lg-4 align-self-center">
               <ul>

@@ -7,7 +7,7 @@ import { NavLink, Link } from 'react-router-dom'
 import Cart from './Cart';
 
 const Header = (props) => {
-    const { dispatch, cartToggle } = props;
+    const { dispatch, cartToggle, loggedInUser } = props;
     const showCart = bindActionCreators(InterfaceActionCreators.showCart, dispatch);
     return(
         <div>
@@ -52,14 +52,25 @@ const Header = (props) => {
                         className="nav-link"> Privacy Policy
                 </NavLink>
               </li>
-              <li className="nav-item">
-                <NavLink
-                        exact
-                        to="/"
-                        activeClassName="active"
-                        className="nav-link"> SignIn/SignUp
-                </NavLink>
-              </li>
+              {(!loggedInUser.name) ?
+                <li className="nav-item">
+                  <NavLink
+                          exact
+                          to="/"
+                          activeClassName="active"
+                          className="nav-link"> SignIn/SignUp
+                  </NavLink>
+                </li>
+                :
+                <li className="nav-item">
+                  <NavLink
+                          exact
+                          to="/profile"
+                          activeClassName="active"
+                          className="nav-link"> Profile
+                  </NavLink>
+                </li>
+              }
               <li className="nav-item">
                 <button type="button" className="btn" onClick={()=>showCart()}><i className="fas fa-shopping-cart"></i></button>
               </li>
@@ -79,11 +90,13 @@ const Header = (props) => {
 
 Header.propTypes = {
   cartToggle: PropTypes.bool.isRequired,
+  loggedInUser: PropTypes.object.isRequired
 }
 
 const mapStateToProps = state => (
   {
     cartToggle: state.cartToggle,
+    loggedInUser: state.loggedInUser,
   }
 );
 

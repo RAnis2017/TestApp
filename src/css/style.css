@@ -81,6 +81,13 @@
   background-size: cover;
   background-position: center;
 }
+.hero-sm-profile {
+  max-height: 30vh;
+  background-image: url("../images/profileImg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
 
 h1 {
   color: #F7FFF7 !important;
@@ -137,6 +144,32 @@ h1 {
 }
 .courseImg {
   border-bottom: 1px solid #1A535C !important;
+}
+
+.profile-body {
+  background-color: #20083B !important;
+}
+.profile-body .nav {
+  background-color: #3F0863 !important;
+  -webkit-box-shadow: 0px 0px 34px 1px rgba(0, 0, 0, 0.7);
+  -moz-box-shadow: 0px 0px 34px 1px rgba(0, 0, 0, 0.7);
+  box-shadow: 0px 0px 34px 1px rgba(0, 0, 0, 0.7);
+}
+.profile-body a {
+  color: #D9BF96 !important;
+}
+.profile-body a:hover {
+  background-color: #4A0B75 !important;
+}
+.profile-content {
+  margin-top: 40px;
+}
+.profile-content .tab {
+  background-color: #3F0863 !important;
+  padding: 20px;
+  -webkit-box-shadow: 0px 0px 34px 1px rgba(0, 0, 0, 0.7);
+  -moz-box-shadow: 0px 0px 34px 1px rgba(0, 0, 0, 0.7);
+  box-shadow: 0px 0px 34px 1px rgba(0, 0, 0, 0.7);
 }
 
 body {
