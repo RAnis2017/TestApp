@@ -44,14 +44,6 @@ const Footer = (props) => {
                           className="nav-link"> Privacy Policy
                   </NavLink>
                 </li>
-                <li className="nav-item">
-                  <NavLink
-                          exact
-                          to="/"
-                          activeClassName="active"
-                          className="nav-link"> SignIn/SignUp
-                  </NavLink>
-                </li>
               </ul>
             </div>
           </div>

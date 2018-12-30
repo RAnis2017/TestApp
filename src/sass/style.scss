@@ -19,12 +19,13 @@ box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.4);
   min-height: 100vh;
 }
 
-@import "header";
-@import "footer";
-@import "home";
-@import "loginForm";
-@import "courses";
-@import "profile";
+@import "header",
+        "footer",
+        "home",
+        "loginForm",
+        "courses",
+        "profile",
+        "test";
 
 body {
   background-color: $background-color;

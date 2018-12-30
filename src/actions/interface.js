@@ -86,3 +86,20 @@ export const keyPressedOnForm = (type,e) => {
   };
 }
 };
+
+export const selectQuestion = (e,id) => {
+  e.preventDefault();
+  return {
+    type: InterfaceActionTypes.SELECT_QUESTION,
+    id
+  };
+};
+
+export const selectAnswer = (courseid,qid,ansid) => {
+  return {
+    type: InterfaceActionTypes.SELECT_ANSWER,
+    courseid,
+    qid,
+    ansid
+  };
+};

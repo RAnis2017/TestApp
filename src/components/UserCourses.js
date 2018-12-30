@@ -26,7 +26,7 @@ const UserCourse = (props) => {
                   <hr/>
                   {
                     (course.availability == "released") ?
-                    <button type="button" className={`btn btn-primary`}>Take Test!</button>
+                    <Link className={`btn btn-primary`} to={`/courses/${course.path}`}>Take Test!</Link>
                     :
                     <button type="button" className={`btn btn-primary`}>Coming Soon!</button>
                   }

@@ -5,6 +5,7 @@ import Footer from '../components/Footer';
 import Home from '../components/Home';
 import Profile from '../components/Profile';
 import Courses from '../components/Courses';
+import Test from '../components/Test';
 import { bindActionCreators } from 'redux';
 import * as InterfaceActionCreators from '../actions/interface';
 
@@ -37,7 +38,8 @@ class Website extends Component {
         <div className="app">
           <Header />
           <Route exact path="/" render={Home} />
-          <Route path="/courses" render={Courses} />
+          <Route exact path="/courses" render={Courses} />
+          <Route path="/courses/:path" component={Test} />
           <Route path="/profile"  render={(props) => <Profile {...props} changeTab={this.changeTab} currentTab={this.state.currentTab} />}/>
           <Footer />
         </div>

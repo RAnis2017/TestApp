@@ -1,0 +1,57 @@
+$dark-profile: #20083B !important;
+$dark-profile-1: #3F0863 !important;
+$dark-profile-2: #4A0B75 !important;
+$correct-ans: #67fc9e !important;
+$profile-text: #D9BF96 !important;
+$wrong-ans: #ff3f00 !important;
+.test {
+  &-body{
+      background-color: $dark-profile;
+      .nav {
+        background-color: $dark-profile-1;
+        border-radius: 2px;
+        height: 500px;
+        overflow-y: scroll;
+        margin-bottom: 30px;
+        @include shadow;
+      }
+      a {
+        color: $profile-text;
+        &:hover {
+          background-color: $dark-profile-2;
+        }
+      }
+  }
+  &-content {
+    margin-top: 40px;
+  }
+  &-content .tab {
+    background-color: $dark-profile-1;
+    border-radius: 2px;
+    padding: 20px;
+    @include shadow;
+    color: $profile-text;
+    .answer {
+      background-color: $dark-profile-2;
+      padding: 5px;
+      border-radius: 3px;
+      &:hover{
+        background-color: $dark-profile;
+      }
+    }
+    .correct {
+     color: $primary-color;
+     background-color: $correct-ans;
+   }
+   .disabled {
+     pointer-events: none;
+     cursor: default;
+   }
+   .wrong {
+     color: $wrong-ans;
+   }
+   .not-visible {
+     display: none;
+   }
+  }
+}
