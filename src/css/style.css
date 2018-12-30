@@ -197,6 +197,12 @@ h1 {
 .test-content {
   margin-top: 40px;
 }
+.test-content .attempted {
+  color: #67fc9e !important;
+}
+.test-content .unattempted {
+  color: #ff3f00 !important;
+}
 .test-content .tab {
   background-color: #3F0863 !important;
   border-radius: 2px;
@@ -227,6 +233,14 @@ h1 {
 }
 .test-content .tab .not-visible {
   display: none;
+}
+.test-content .tab .timer {
+  text-align: center;
+}
+.test-content .tab .timer h3 {
+  background-color: #1A535C !important;
+  padding: 5px;
+  border-radius: 5px;
 }
 
 body {

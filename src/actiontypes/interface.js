@@ -14,3 +14,4 @@ export const EDIT_TYPING_PASSWORD = 'interface/EDIT_TYPING_PASSWORD';
 export const EDIT_TYPING_NAME = 'interface/EDIT_TYPING_NAME';
 export const SELECT_QUESTION = 'interface/SELECT_QUESTION';
 export const SELECT_ANSWER = 'interface/SELECT_ANSWER';
+export const TIMER_OVER = 'interface/TIMER_OVER';

@@ -24,6 +24,12 @@ $wrong-ans: #ff3f00 !important;
   }
   &-content {
     margin-top: 40px;
+    .attempted {
+      color: $correct-ans;
+    }
+    .unattempted {
+      color: $wrong-ans;
+    }
   }
   &-content .tab {
     background-color: $dark-profile-1;
@@ -52,6 +58,14 @@ $wrong-ans: #ff3f00 !important;
    }
    .not-visible {
      display: none;
+   }
+   .timer {
+     text-align: center;
+     h3 {
+       background-color: $primary-color;
+       padding: 5px;
+       border-radius: 5px;
+     }
    }
   }
 }

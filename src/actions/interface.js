@@ -103,3 +103,10 @@ export const selectAnswer = (courseid,qid,ansid) => {
     ansid
   };
 };
+
+export const timeOver = (cid) => {
+  return {
+    type: InterfaceActionTypes.TIMER_OVER,
+    cid
+  };
+};
