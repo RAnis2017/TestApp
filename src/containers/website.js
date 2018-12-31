@@ -19,7 +19,7 @@ class Website extends Component {
       super(props);
 
       this.state = {
-        currentTab: 1
+        currentTab: 4
       }
    }
   changeTab = (type) => {
@@ -30,6 +30,8 @@ class Website extends Component {
       this.setState({...this.state, currentTab: 2});
     } else if (type === "settings") {
       this.setState({...this.state, currentTab: 3});
+    } else if (type === "dashboard") {
+      this.setState({...this.state, currentTab: 4});
     }
   }
   render() {

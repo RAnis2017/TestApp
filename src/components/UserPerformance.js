@@ -45,17 +45,17 @@ const dataSource = {
     }
   ]
 };
-const chartConfigs = {
-  type: "pareto2d",
-  width: '100%',
-  height: '600',
-  dataFormat: "JSON",
-  dataSource: dataSource
-};
+
 
 const UserPerformance = (props) => {
     const { dispatch, loggedInUser } = props;
-
+    const chartConfigs = {
+      type: "pareto2d",
+      width: '100%',
+      height: props.height,
+      dataFormat: "JSON",
+      dataSource: dataSource
+    };
     return(
       <div className="tab-body">
           <ReactFC className="performanceChart" {...chartConfigs} />

@@ -29,4 +29,10 @@ $profile-text: #D9BF96 !important;
     color: $profile-text;
 
   }
+  &-content .tab .widget {
+    background-color: $dark-profile-2;
+    padding: 10px;
+    @include shadow-light;
+    border-radius: 5px;
+  }
 }
