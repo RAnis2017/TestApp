@@ -8,7 +8,7 @@ import UserPerformance from './UserPerformance';
 
 const UserDashboard = (props) => {
     const { dispatch, loggedInUser } = props;
-    const recentPackages = loggedInUser.recentPackages.map((recentPackage)=><li><Link className={``} to={`/courses/${recentPackage.path}`}>{recentPackage.name}</Link></li>);
+    const recentPackages = loggedInUser.recentPackages.map((recentPackage,key)=><li key={key}><Link className={``} to={`/courses/${recentPackage.path}`}>{recentPackage.name}</Link></li>);
 
     return(
       <div className="tab-body">
@@ -132,7 +132,7 @@ const UserDashboard = (props) => {
 }
 
 UserDashboard.propTypes = {
-  loggedInUser: PropTypes.array.isRequired,
+  loggedInUser: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = state => (

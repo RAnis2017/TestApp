@@ -21,8 +21,16 @@ class Website extends Component {
       this.state = {
         currentTab: 4,
         path: "",
+        style: "dark",
       }
    }
+  handleStyleButtonClick = () => {
+      if(this.state.style == "dark") {
+        this.setState({...this.state, style: 'light'});
+      } else {
+        this.setState({...this.state, style: 'dark'});
+      }
+  }
   changeTab = (type,path = null) => {
     let currentTab;
     if(type === "courses") {
@@ -47,7 +55,7 @@ class Website extends Component {
           <Route exact path="/" render={Home} />
           <Route exact path="/courses" render={Courses} />
           <Route path="/courses/:path" component={Test} />
-          <Route path="/profile"  render={(props) => <Profile {...props} changeTab={this.changeTab} currentTab={this.state.currentTab} path={this.state.path} />}/>
+          <Route path="/profile"  render={(props) => <Profile {...props} changeTab={this.changeTab} currentTab={this.state.currentTab} path={this.state.path} theme={this.handleStyleButtonClick}/>}/>
           <Footer />
         </div>
       </BrowserRouter>
