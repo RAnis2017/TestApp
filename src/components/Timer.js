@@ -49,7 +49,7 @@ export default class Timer extends Component {
           this.setState({ secs: 0, mins: this.state.mins + 1 });
         } else {
            this.setState({ mins: 0, secs: 0, hours: this.state.hours + 1 });
-           if(this.state.hours === this.state.ogTime){
+           if(this.state.hours >= this.state.ogTime){
              this.props.timeOver(this.props.courseId);
              this.setState({ running: false });
            }

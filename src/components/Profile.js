@@ -5,6 +5,8 @@ import UserDashboard from './UserDashboard';
 import UserCourses from './UserCourses';
 import UserPerformance from './UserPerformance';
 import UserSettings from './UserSettings';
+import UserTests from './UserTests';
+import UserPosts from './UserPosts';
 
 const Profile = (props) => {
 
@@ -22,13 +24,14 @@ const Profile = (props) => {
                 <a className="nav-link active" href="#" onClick={()=>props.changeTab("dashboard")}><i className="fas fa-book"></i> Dashboard</a>
                 <a className="nav-link active" href="#" onClick={()=>props.changeTab("courses")}><i className="fas fa-book"></i> Tests</a>
                 <a className="nav-link" href="#" onClick={()=>props.changeTab("performance")}><i className="fas fa-chart-area"></i> Performance</a>
+                <a className="nav-link" href="#" onClick={()=>props.changeTab("posts")}><i className="fas fa-paste"></i> Posts</a>
                 <a className="nav-link" href="#" onClick={()=>props.changeTab("settings")}><i className="fas fa-cog"></i> Settings</a>
               </nav>
             </div>
             <div className="col-sm-12 col-lg-9">
               <div className="tab">
               {
-                (props.currentTab == 1) ? <UserCourses /> : (props.currentTab == 2) ? <UserPerformance height="600"/> : (props.currentTab == 3) ? <UserSettings /> : <UserDashboard/>
+                (props.currentTab == 1) ? <UserCourses changeTab={props.changeTab} /> : (props.currentTab == 2) ? <UserPerformance height="600"/> : (props.currentTab == 3) ? <UserSettings /> : (props.currentTab == 4) ? <UserDashboard/> : (props.currentTab == 5) ? <UserTests path={props.path}/> : <UserPosts />
               }
               </div>
             </div>

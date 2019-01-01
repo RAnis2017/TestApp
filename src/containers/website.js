@@ -19,10 +19,11 @@ class Website extends Component {
       super(props);
 
       this.state = {
-        currentTab: 4
+        currentTab: 4,
+        path: "",
       }
    }
-  changeTab = (type) => {
+  changeTab = (type,path = null) => {
     let currentTab;
     if(type === "courses") {
       this.setState({...this.state, currentTab: 1});
@@ -32,6 +33,10 @@ class Website extends Component {
       this.setState({...this.state, currentTab: 3});
     } else if (type === "dashboard") {
       this.setState({...this.state, currentTab: 4});
+    } else if (type === "tests") {
+      this.setState({...this.state, currentTab: 5, path: path});
+    } else if (type === "posts") {
+      this.setState({...this.state, currentTab: 6});
     }
   }
   render() {
@@ -42,7 +47,7 @@ class Website extends Component {
           <Route exact path="/" render={Home} />
           <Route exact path="/courses" render={Courses} />
           <Route path="/courses/:path" component={Test} />
-          <Route path="/profile"  render={(props) => <Profile {...props} changeTab={this.changeTab} currentTab={this.state.currentTab} />}/>
+          <Route path="/profile"  render={(props) => <Profile {...props} changeTab={this.changeTab} currentTab={this.state.currentTab} path={this.state.path} />}/>
           <Footer />
         </div>
       </BrowserRouter>

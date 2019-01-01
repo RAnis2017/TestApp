@@ -19,14 +19,13 @@ const UserCourse = (props) => {
                 </div>
                 <div className="courseName font-primary">
                   <h4>{course.name}</h4>
-                  <h6>Questions: {course.mcqQuantity} Duration: {course.duration} hrs</h6>
                 </div>
                 <div className="coursePriceCartAdd font-secondary">
                   <h4>{course.price} {course.currency}</h4>
                   <hr/>
                   {
                     (course.availability == "released") ?
-                    <Link className={`btn btn-primary`} to={`/courses/${course.path}`}>Take Test!</Link>
+                    <a className="btn btn-primary" href="#" onClick={()=>props.changeTab("tests",course.path)}>Check Course!</a>
                     :
                     <button type="button" className={`btn btn-primary`}>Coming Soon!</button>
                   }
