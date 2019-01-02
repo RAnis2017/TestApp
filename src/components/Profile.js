@@ -26,6 +26,7 @@ const Profile = (props) => {
                 <a className="nav-link" href="#" onClick={()=>props.changeTab("performance")}><i className="fas fa-chart-area"></i> Performance</a>
                 <a className="nav-link" href="#" onClick={()=>props.changeTab("posts")}><i className="fas fa-paste"></i> Posts</a>
                 <a className="nav-link" href="#" onClick={()=>props.changeTab("settings")}><i className="fas fa-cog"></i> Settings</a>
+                <a className="nav-link" href="#" onClick={()=>props.theme()}><i className="fas fa-brush"></i> Change Theme to {props.currentTheme === "Light" ? "Night" : "Light"}</a>
               </nav>
             </div>
             <div className="col-sm-12 col-lg-9">

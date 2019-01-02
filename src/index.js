@@ -5,7 +5,6 @@ import 'animate.css/animate.min.css';
 import 'jquery/dist/jquery.js';
 import 'bootstrap/dist/js/bootstrap.js';
 import App from "./App";
-import "./css/style-light.css";
 import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(<App />, document.getElementById("root"));

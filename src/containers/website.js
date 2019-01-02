@@ -21,14 +21,17 @@ class Website extends Component {
       this.state = {
         currentTab: 4,
         path: "",
-        style: "dark",
+        style: "Light",
+        styleVar: "../css/style-light.css",
       }
    }
   handleStyleButtonClick = () => {
-      if(this.state.style == "dark") {
-        this.setState({...this.state, style: 'light'});
+      if(this.state.style == "Light") {
+        this.setState({...this.state, style: 'Night', styleVar: "/css/style-night.css"});
+        console.log("Night");
       } else {
-        this.setState({...this.state, style: 'dark'});
+        this.setState({...this.state, style: 'Light', styleVar: "/css/style-light.css"});
+        console.log("Light");
       }
   }
   changeTab = (type,path = null) => {
@@ -51,11 +54,12 @@ class Website extends Component {
     return (
       <BrowserRouter>
         <div className="app">
+          <link href={`${this.state.styleVar}`} rel="stylesheet" />
           <Header />
           <Route exact path="/" render={Home} />
           <Route exact path="/courses" render={Courses} />
           <Route path="/courses/:path" component={Test} />
-          <Route path="/profile"  render={(props) => <Profile {...props} changeTab={this.changeTab} currentTab={this.state.currentTab} path={this.state.path} theme={this.handleStyleButtonClick}/>}/>
+          <Route path="/profile"  render={(props) => <Profile {...props} changeTab={this.changeTab} currentTab={this.state.currentTab} path={this.state.path} theme={this.handleStyleButtonClick} currentTheme={this.state.style}/>}/>
           <Footer />
         </div>
       </BrowserRouter>
