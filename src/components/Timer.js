@@ -6,9 +6,9 @@ export default class Timer extends Component {
 
       this.state = {
        running: true,
-       hours: 2,
-       mins: 59,
-       secs: 50,
+       hours: 0,
+       mins: 0,
+       secs: 0,
        ogTime: this.props.ogTime,
      };
    }

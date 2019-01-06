@@ -123,7 +123,8 @@ export default function Interface(state=initialState, action) {
                       id: 1,
                       name: "Test 1 2018",
                       duration: 2,
-                      mcqQuantity: 150,
+                      mcqQuantity: 5,
+                      availability: "released",
                       passRequirementPercentage: 50,
                       lastTakenDate: "12-08-2018",
                       lastScore: "0.0",
@@ -246,7 +247,8 @@ export default function Interface(state=initialState, action) {
                       id: 1,
                       name: "Test 1 2018",
                       duration: 2,
-                      mcqQuantity: 150,
+                      mcqQuantity: 5,
+                      availability: "upcoming",
                       passRequirementPercentage: 50,
                       lastTakenDate: "12-08-2018",
                       lastScore: "0.0",
@@ -382,6 +384,18 @@ export default function Interface(state=initialState, action) {
           return {
             ...state,
     				selectedQuestion: action.id
+    		 	};
+	 	}
+    case InterfaceActionTypes.QUESTION_NEXT: {
+          return {
+            ...state,
+    				selectedQuestion: ++state.selectedQuestion
+    		 	};
+	 	}
+    case InterfaceActionTypes.QUESTION_PREV: {
+          return {
+            ...state,
+    				selectedQuestion: --state.selectedQuestion
     		 	};
 	 	}
     case InterfaceActionTypes.TIMER_OVER: {

@@ -27,10 +27,10 @@ class Website extends Component {
    }
   handleStyleButtonClick = () => {
       if(this.state.style == "Light") {
-        this.setState({...this.state, style: 'Night', styleVar: "/css/style-night.css"});
+        this.setState({...this.state, style: 'Night', styleVar: "../css/style-night.css"});
         console.log("Night");
       } else {
-        this.setState({...this.state, style: 'Light', styleVar: "/css/style-light.css"});
+        this.setState({...this.state, style: 'Light', styleVar: "../css/style-light.css"});
         console.log("Light");
       }
   }

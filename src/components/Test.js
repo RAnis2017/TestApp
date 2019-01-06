@@ -12,16 +12,19 @@ const Test = (props) => {
     const selectQuestion = bindActionCreators(InterfaceActionCreators.selectQuestion, dispatch);
     const selectAnswer = bindActionCreators(InterfaceActionCreators.selectAnswer, dispatch);
     const timeOver = bindActionCreators(InterfaceActionCreators.timeOver, dispatch);
+    const nextPrevQuestion = bindActionCreators(InterfaceActionCreators.nextPrevQuestion, dispatch);
     const path = props.match.params.path;
     let ogTime;
     let sideNav;
     let currentQuestion;
     let currentCourse;
+    let mcqQuantity;
     loggedInUser.courses.map((outerCourse,index) => {
       outerCourse.tests.map((course,index) => {
         if(course.path === path){
           if(course.timeOver != true){
             currentCourse = course.id;
+            mcqQuantity = course.mcqQuantity;
             sideNav = course.questions.map((question,key) => {
               return (<a className={`nav-link`} href="#" key={key} onClick={(e)=>selectQuestion(e,question.id)}>{(question.selectedAnswer === 0) ? <i className="fas fa-question-circle unattempted" ></i> : <i className="fas fa-question-circle attempted" ></i> } {question.id} - {question.title}</a>);
             });
@@ -75,15 +78,18 @@ const Test = (props) => {
         </div>
         <div className="container fullview">
           <div className="row test-content">
-            <div className="col-sm-12 col-lg-4">
+            <div className="col-sm-12 col-lg-3">
               <nav className="nav">
                 {sideNav}
               </nav>
             </div>
-            <div className="col-sm-12 col-lg-8">
+            <div className="col-sm-12 col-lg-9">
               <div className="tab">
+                <div className="ad"></div>
                 <Timer ogTime={ogTime} timeOver={timeOver} courseId={currentCourse}/>
                 {currentQuestion}
+                <button type="button" className={"btn btn-success"+`${(selectedQuestion <= 1) ? " disabled" : ""}`} onClick={(e)=>nextPrevQuestion("prev",e)}>Prev</button>
+                <button type="button" className={"btn btn-success float-right"+`${(selectedQuestion === mcqQuantity) ? " disabled" : ""}`} onClick={(e)=>nextPrevQuestion("next",e)}>Next</button>
               </div>
             </div>
           </div>

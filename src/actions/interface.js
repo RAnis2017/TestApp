@@ -110,3 +110,16 @@ export const timeOver = (cid) => {
     cid
   };
 };
+
+export const nextPrevQuestion = (type,e) => {
+  e.preventDefault();
+  if(type === "next"){
+    return {
+      type: InterfaceActionTypes.QUESTION_NEXT,
+    };
+  } else if(type === "prev") {
+    return {
+      type: InterfaceActionTypes.QUESTION_PREV,
+    };
+  }
+};

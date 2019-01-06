@@ -62,5 +62,14 @@
        border-radius: 5px;
      }
    }
+   .ad {
+     min-width: 728px;
+     min-height: 90px;
+     background-image: url('../images/ad.jpg');
+     background-repeat: no-repeat;
+     background-size: contain;
+     background-position: center;
+     margin-bottom: 20px;
+   }
   }
 }
