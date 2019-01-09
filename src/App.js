@@ -1,13 +1,7 @@
 import React, { Component } from "react";
 import { Provider } from "react-redux";
-import { createStore } from "redux";
-import InterfaceReducer from "./reducers/interface";
+import {store} from './Store';
 import WebsiteComponent from "./containers/website";
-
-const store = createStore(
-  InterfaceReducer,
-  window.devToolsExtension && window.devToolsExtension()
-);
 
 class App extends Component {
   render() {

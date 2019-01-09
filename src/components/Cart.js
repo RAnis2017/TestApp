@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as InterfaceActionCreators from '../actions/interface';
 import CartItem from './CartItem';
+import { Link } from 'react-router-dom'
 
 const Cart = (props) => {
   const { dispatch, courses } = props;
@@ -37,7 +38,7 @@ const Cart = (props) => {
             <ul>
               {ItemsJSX}
             </ul>
-            <button type="button" className="btn btn-primary btn-block">Check Out!</button>
+            <Link type="button" className="btn btn-primary btn-block" to={`/checkout`}>Check Out!</Link>
           </div>
         </div>
       );

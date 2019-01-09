@@ -21,10 +21,6 @@ const Form = (props) => {
                     <label htmlFor="password">Password</label>
                     <input type="password" className="form-control" id="password" placeholder="Password" value={password} onChange={(e)=>keyPressedOnForm("password",e)}/>
                   </div>
-                  <div className="form-group form-check">
-                    <input type="checkbox" className="form-check-input" id="keeploggedin" />
-                    <label className="form-check-label" htmlFor="keeploggedin">Check me out</label>
-                  </div>
                   <button type="submit" className="btn btn-block btn-primary" >Log In</button>
                 </form>;
     } else {

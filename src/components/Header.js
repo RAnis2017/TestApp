@@ -52,7 +52,7 @@ const Header = (props) => {
                         className="nav-link"> Privacy Policy
                 </NavLink>
               </li>
-              {(!loggedInUser.name) ?
+              {(loggedInUser.name.length < 1) ?
                 <li className="nav-item">
                   <NavLink
                           exact

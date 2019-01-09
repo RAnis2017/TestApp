@@ -260,6 +260,12 @@ h1 {
   margin-bottom: 20px;
 }
 
+.checkout {
+  margin-top: 25px;
+  background-color: #F7FFF7 !important;
+  padding: 10px;
+}
+
 body {
   background-color: #eee !important;
 }

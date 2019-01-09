@@ -1,6 +1,9 @@
 import * as InterfaceActionTypes from '../actiontypes/interface';
+import axios from "axios";
+import md5 from "md5";
 
 const initialState = {
+  apiUrl: "http://localhost:80/vinodkatrelaapi/public/",
   selectedForm: "LOGIN",
   loggedInUser: {email: "", name: "", password: "", courses: []},
   signupDone: false,
@@ -20,15 +23,15 @@ const initialState = {
       description: "Some long description about this particular course",
       mcqQuantity: 100,
       duration: 3,
-      inCart: false,
+      inCart: true,
       path: "/about",
       imgSrc: "https://gs-post-images.grdp.co/2018/6/gate-img1529910709846-84.png-rs-high-webp.png"
     },
     {
       id: 2,
       name: "SAT TEST 2018",
-      price: "1800",
-      currency: "INR",
+      price: "18",
+      currency: "USD",
       availability: "released",
       description: "Some long description about this particular course",
       mcqQuantity: 90,
@@ -92,293 +95,10 @@ export default function Interface(state=initialState, action) {
     		 	};
 	 	}
     case InterfaceActionTypes.LOGIN_SUBMIT: {
-          if(state.email === "abc@gmail.com" && state.password === "abc123"){
-            return {
-              ...state,
-      				loggedInUser: {email: state.email, name: "Raza Anis", password: "abc123", nextPath:"get-test-2018-1", accuracy: "57", totalMcqs: "400", recentPackages: [{name: "GET TEST 2018", path: "get-test-2018-1"}],
-              posts: [{
-                id: 1,
-                poster: "Admin",
-                dated: "1-01-2019",
-                title: "New Annoucement",
-                description: "Somewhat long statement",
-                userpic: "https://gs-post-images.grdp.co/2018/6/gate-img1529910709846-84.png-rs-high-webp.png",
-              }],
-              courses: [
-                {
-                  id: 1,
-                  name: "GET TEST 2018",
-                  price: "180",
-                  currency: "USD",
-                  availability: "released",
-                  description: "Some long description about this particular course",
-                  mcqQuantity: 100,
-                  duration: 3,
-                  timeOver: false,
-                  inCart: false,
-                  path: "get-test-2018",
-                  imgSrc: "https://gs-post-images.grdp.co/2018/6/gate-img1529910709846-84.png-rs-high-webp.png",
-                  tests: [
-                    {
-                      id: 1,
-                      name: "Test 1 2018",
-                      duration: 2,
-                      mcqQuantity: 5,
-                      availability: "released",
-                      passRequirementPercentage: 50,
-                      lastTakenDate: "12-08-2018",
-                      lastScore: "0.0",
-                      path: "get-test-2018-1",
-                      lastCorrect: 20,
-                      lastIncorrect: 90,
-                      lastStoredDataReview: [{
-                        id: 1,
-                        title: "Programming Language",
-                        question: "Which is the best Programming Language? ",
-                        answer1: "Python",
-                        answer2: "Java",
-                        answer3: "JavaScript",
-                        answer4: "All of these",
-                        truthyOption: "4",
-                        selectedAnswer: 4,
-                      },
-                      {
-                        id: 2,
-                        title: "Programming Language 2",
-                        question: "Which is the best Programming Language? ",
-                        answer1: "Python",
-                        answer2: "Java",
-                        answer3: "JavaScript",
-                        answer4: "All of these",
-                        truthyOption: "2",
-                        selectedAnswer: 2,
-                      },
-                      {
-                        id: 3,
-                        title: "Programming Language 3",
-                        question: "Which is the best Programming Language? ",
-                        answer1: "Python",
-                        answer2: "Java",
-                        answer3: "JavaScript",
-                        answer4: "All of these",
-                        truthyOption: "3",
-                        selectedAnswer:3,
-                      },
-                      {
-                        id: 4,
-                        title: "Programming Language 3",
-                        question: "Which is the best Programming Language? ",
-                        answer1: "Python",
-                        answer2: "Java",
-                        answer3: "JavaScript",
-                        answer4: "All of these",
-                        truthyOption: "3",
-                        selectedAnswer: 1,
-                      },
-                      {
-                        id: 5,
-                        title: "Programming Language 3",
-                        question: "Which is the best Programming Language? ",
-                        answer1: "Python",
-                        answer2: "Java",
-                        answer3: "JavaScript",
-                        answer4: "All of these",
-                        truthyOption: "3",
-                        selectedAnswer: 2,
-                      }],
-                      attemptedBy: 30,
-                      questions: [{
-                        id: 1,
-                        title: "Programming Language",
-                        question: "Which is the best Programming Language? ",
-                        answer1: "Python",
-                        answer2: "Java",
-                        answer3: "JavaScript",
-                        answer4: "All of these",
-                        truthyOption: "4",
-                        selectedAnswer: 0,
-                      },
-                      {
-                        id: 2,
-                        title: "Programming Language 2",
-                        question: "Which is the best Programming Language? ",
-                        answer1: "Python",
-                        answer2: "Java",
-                        answer3: "JavaScript",
-                        answer4: "All of these",
-                        truthyOption: "2",
-                        selectedAnswer: 0,
-                      },
-                      {
-                        id: 3,
-                        title: "Programming Language 3",
-                        question: "Which is the best Programming Language? ",
-                        answer1: "Python",
-                        answer2: "Java",
-                        answer3: "JavaScript",
-                        answer4: "All of these",
-                        truthyOption: "3",
-                        selectedAnswer: 0,
-                      },
-                      {
-                        id: 4,
-                        title: "Programming Language 3",
-                        question: "Which is the best Programming Language? ",
-                        answer1: "Python",
-                        answer2: "Java",
-                        answer3: "JavaScript",
-                        answer4: "All of these",
-                        truthyOption: "3",
-                        selectedAnswer: 0,
-                      },
-                      {
-                        id: 5,
-                        title: "Programming Language 3",
-                        question: "Which is the best Programming Language? ",
-                        answer1: "Python",
-                        answer2: "Java",
-                        answer3: "JavaScript",
-                        answer4: "All of these",
-                        truthyOption: "3",
-                        selectedAnswer: 0,
-                      }]
-                    },
-                    {
-                      id: 1,
-                      name: "Test 1 2018",
-                      duration: 2,
-                      mcqQuantity: 5,
-                      availability: "upcoming",
-                      passRequirementPercentage: 50,
-                      lastTakenDate: "12-08-2018",
-                      lastScore: "0.0",
-                      path: "get-test-2018-1",
-                      lastCorrect: 20,
-                      lastIncorrect: 90,
-                      lastStoredDataReview: [{
-                        id: 1,
-                        title: "Programming Language",
-                        question: "Which is the best Programming Language? ",
-                        answer1: "Python",
-                        answer2: "Java",
-                        answer3: "JavaScript",
-                        answer4: "All of these",
-                        truthyOption: "4",
-                        selectedAnswer: 4,
-                      },
-                      {
-                        id: 2,
-                        title: "Programming Language 2",
-                        question: "Which is the best Programming Language? ",
-                        answer1: "Python",
-                        answer2: "Java",
-                        answer3: "JavaScript",
-                        answer4: "All of these",
-                        truthyOption: "2",
-                        selectedAnswer: 2,
-                      },
-                      {
-                        id: 3,
-                        title: "Programming Language 3",
-                        question: "Which is the best Programming Language? ",
-                        answer1: "Python",
-                        answer2: "Java",
-                        answer3: "JavaScript",
-                        answer4: "All of these",
-                        truthyOption: "3",
-                        selectedAnswer:3,
-                      },
-                      {
-                        id: 4,
-                        title: "Programming Language 3",
-                        question: "Which is the best Programming Language? ",
-                        answer1: "Python",
-                        answer2: "Java",
-                        answer3: "JavaScript",
-                        answer4: "All of these",
-                        truthyOption: "3",
-                        selectedAnswer: 1,
-                      },
-                      {
-                        id: 5,
-                        title: "Programming Language 3",
-                        question: "Which is the best Programming Language? ",
-                        answer1: "Python",
-                        answer2: "Java",
-                        answer3: "JavaScript",
-                        answer4: "All of these",
-                        truthyOption: "3",
-                        selectedAnswer: 2,
-                      }],
-                      attemptedBy: 30,
-                      questions: [{
-                        id: 1,
-                        title: "Programming Language",
-                        question: "Which is the best Programming Language? ",
-                        answer1: "Python",
-                        answer2: "Java",
-                        answer3: "JavaScript",
-                        answer4: "All of these",
-                        truthyOption: "4",
-                        selectedAnswer: 0,
-                      },
-                      {
-                        id: 2,
-                        title: "Programming Language 2",
-                        question: "Which is the best Programming Language? ",
-                        answer1: "Python",
-                        answer2: "Java",
-                        answer3: "JavaScript",
-                        answer4: "All of these",
-                        truthyOption: "2",
-                        selectedAnswer: 0,
-                      },
-                      {
-                        id: 3,
-                        title: "Programming Language 3",
-                        question: "Which is the best Programming Language? ",
-                        answer1: "Python",
-                        answer2: "Java",
-                        answer3: "JavaScript",
-                        answer4: "All of these",
-                        truthyOption: "3",
-                        selectedAnswer: 0,
-                      },
-                      {
-                        id: 4,
-                        title: "Programming Language 3",
-                        question: "Which is the best Programming Language? ",
-                        answer1: "Python",
-                        answer2: "Java",
-                        answer3: "JavaScript",
-                        answer4: "All of these",
-                        truthyOption: "3",
-                        selectedAnswer: 0,
-                      },
-                      {
-                        id: 5,
-                        title: "Programming Language 3",
-                        question: "Which is the best Programming Language? ",
-                        answer1: "Python",
-                        answer2: "Java",
-                        answer3: "JavaScript",
-                        answer4: "All of these",
-                        truthyOption: "3",
-                        selectedAnswer: 0,
-                      }]
-                    }
-
-                  ]
-                }
-              ]
-              }
-      		 	};
-          } else {
-            return {
-              ...state,
-      				loggedInUser: {}
-      		 	};
-          }
+          return {
+            ...state,
+            loggedInUser: action.user
+          };
 	 	}
     case InterfaceActionTypes.SELECT_QUESTION: {
           return {
@@ -396,6 +116,12 @@ export default function Interface(state=initialState, action) {
           return {
             ...state,
     				selectedQuestion: --state.selectedQuestion
+    		 	};
+	 	}
+    case InterfaceActionTypes.COURSES_MIN_GET: {
+          return {
+            ...state,
+    				courses: action.courses
     		 	};
 	 	}
     case InterfaceActionTypes.TIMER_OVER: {
@@ -434,15 +160,31 @@ export default function Interface(state=initialState, action) {
     		 	};
 	 	}
     case InterfaceActionTypes.SIGNUP_SUBMIT: {
-        return {
-          ...state,
-  				signupDone: true
-  		 	};
+        axios
+          .post(`${state.apiUrl}signup`, {
+            data: JSON.stringify({
+              obj:  {email: state.email, name: state.name, password: md5(state.password), nextPath:"", accuracy: "0", totalMcqs: "0", recentPackages: [], posts: [], courses: []},
+            })
+          })
+          .then(response => {
+            console.log(response);
+            localStorage.setItem('genhex-auth-token', response.data.token);
+          });
+          return {
+            ...state,
+            signupDone: true
+          };
 	 	}
     case InterfaceActionTypes.USER_SETTING_SAVE: {
         return {
           ...state,
-  				loggedInUser: {...state.loggedInUser, email: state.email, name: state.name, password: state.password}
+  				loggedInUser: {...state.loggedInUser}
+  		 	};
+	 	}
+    case InterfaceActionTypes.LOAD_USER: {
+        return {
+          ...state,
+  				loggedInUser: action.user
   		 	};
 	 	}
     case InterfaceActionTypes.CART_TOGGLE: {
