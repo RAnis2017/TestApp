@@ -25,7 +25,7 @@ class Website extends Component {
         path: "",
         style: "Light",
         styleVar: "../css/style-light.css",
-        loggedIn: (localStorage.getItem('genhex-auth-token') != null) ? true : false
+        loggedIn: (localStorage.getItem('genhex-auth-token') != null) ? true : true
       }
    }
   componentWillMount(){
@@ -33,8 +33,8 @@ class Website extends Component {
     const coursesMinGet = bindActionCreators(InterfaceActionCreators.coursesMinGet, dispatch);
     const loadLoggedInUser = bindActionCreators(InterfaceActionCreators.loadLoggedInUser, dispatch);
 
-    coursesMinGet();
     loadLoggedInUser();
+    coursesMinGet();
   }
   handleStyleButtonClick = () => {
       if(this.state.style == "Light") {

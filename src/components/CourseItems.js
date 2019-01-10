@@ -9,30 +9,31 @@ const CourseItems = (props) => {
     const addCartItem = bindActionCreators(InterfaceActionCreators.addCartItem, dispatch);
     let ItemsJSX;
     ItemsJSX = courses.map((course,index)=>{
-
-          return (
-            <div className="col col-lg-3" key={index}>
-              <div className="courseItem">
-                <div className="courseImg text-center">
-                  <img src={course.imgSrc} className="img-fluid" />
-                </div>
-                <div className="courseName font-primary">
-                  <h4>{course.name}</h4>
-                  <h6>Questions: {course.mcqQuantity} Duration: {course.duration} hrs</h6>
-                </div>
-                <div className="coursePriceCartAdd font-secondary">
-                  <h4>{course.price} {course.currency}</h4>
-                  <hr/>
-                  {
-                    (course.availability == "released") ?
-                    <button type="button" className={`btn btn-primary`} onClick={()=> addCartItem(course.id)}>Add to Cart</button>
-                    :
-                    <button type="button" className={`btn btn-primary`}>Coming Soon!</button>
-                  }
+          if(course != false){
+            return (
+              <div className="col col-lg-3" key={index}>
+                <div className="courseItem">
+                  <div className="courseImg text-center">
+                    <img src={course.imgSrc} className="img-fluid" />
+                  </div>
+                  <div className="courseName font-primary">
+                    <h4>{course.name}</h4>
+                    <h6>Questions: {course.mcqQuantity} Duration: {course.duration} hrs</h6>
+                  </div>
+                  <div className="coursePriceCartAdd font-secondary">
+                    <h4>{course.price} {course.currency}</h4>
+                    <hr/>
+                    {
+                      (course.availability == "released") ?
+                      <button type="button" className={`btn btn-primary`} onClick={()=> addCartItem(course.id)}>Add to Cart</button>
+                      :
+                      <button type="button" className={`btn btn-primary`}>Coming Soon!</button>
+                    }
+                  </div>
                 </div>
               </div>
-            </div>
-          );
+            );
+          }
     })
     return(
       <div className="row">

@@ -182,15 +182,40 @@ export default function Interface(state=initialState, action) {
   		 	};
 	 	}
     case InterfaceActionTypes.LOAD_USER: {
+          let courses;
+          action.user.courses.map((userCourse)=>{
+          console.log(userCourse);
+
+          courses = state.courses.map((course)=>{
+            console.log(course);
+            if(course.id !== userCourse.id){
+              return course;
+            }
+            return false;
+          });
+        });
         return {
           ...state,
-  				loggedInUser: action.user
+  				loggedInUser: action.user,
+          courses
   		 	};
 	 	}
     case InterfaceActionTypes.CART_TOGGLE: {
           return {
             ...state,
     				cartToggle: !state.cartToggle
+    		 	};
+	 	}
+    case InterfaceActionTypes.COURSES_BOUGHT: {
+          let courses = state.courses.map((course,index)=>{
+              if(course.inCart){
+                return false;
+              }
+              return true;
+          });
+          return {
+            ...state,
+    				courses: courses
     		 	};
 	 	}
     case InterfaceActionTypes.REMOVE_CART_ITEM: {

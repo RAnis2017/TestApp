@@ -5,12 +5,32 @@ import PaypalExpressBtn from 'react-paypal-express-checkout';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as InterfaceActionCreators from '../actions/interface';
+import axios from "axios";
 
 const Checkout = (props) => {
-    const { dispatch, courses } = props;
+    const { dispatch, courses, apiUrl } = props;
+    const coursesBought = bindActionCreators(InterfaceActionCreators.coursesBought, dispatch);
+
     const onSuccess = (payment) => {
         // Congratulation, it came here means everything's fine!
+            let coursesIDs = "";
+            courses.map((course,index)=>{
+                if(course.inCart){
+                  coursesIDs += `${course.id},`
+                }
+            });
             console.log("The payment was succeeded!", payment);
+            axios
+              .post(`${apiUrl}coursesBought`, {
+                data: JSON.stringify({
+                  token: localStorage.getItem('genhex-auth-token'),
+                  ids: coursesIDs
+                })
+              })
+              .then(response => {
+                console.log(response);
+                coursesBought();
+              });
             // You can bind the "payment" object's value to your state or props or whatever here, please see below for sample returned data
     }
 
@@ -83,11 +103,13 @@ const Checkout = (props) => {
 
 Checkout.propTypes = {
   courses: PropTypes.array.isRequired,
+  apiUrl: PropTypes.string.isRequired,
 }
 
 const mapStateToProps = state => (
   {
     courses: state.courses,
+    apiUrl: state.apiUrl
   }
 );
 

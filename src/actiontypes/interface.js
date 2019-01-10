@@ -19,3 +19,4 @@ export const QUESTION_PREV = 'interface/QUESTION_PREV';
 export const QUESTION_NEXT = 'interface/QUESTION_NEXT';
 export const COURSES_MIN_GET = 'interface/COURSES_MIN_GET';
 export const LOAD_USER = 'interface/LOAD_USER';
+export const COURSES_BOUGHT = 'interface/COURSES_BOUGHT';

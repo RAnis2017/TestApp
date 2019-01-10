@@ -15,37 +15,11 @@ export const changeForm = type => {
   }
 };
 
-// export const formSubmit = (e,type) => {
-//   e.preventDefault();
-//   if(type === "login"){
-//     let user = {email: "", name: "", password: "", courses: []};
-//     axios
-//       .post(`${store.getState().apiUrl}login`, {
-//         data: JSON.stringify({
-//           obj:  {email: store.getState().email, password: md5(store.getState().password)},
-//         })
-//       })
-//       .then(response => {
-//         console.log(response);
-//         localStorage.setItem('genhex-auth-token', response.data.token);
-//         user = response.data.user[0];
-//         return {
-//           type: InterfaceActionTypes.LOGIN_SUBMIT,
-//           user
-//         };
-//       });
-//
-//   } else if(type === "signup") {
-//     return {
-//       type: InterfaceActionTypes.SIGNUP_SUBMIT,
-//     };
-//   }
-// };
-
 export const formSubmit = (e,type) => {
   e.preventDefault();
   return function action(dispatch) {
     let user = {email: "", name: "", password: "", courses: []};
+    let courses = [];
     axios
       .post(`${store.getState().apiUrl}login`, {
         data: JSON.stringify({
@@ -56,6 +30,11 @@ export const formSubmit = (e,type) => {
         console.log(response);
         localStorage.setItem('genhex-auth-token', response.data.token);
         user = JSON.parse(response.data.user[0].obj);
+        response.data.courses.map((course)=>{
+          courses.push({id:course.id,...JSON.parse(course.objFull)});
+          // console.log(JSON.parse(course.objFull));
+        })
+        user.courses = courses;
         dispatch({
           type: InterfaceActionTypes.LOGIN_SUBMIT,
           user
@@ -72,7 +51,7 @@ export const coursesMinGet = () => {
       .then(response => {
         console.log(response);
         response.data.map((course)=>{
-          courses.push(JSON.parse(course.objMin));
+          courses.push({id:course.id,...JSON.parse(course.objMin)});
           // console.log(JSON.parse(course.objMin));
         })
         console.log(courses);
@@ -108,6 +87,7 @@ export const userSettingSubmit = (e) => {
 export const loadLoggedInUser = () => {
   return function action(dispatch) {
     let user = {email: "", name: "", password: "", courses: []};
+    let courses = [];
     let token = (localStorage.getItem('genhex-auth-token') != null) ? localStorage.getItem('genhex-auth-token') : "";
     axios
       .post(`${store.getState().apiUrl}authenticate`, {
@@ -119,6 +99,11 @@ export const loadLoggedInUser = () => {
         console.log(response);
         if(response.data.success !== "0"){
           user = JSON.parse(response.data.user[0].obj);
+          response.data.courses.map((course)=>{
+            courses.push({id:course.id,...JSON.parse(course.objFull)});
+            // console.log(JSON.parse(course.objFull));
+          })
+          user.courses = courses;
         }
         dispatch({
           type: InterfaceActionTypes.LOAD_USER,
@@ -139,7 +124,11 @@ export const removeCartItem = (id) => {
     id
   };
 };
-
+export const coursesBought = () => {
+  return {
+    type: InterfaceActionTypes.COURSES_BOUGHT,
+  };
+};
 export const addCartItem = (id) => {
   return {
     type: InterfaceActionTypes.ADD_CART_ITEM,
