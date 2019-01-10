@@ -19,20 +19,30 @@ const Test = (props) => {
     let currentQuestion;
     let currentCourse;
     let mcqQuantity;
+    let correct;
+    let wrong;
+    let score;
+
     loggedInUser.courses.map((outerCourse,index) => {
       outerCourse.tests.map((course,index) => {
+
+
         if(course.path === path){
+          correct = course.lastCorrect;
+          wrong = course.lastIncorrect;
+          score = course.lastScore;
           if(course.timeOver != true){
             currentCourse = course.id;
             mcqQuantity = course.mcqQuantity;
+
             sideNav = course.questions.map((question,key) => {
               return (<a className={`nav-link`} href="#" key={key} onClick={(e)=>selectQuestion(e,question.id)}>{(question.selectedAnswer === 0) ? <i className="fas fa-question-circle unattempted" ></i> : <i className="fas fa-question-circle attempted" ></i> } {question.id} - {question.title}</a>);
             });
             currentQuestion = course.questions.map((question,key) => {
-              ogTime = course.duration;
               if(question.id === selectedQuestion){
                 return (
                   <div key={key}>
+                    <Timer timeOver={timeOver} path={path} loggedInUser={loggedInUser}/>
                     <h3  className="question">Q: {question.question}</h3>
                     <hr />
                     <h5>Select Correct Answer:</h5>
@@ -47,21 +57,18 @@ const Test = (props) => {
             });
           } else {
             currentQuestion = <div className="text-center">
-                                <h3>Your Time is Over!</h3>
+                                <h3>Your Test is Over!</h3>
                                  <div className="row">
                                   <div className="col-lg-6">
-                                    <i className="fas fa-check attempted heading-min"></i> 1 CORRECT
+                                    <i className="fas fa-check attempted heading-min"></i> {correct} CORRECT
                                   </div>
                                   <div className="col-lg-6">
-                                    <i className="fas fa-times unattempted heading-min"></i> 4 INCORRECT
+                                    <i className="fas fa-times unattempted heading-min"></i> {wrong} INCORRECT
                                   </div>
                                  </div>
                                  <div className="row">
                                   <div className="col-lg-6">
-                                    <i className="fas fa-crosshairs attempted heading-min"></i> 10% ACCURATE
-                                  </div>
-                                  <div className="col-lg-6">
-                                    <i className="fas fa-tachometer-alt attempted heading-min"></i> 1.00 SCORE
+                                    <i className="fas fa-crosshairs attempted heading-min"></i> {score}% SCORE
                                   </div>
                                  </div>
                                 <Link className="btn btn-primary" to="/profile">Review Results</Link>
@@ -86,10 +93,10 @@ const Test = (props) => {
             <div className="col-sm-12 col-lg-9">
               <div className="tab">
                 <div className="ad"></div>
-                <Timer ogTime={ogTime} timeOver={timeOver} courseId={currentCourse}/>
+
                 {currentQuestion}
-                <button type="button" className={"btn btn-success"+`${(selectedQuestion <= 1) ? " disabled" : ""}`} onClick={(e)=>nextPrevQuestion("prev",e)}>Prev</button>
-                <button type="button" className={"btn btn-success float-right"+`${(selectedQuestion === mcqQuantity) ? " disabled" : ""}`} onClick={(e)=>nextPrevQuestion("next",e)}>Next</button>
+                <button type="button" className={"btn btn-success"+`${(selectedQuestion <= 1 && selectedQuestion > mcqQuantity) ? " disabled" : ""}`} onClick={(e)=>nextPrevQuestion("prev",e,null)}>Prev</button>
+                <button type="button" className={"btn btn-success float-right"+`${(selectedQuestion === mcqQuantity+1) ? " disabled" : ""}`} onClick={(e)=>nextPrevQuestion("next",e,currentCourse)}>{(selectedQuestion === mcqQuantity) ? " Finish" : "Next"}</button>
               </div>
             </div>
           </div>

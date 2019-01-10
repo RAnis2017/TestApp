@@ -195,11 +195,12 @@ export const timeOver = (cid) => {
   };
 };
 
-export const nextPrevQuestion = (type,e) => {
+export const nextPrevQuestion = (type,e,cid) => {
   e.preventDefault();
   if(type === "next"){
     return {
       type: InterfaceActionTypes.QUESTION_NEXT,
+      cid
     };
   } else if(type === "prev") {
     return {

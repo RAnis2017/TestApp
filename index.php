@@ -135,33 +135,13 @@ $app->post('/login', function (Request $request, Response $response, array $args
         $db = null;
         $data = json_encode($user);
         $decoded = json_decode($data, true);
-        $courseIds = substr($decoded[0]['courses'], 0, -1);
-        $courses = json_encode([]);
-        if(strlen($courseIds) > 0){
-          $sql = "SELECT id,objFull FROM courses WHERE id IN ($courseIds)";
-          try {
-              $db = new db();
-              $db = $db->connect();
-              $stmt = $db->query($sql);
-              $dataC = $stmt->fetchAll(PDO::FETCH_OBJ);
-              $db = null;
-              $courses = json_encode($dataC);
-              $startDate = time();
-              $date = date('Y-m-d H:i:s', strtotime('+1 day', $startDate));
 
-              $token = Token::getToken('' . $decoded[0]['id'], 'se12!@2s23!=eT423*&', $date, 'razaanis');
-              echo '{"notice": {"text": "User Authenticated"}, "id": ' . $decoded[0]['id'] . ', "success": "1", "user": ' . $data . ', "courses": '. $courses .' ,"token":"' . $token . '"}';
-
-          } catch (PDOException $e) {
-              echo '{"error":{"text": ' . $e->getMessage() . '}}';
-          }
-        } else {
         $startDate = time();
         $date = date('Y-m-d H:i:s', strtotime('+1 day', $startDate));
 
         $token = Token::getToken('' . $decoded[0]['id'], 'se12!@2s23!=eT423*&', $date, 'razaanis');
-        echo '{"notice": {"text": "User Authenticated"}, "id": ' . $decoded[0]['id'] . ', "success": "1", "user": ' . $data . ', "courses": '. $courses .' ,"token":"' . $token . '"}';
-        }
+        echo '{"notice": {"text": "User Authenticated"}, "id": ' . $decoded[0]['id'] . ', "success": "1", "user": ' . $data . ', "courses": '. $decoded[0]['coursesObj'] .' ,"token":"' . $token . '"}';
+
     } catch (PDOException $e) {
         echo '{"error":{"text": ' . $e->getMessage() . '}}';
     }
@@ -201,17 +181,38 @@ $app->post('/coursesBought', function (Request $request, Response $response, arr
     $data = json_decode($request->getParam('data'), true);
     $ids = $data['ids'];
     $token = $data['token'];
+    $courseIds = substr($data['ids'], 0, -1);
+    $courses = json_encode([]);
+    if(strlen($courseIds) > 0){
+      $sql = "SELECT id,objFull FROM courses WHERE id IN ($courseIds)";
+      try {
+          $db = new db();
+          $db = $db->connect();
+          $stmt = $db->query($sql);
+          $dataC = $stmt->fetchAll(PDO::FETCH_OBJ);
+          $db = null;
+          $courses = json_encode($dataC);
+          $startDate = time();
+          $date = date('Y-m-d H:i:s', strtotime('+1 day', $startDate));
+
+
+      } catch (PDOException $e) {
+          echo '{"error":{"text": ' . $e->getMessage() . '}}';
+      }
+    }
     $result = Token::validate($token, 'se12!@2s23!=eT423*&');
+
     if ($result) {
         $result = Token::getPayload($token);
         $data = json_decode($result, true);
         $sql = "UPDATE users SET
-            `courses`=:courses WHERE id=" . $data['user_id'];
+            `courses`=:courses, `coursesObj`=:cObj WHERE id=" . $data['user_id'];
         try {
             $db = new db();
             $db = $db->connect();
             $stmt = $db->prepare($sql);
             $stmt->bindParam(':courses', $ids);
+            $stmt->bindParam(':cObj', $courses);
             $stmt->execute();
 
             $db = null;
@@ -288,33 +289,13 @@ $app->post('/authenticate', function (Request $request, Response $response, arra
             $db = null;
             $data = json_encode($user);
             $decoded = json_decode($data, true);
-            $courseIds = substr($decoded[0]['courses'], 0, -1);
-            $courses = json_encode([]);
-            if(strlen($courseIds) > 0){
-              $sql = "SELECT id,objFull FROM courses WHERE id IN ($courseIds)";
-              try {
-                  $db = new db();
-                  $db = $db->connect();
-                  $stmt = $db->query($sql);
-                  $dataC = $stmt->fetchAll(PDO::FETCH_OBJ);
-                  $db = null;
-                  $courses = json_encode($dataC);
-                  $startDate = time();
-                  $date = date('Y-m-d H:i:s', strtotime('+1 day', $startDate));
 
-                  $token = Token::getToken('' . $decoded[0]['id'], 'se12!@2s23!=eT423*&', $date, 'razaanis');
-                  echo '{"notice": {"text": "User Authenticated"}, "success": "1", "user": ' . $data . ', "courses": '. $courses .'}';
-
-              } catch (PDOException $e) {
-                  echo '{"error":{"text": ' . $e->getMessage() . '}}';
-              }
-            } else {
             $startDate = time();
             $date = date('Y-m-d H:i:s', strtotime('+1 day', $startDate));
 
             $token = Token::getToken('' . $decoded[0]['id'], 'se12!@2s23!=eT423*&', $date, 'razaanis');
-            echo '{"notice": {"text": "User Authenticated"}, "success": "1", "user": ' . $data . ', "courses": '. $courses .'}';
-            }
+            echo '{"notice": {"text": "User Authenticated"}, "success": "1", "user": ' . $data . ', "courses": '. $decoded[0]['coursesObj'] .'}';
+
         } catch (PDOException $e) {
             echo '{"error":{"text": ' . $e->getMessage() . '}}';
         }

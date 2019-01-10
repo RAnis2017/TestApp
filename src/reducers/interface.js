@@ -107,9 +107,22 @@ export default function Interface(state=initialState, action) {
     		 	};
 	 	}
     case InterfaceActionTypes.QUESTION_NEXT: {
+          let courses = state.loggedInUser.courses.map((outerCourse)=>{
+            outerCourse.tests.map((course)=>{
+              if(course.id === action.cid){
+                if(state.selectedQuestion === course.mcqQuantity){
+                  course.timeOver = true;
+                }
+              }
+
+            });
+            return outerCourse;
+
+          });
           return {
             ...state,
-    				selectedQuestion: ++state.selectedQuestion
+    				selectedQuestion: ++state.selectedQuestion,
+            loggedInUser: { ...state.loggedInUser, courses: courses }
     		 	};
 	 	}
     case InterfaceActionTypes.QUESTION_PREV: {
@@ -147,12 +160,17 @@ export default function Interface(state=initialState, action) {
                 course.questions.map((question)=>{
                     if(question.id === action.qid){
                       question.selectedAnswer = `${action.ansid}`;
+                      if(question.selectedAnswer === question.truthyOption){
+                        course.lastCorrect++;
+                      } else {
+                        course.lastIncorrect++;
+                      }
+                      course.lastScore = (course.lastCorrect/course.mcqQuantity) * 100;
                     }
                 });
               }
             });
             return outerCourse;
-
           });
           return {
             ...state,

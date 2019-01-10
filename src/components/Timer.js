@@ -1,26 +1,52 @@
 import React, { Component, PropTypes } from 'react';
+import axios from "axios";
+import {store} from '../Store';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import * as InterfaceActionCreators from '../actions/interface';
 
-export default class Timer extends Component {
+class Timer extends Component {
   constructor(props) {
       super(props);
+
 
       this.state = {
        running: true,
        hours: 0,
        mins: 0,
        secs: 0,
-       ogTime: this.props.ogTime,
+       ogTime: 0,
      };
    }
 
   componentDidMount() {
     this.interval = setInterval(this.onTick,1000);
+    this.loadData();
   }
-
   componentWillUnmount() {
     clearInterval(this.interval);
   }
+  loadData = () => {
+    let hours;
+    let mins;
+    let secs;
+    let ogTime;
 
+    this.props.loggedInUser.courses.map((outerCourse,index) => {
+      outerCourse.tests.map((course,index) => {
+
+        if(course.path === this.props.path){
+          hours = course.hours;
+          mins = course.mins;
+          secs = course.secs;
+          ogTime = course.duration;
+          this.setState({...this.state, hours, mins, secs, ogTime});
+          console.log(this.state);
+
+        }
+      })
+    });
+  };
   onStart = () => {
     this.setState({
       running: true,
@@ -40,10 +66,23 @@ export default class Timer extends Component {
   };
 
   onTick = () => {
+    const { dispatch, apiUrl } = this.props;
+    const loadLoggedInUser = bindActionCreators(InterfaceActionCreators.loadLoggedInUser, dispatch);
+
     if (this.state.running) {
       var now = Date.now();
       if(this.state.secs < 59){
         this.setState({ secs: this.state.secs + 1 });
+        // axios
+        //   .post(`${apiUrl}saveUserState`, {
+        //     data: JSON.stringify({
+        //       token: localStorage.getItem('genhex-auth-token'),
+        //     })
+        //   })
+        //   .then(response => {
+        //     console.log(response);
+        //     loadLoggedInUser();
+        //   });
       } else {
         if(this.state.mins < 59){
           this.setState({ secs: 0, mins: this.state.mins + 1 });
@@ -67,3 +106,11 @@ export default class Timer extends Component {
     );
   }
 }
+
+const mapStateToProps = state => (
+  {
+    apiUrl: state.apiUrl,
+  }
+);
+
+export default connect(mapStateToProps)(Timer);
