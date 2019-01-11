@@ -17,29 +17,35 @@ export const changeForm = type => {
 
 export const formSubmit = (e,type) => {
   e.preventDefault();
-  return function action(dispatch) {
-    let user = {email: "", name: "", password: "", courses: []};
-    let courses = [];
-    axios
-      .post(`${store.getState().apiUrl}login`, {
-        data: JSON.stringify({
-          obj:  {email: store.getState().email, password: md5(store.getState().password)},
+  if(type === "login"){
+    return function action(dispatch) {
+      let user = {email: "", name: "", password: "", courses: []};
+      let courses = [];
+      axios
+        .post(`${store.getState().apiUrl}login`, {
+          data: JSON.stringify({
+            obj:  {email: store.getState().email, password: md5(store.getState().password)},
+          })
         })
-      })
-      .then(response => {
-        console.log(response);
-        localStorage.setItem('genhex-auth-token', response.data.token);
-        user = JSON.parse(response.data.user[0].obj);
-        response.data.courses.map((course)=>{
-          courses.push({id:course.id,...JSON.parse(course.objFull)});
-          // console.log(JSON.parse(course.objFull));
-        })
-        user.courses = courses;
-        dispatch({
-          type: InterfaceActionTypes.LOGIN_SUBMIT,
-          user
+        .then(response => {
+          console.log(response);
+          localStorage.setItem('genhex-auth-token', response.data.token);
+          user = JSON.parse(response.data.user[0].obj);
+          response.data.courses.map((course)=>{
+            courses.push({id:course.id,...JSON.parse(course.objFull)});
+            // console.log(JSON.parse(course.objFull));
+          })
+          user.courses = courses;
+          dispatch({
+            type: InterfaceActionTypes.LOGIN_SUBMIT,
+            user
+          });
         });
-      });
+    }
+  } else if(type === "signup") {
+      return {
+        type: InterfaceActionTypes.SIGNUP_SUBMIT,
+      };
   }
 }
 
@@ -100,8 +106,12 @@ export const loadLoggedInUser = () => {
         if(response.data.success !== "0"){
           user = JSON.parse(response.data.user[0].obj);
           response.data.courses.map((course)=>{
-            courses.push({id:course.id,...JSON.parse(course.objFull)});
-            // console.log(JSON.parse(course.objFull));
+            if (typeof course.objFull === 'string' || course.objFull instanceof String){
+              courses.push({id:course.id,...JSON.parse(course.objFull)});
+            }
+            else {
+              courses.push({id:course.id,...course.objFull});
+            }
           })
           user.courses = courses;
         }

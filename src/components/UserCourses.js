@@ -36,7 +36,9 @@ const UserCourse = (props) => {
     })
     return(
       <div className="tab-body">
-        {ItemsJSX}
+        <div className="row">
+          {ItemsJSX}
+        </div>
       </div>
     );
 }

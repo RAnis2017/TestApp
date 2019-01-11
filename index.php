@@ -92,7 +92,8 @@ $app->post('/signup', function (Request $request, Response $response, array $arg
     $initialObj = json_encode($data['obj']);
     $email = $data['obj']['email'];
     $password = $data['obj']['password'];
-    $sql = "INSERT INTO users (`email`,`password`,`obj`) VALUES (:email,:password,:obj)";
+    $nullObj = json_encode([]);
+    $sql = "INSERT INTO users (`email`,`password`,`obj`,`coursesObj`) VALUES (:email,:password,:obj,:cObj)";
     try {
         $db = new db();
         $db = $db->connect();
@@ -100,6 +101,7 @@ $app->post('/signup', function (Request $request, Response $response, array $arg
         $stmt->bindParam(':obj', $initialObj);
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':password', $password);
+        $stmt->bindParam(':cObj', $nullObj);
         $stmt->execute();
         $id = $db->lastInsertId();
 
@@ -145,7 +147,6 @@ $app->post('/login', function (Request $request, Response $response, array $args
     } catch (PDOException $e) {
         echo '{"error":{"text": ' . $e->getMessage() . '}}';
     }
-
     return $response;
 });
 
@@ -180,7 +181,9 @@ $app->get('/getMinCourses', function (Request $request, Response $response, arra
 $app->post('/coursesBought', function (Request $request, Response $response, array $args) {
     $data = json_decode($request->getParam('data'), true);
     $ids = $data['ids'];
+    $completeids = $data['completeids'];
     $token = $data['token'];
+    $allCourses = $data['courses'];
     $courseIds = substr($data['ids'], 0, -1);
     $courses = json_encode([]);
     if(strlen($courseIds) > 0){
@@ -191,7 +194,10 @@ $app->post('/coursesBought', function (Request $request, Response $response, arr
           $stmt = $db->query($sql);
           $dataC = $stmt->fetchAll(PDO::FETCH_OBJ);
           $db = null;
-          $courses = json_encode($dataC);
+          foreach ($dataC as $course) {
+            array_push($allCourses, $course);
+          }
+          $courses = json_encode($allCourses);
           $startDate = time();
           $date = date('Y-m-d H:i:s', strtotime('+1 day', $startDate));
 
@@ -211,7 +217,7 @@ $app->post('/coursesBought', function (Request $request, Response $response, arr
             $db = new db();
             $db = $db->connect();
             $stmt = $db->prepare($sql);
-            $stmt->bindParam(':courses', $ids);
+            $stmt->bindParam(':courses', $completeids);
             $stmt->bindParam(':cObj', $courses);
             $stmt->execute();
 

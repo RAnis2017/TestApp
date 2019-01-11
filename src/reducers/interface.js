@@ -154,6 +154,7 @@ export default function Interface(state=initialState, action) {
       };
 	 	}
     case InterfaceActionTypes.SELECT_ANSWER: {
+          let accuracy = parseInt(state.loggedInUser.accuracy);
           let courses = state.loggedInUser.courses.map((outerCourse)=>{
             outerCourse.tests.map((course)=>{
               if(course.id === action.courseid){
@@ -166,6 +167,7 @@ export default function Interface(state=initialState, action) {
                         course.lastIncorrect++;
                       }
                       course.lastScore = (course.lastCorrect/course.mcqQuantity) * 100;
+                      accuracy += ((parseInt(state.loggedInUser.totalMcqs)+1)/course.lastScore)*100;
                     }
                 });
               }
@@ -174,7 +176,7 @@ export default function Interface(state=initialState, action) {
           });
           return {
             ...state,
-    				loggedInUser: { ...state.loggedInUser, courses: courses }
+    				loggedInUser: { ...state.loggedInUser, totalMcqs: parseInt(state.loggedInUser.totalMcqs)+1, accuracy: accuracy, courses: courses }
     		 	};
 	 	}
     case InterfaceActionTypes.SIGNUP_SUBMIT: {

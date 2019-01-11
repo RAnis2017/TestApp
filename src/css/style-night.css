@@ -255,8 +255,15 @@ h1 {
   min-height: 90px;
   background-image: url("../images/ad.jpg");
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: contain;
   background-position: center;
+  margin-bottom: 20px;
+}
+
+.checkout {
+  margin-top: 25px;
+  background-color: #F7FFF7 !important;
+  padding: 10px;
 }
 
 body {

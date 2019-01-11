@@ -8,15 +8,24 @@ import * as InterfaceActionCreators from '../actions/interface';
 import axios from "axios";
 
 const Checkout = (props) => {
-    const { dispatch, courses, apiUrl } = props;
+    const { dispatch, courses, apiUrl, loggedInUser } = props;
     const coursesBought = bindActionCreators(InterfaceActionCreators.coursesBought, dispatch);
 
     const onSuccess = (payment) => {
         // Congratulation, it came here means everything's fine!
             let coursesIDs = "";
+            let oldCourses = [];
+
+            let completeCoursesIDs = "";
+            loggedInUser.courses.map((course,index)=>{
+                  completeCoursesIDs += `${course.id},`;
+                  let obj = {id: course.id, objFull: {...course}};
+                  oldCourses.push(obj);
+            });
             courses.map((course,index)=>{
                 if(course.inCart){
-                  coursesIDs += `${course.id},`
+                  coursesIDs += `${course.id},`;
+                  completeCoursesIDs += `${course.id},`;
                 }
             });
             console.log("The payment was succeeded!", payment);
@@ -24,7 +33,9 @@ const Checkout = (props) => {
               .post(`${apiUrl}coursesBought`, {
                 data: JSON.stringify({
                   token: localStorage.getItem('genhex-auth-token'),
-                  ids: coursesIDs
+                  ids: coursesIDs,
+                  completeids: completeCoursesIDs,
+                  courses: oldCourses
                 })
               })
               .then(response => {
@@ -94,7 +105,12 @@ const Checkout = (props) => {
         <div className="container fullview">
           {ItemsJSX}
           <div className="float-right">
-          <h3 className="text-center font-secondary">Total:</h3><h5 className="text-center font-accent">{total} {currency}</h5><PaypalExpressBtn env={env} client={client} currency={currency} total={total} onError={onError} onSuccess={onSuccess} onCancel={onCancel} shipping={1}/>
+          <h3 className="text-center font-secondary">Total:</h3><h5 className="text-center font-accent">{total} {currency}</h5>
+          {
+            (loggedInUser.name.length < 1) ? <Link className={`btn btn-success`} to={`/`}>Login or Sign up first!</Link>
+            :
+            <PaypalExpressBtn env={env} client={client} currency={currency} total={total} onError={onError} onSuccess={onSuccess} onCancel={onCancel} shipping={1}/>
+          }
           </div>
         </div>
       </div>
@@ -104,12 +120,14 @@ const Checkout = (props) => {
 Checkout.propTypes = {
   courses: PropTypes.array.isRequired,
   apiUrl: PropTypes.string.isRequired,
+  loggedInUser: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = state => (
   {
     courses: state.courses,
-    apiUrl: state.apiUrl
+    apiUrl: state.apiUrl,
+    loggedInUser: state.loggedInUser,
   }
 );
 

@@ -66,23 +66,23 @@ class Timer extends Component {
   };
 
   onTick = () => {
-    const { dispatch, apiUrl } = this.props;
+    const { dispatch, apiUrl, loggedInUser } = this.props;
     const loadLoggedInUser = bindActionCreators(InterfaceActionCreators.loadLoggedInUser, dispatch);
 
     if (this.state.running) {
       var now = Date.now();
       if(this.state.secs < 59){
         this.setState({ secs: this.state.secs + 1 });
-        // axios
-        //   .post(`${apiUrl}saveUserState`, {
-        //     data: JSON.stringify({
-        //       token: localStorage.getItem('genhex-auth-token'),
-        //     })
-        //   })
-        //   .then(response => {
-        //     console.log(response);
-        //     loadLoggedInUser();
-        //   });
+        axios
+          .post(`${apiUrl}saveUserState`, {
+            data: JSON.stringify({
+              token: localStorage.getItem('genhex-auth-token'),
+              user: {...loggedInUser, nextPath: this.props.path},
+            })
+          })
+          .then(response => {
+            console.log(response);
+          });
       } else {
         if(this.state.mins < 59){
           this.setState({ secs: 0, mins: this.state.mins + 1 });
@@ -110,6 +110,7 @@ class Timer extends Component {
 const mapStateToProps = state => (
   {
     apiUrl: state.apiUrl,
+    loggedInUser: state.loggedInUser,
   }
 );
 
