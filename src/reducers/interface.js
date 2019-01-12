@@ -13,6 +13,7 @@ const initialState = {
   cartToggle: false,
   selectedQuestion: 0,
   timeout: false,
+  users: [],
   courses: [
     {
       id: 1,
@@ -104,6 +105,12 @@ export default function Interface(state=initialState, action) {
           return {
             ...state,
     				selectedQuestion: action.id
+    		 	};
+	 	}
+    case InterfaceActionTypes.USERS_LIST: {
+          return {
+            ...state,
+    				users: action.users
     		 	};
 	 	}
     case InterfaceActionTypes.QUESTION_NEXT: {

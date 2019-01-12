@@ -42,7 +42,7 @@ const Test = (props) => {
               if(question.id === selectedQuestion){
                 return (
                   <div key={key}>
-                    <Timer timeOver={timeOver} path={path} loggedInUser={loggedInUser}/>
+                    <Timer timeOver={timeOver} path={path} loggedInUser={loggedInUser} testId={currentCourse}/>
                     <h3  className="question">Q: {question.question}</h3>
                     <hr />
                     <h5>Select Correct Answer:</h5>

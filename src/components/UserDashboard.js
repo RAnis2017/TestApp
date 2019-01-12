@@ -7,11 +7,31 @@ import { Link } from 'react-router-dom';
 import UserPerformance from './UserPerformance';
 
 const UserDashboard = (props) => {
-    const { dispatch, loggedInUser } = props;
+    const { dispatch, loggedInUser, users } = props;
     let recentPackages;
     if(loggedInUser.name.length > 1) {
       recentPackages = loggedInUser.recentPackages.map((recentPackage,key)=><li key={key}><Link className={``} to={`/courses/${recentPackage.path}`}>{recentPackage.name}</Link></li>);
     }
+    let usersSorted = users.sort(function(obj1, obj2) {
+            	// Ascending: first age less than the previous
+            	return obj2.accuracy - obj1.accuracy;
+            });
+    console.log(usersSorted);
+    let usersList = usersSorted.map((user,key)=>{
+      if(key < 5){
+        return(
+          <div className="row">
+            <div className="col-lg-4">
+              {key} . <i className="fas fa-user-circle heading-min"></i>
+            </div>
+            <div className="col-lg-8">
+              <h6>{user.name}</h6><span><i className="fas fa-crosshairs"></i> {user.accuracy}% | <i className="fas fa-tachometer-alt"></i> {user.totalMcqs}</span>
+            </div>
+            <hr />
+          </div>
+        );
+      }
+    });
     return(
       <div className="tab-body">
         <div className="row">
@@ -80,51 +100,7 @@ const UserDashboard = (props) => {
             <div className="widget">
               <h4>Leader Board</h4>
               <hr />
-              <div className="row">
-                <div className="col-lg-4">
-                  1 . <i className="fas fa-user-circle heading-min"></i>
-                </div>
-                <div className="col-lg-8">
-                  <h6>Raza Anis</h6><span><i className="fas fa-crosshairs"></i> 57% | <i className="fas fa-tachometer-alt"></i> 400</span>
-                </div>
-              </div>
-              <hr />
-              <div className="row">
-                <div className="col-lg-4">
-                  2 . <i className="fas fa-user-circle heading-min"></i>
-                </div>
-                <div className="col-lg-8">
-                  <h6>Danial Shakil</h6><span><i className="fas fa-crosshairs"></i> 47% | <i className="fas fa-tachometer-alt"></i> 230</span>
-                </div>
-              </div>
-              <hr />
-              <div className="row">
-                <div className="col-lg-4">
-                  3 . <i className="fas fa-user-circle heading-min"></i>
-                </div>
-                <div className="col-lg-8">
-                  <h6>Usama Tariq</h6><span><i className="fas fa-crosshairs"></i> 77% | <i className="fas fa-tachometer-alt"></i> 300</span>
-                </div>
-              </div>
-              <hr />
-              <div className="row">
-                <div className="col-lg-4">
-                  4 . <i className="fas fa-user-circle heading-min"></i>
-                </div>
-                <div className="col-lg-8">
-                  <h6>Raza Anis</h6><span><i className="fas fa-crosshairs"></i> 57% | <i className="fas fa-tachometer-alt"></i> 400</span>
-                </div>
-              </div>
-              <hr />
-              <div className="row">
-                <div className="col-lg-4">
-                  5 . <i className="fas fa-user-circle heading-min"></i>
-                </div>
-                <div className="col-lg-8">
-                  <h6>Raza Anis</h6><span><i className="fas fa-crosshairs"></i> 57% | <i className="fas fa-tachometer-alt"></i> 400</span>
-                </div>
-              </div>
-              <hr />
+              {usersList}
             </div>
 
           </div>
@@ -135,11 +111,13 @@ const UserDashboard = (props) => {
 
 UserDashboard.propTypes = {
   loggedInUser: PropTypes.object.isRequired,
+  users: PropTypes.array.isRequired,
 }
 
 const mapStateToProps = state => (
   {
     loggedInUser: state.loggedInUser,
+    users: state.users,
   }
 );
 

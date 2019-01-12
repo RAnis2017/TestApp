@@ -32,9 +32,11 @@ class Website extends Component {
     const { dispatch } = this.props;
     const coursesMinGet = bindActionCreators(InterfaceActionCreators.coursesMinGet, dispatch);
     const loadLoggedInUser = bindActionCreators(InterfaceActionCreators.loadLoggedInUser, dispatch);
+    const loadUsers = bindActionCreators(InterfaceActionCreators.usersListGet, dispatch);
 
     loadLoggedInUser();
     coursesMinGet();
+    loadUsers();
   }
   handleStyleButtonClick = () => {
       if(this.state.style == "Light") {

@@ -73,11 +73,25 @@ class Timer extends Component {
       var now = Date.now();
       if(this.state.secs < 59){
         this.setState({ secs: this.state.secs + 1 });
+        let oldCourses = [];
+        loggedInUser.courses.map((outerCourse)=>{
+          outerCourse.tests.map((course)=>{
+            if(course.id === this.props.testId){
+              course.hours = this.state.hours;
+              course.mins = this.state.mins;
+              course.secs = this.state.secs;
+            }
+
+          });
+          let obj = {id: outerCourse.id, objFull: {...outerCourse}};
+          oldCourses.push(obj);
+        });
         axios
           .post(`${apiUrl}saveUserState`, {
             data: JSON.stringify({
               token: localStorage.getItem('genhex-auth-token'),
               user: {...loggedInUser, nextPath: this.props.path},
+              courses: oldCourses,
             })
           })
           .then(response => {

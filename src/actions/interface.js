@@ -32,7 +32,12 @@ export const formSubmit = (e,type) => {
           localStorage.setItem('genhex-auth-token', response.data.token);
           user = JSON.parse(response.data.user[0].obj);
           response.data.courses.map((course)=>{
-            courses.push({id:course.id,...JSON.parse(course.objFull)});
+            if (typeof course.objFull === 'string' || course.objFull instanceof String){
+              courses.push({id:course.id,...JSON.parse(course.objFull)});
+            }
+            else {
+              courses.push({id:course.id,...course.objFull});
+            }
             // console.log(JSON.parse(course.objFull));
           })
           user.courses = courses;
@@ -69,6 +74,25 @@ export const coursesMinGet = () => {
   }
 }
 
+export const usersListGet = () => {
+  return function action(dispatch) {
+    let users = [];
+    axios
+      .get(`${store.getState().apiUrl}getUsersList`)
+      .then(response => {
+        response.data.users.map((user)=>{
+          users.push({id:user.id,...JSON.parse(user.obj)});
+          // console.log(JSON.parse(course.objMin));
+        })
+        console.log(response);
+
+        dispatch({
+          type: InterfaceActionTypes.USERS_LIST,
+          users
+        });
+      });
+  }
+}
 
 export const userSettingSubmit = (e) => {
   e.preventDefault();
