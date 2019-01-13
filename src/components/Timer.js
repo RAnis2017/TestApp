@@ -68,7 +68,17 @@ class Timer extends Component {
   onTick = () => {
     const { dispatch, apiUrl, loggedInUser } = this.props;
     const loadLoggedInUser = bindActionCreators(InterfaceActionCreators.loadLoggedInUser, dispatch);
+    let date = new Date();
+    let monthNames = [
+        "January", "February", "March",
+        "April", "May", "June", "July",
+        "August", "September", "October",
+        "November", "December"
+      ];
 
+    let day = date.getDate();
+    let monthIndex = date.getMonth();
+    let year = date.getFullYear();
     if (this.state.running) {
       var now = Date.now();
       if(this.state.secs < 59){
@@ -80,6 +90,7 @@ class Timer extends Component {
               course.hours = this.state.hours;
               course.mins = this.state.mins;
               course.secs = this.state.secs;
+              course.lastTakenDate = day + '/' + monthNames[monthIndex] + '/' + year;
             }
 
           });
@@ -96,6 +107,7 @@ class Timer extends Component {
           })
           .then(response => {
             console.log(response);
+
           });
       } else {
         if(this.state.mins < 59){

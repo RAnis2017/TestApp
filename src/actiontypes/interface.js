@@ -21,3 +21,4 @@ export const COURSES_MIN_GET = 'interface/COURSES_MIN_GET';
 export const LOAD_USER = 'interface/LOAD_USER';
 export const COURSES_BOUGHT = 'interface/COURSES_BOUGHT';
 export const USERS_LIST = 'interface/USERS_LIST';
+export const RESET_TEST = 'interface/RESET_TEST';

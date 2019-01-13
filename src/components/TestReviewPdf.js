@@ -61,6 +61,7 @@ const Test = (props) => {
             </div>
         </div>
         <div className="container fullview">
+        <hr />
         <button onClick={printDocument} className="btn btn-primary btn-block">Print</button>
           <div className="row test-content" >
             <div className="col-sm-12 col-lg-12" id="divToPrint">

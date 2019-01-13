@@ -6,10 +6,11 @@ import * as InterfaceActionCreators from '../actions/interface';
 import { Link } from 'react-router-dom'
 import Timer from './Timer';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import axios from "axios";
 
 const Test = (props) => {
 
-    const { dispatch, loggedInUser, selectedQuestion} = props;
+    const { dispatch, loggedInUser, selectedQuestion, apiUrl} = props;
     const selectQuestion = bindActionCreators(InterfaceActionCreators.selectQuestion, dispatch);
     const selectAnswer = bindActionCreators(InterfaceActionCreators.selectAnswer, dispatch);
     const timeOver = bindActionCreators(InterfaceActionCreators.timeOver, dispatch);
@@ -23,6 +24,7 @@ const Test = (props) => {
     let correct;
     let wrong;
     let score;
+    let oldCourses = [];
 
     loggedInUser.courses.map((outerCourse,index) => {
       outerCourse.tests.map((course,index) => {
@@ -47,7 +49,7 @@ const Test = (props) => {
                     <h3  className="question">Q: {question.question}</h3>
                     <hr />
                     <h5>Select Correct Answer:</h5>
-                    <h6 className={`${(question.selectedAnswer != question.truthyOption && question.selectedAnswer != 0) ? "wrong" : "not-visible"}`}>Wrong Answer</h6>
+                    {/*<h6 className={`${(question.selectedAnswer != question.truthyOption && question.selectedAnswer != 0) ? "wrong" : "not-visible"}`}>Wrong Answer</h6>*/}
                     {/*<p className={`answer ${(question.selectedAnswer === question.truthyOption && question.truthyOption === "1") ? "correct disabled" : ""} ${(question.selectedAnswer === 0) ? "" : "disabled" }`} onClick={()=>selectAnswer(course.id,question.id,1)}>{question.answer1}</p>*/}
                     <p className={`answer ${(question.selectedAnswer === question.truthyOption && question.truthyOption === "1") ? "disabled" : ""} ${(question.selectedAnswer === 0) ? "" : "disabled" } ${(question.selectedAnswer === "1") ? "selected" : "" }`} onClick={()=>selectAnswer(course.id,question.id,1)}>{question.answer1}</p>
                     <p className={`answer ${(question.selectedAnswer === question.truthyOption && question.truthyOption === "2") ? "disabled" : ""} ${(question.selectedAnswer === 0) ? "" : "disabled" } ${(question.selectedAnswer === "2") ? "selected" : "" }`} onClick={()=>selectAnswer(course.id,question.id,2)}>{question.answer2}</p>
@@ -74,7 +76,7 @@ const Test = (props) => {
                                   </div>
                                  </div>
                                 <Link className="btn btn-primary" to={`/testreview/${path}`}>Review Results</Link>
-                                <Link className="btn btn-primary float-right" to={`/testreviewpdf/${path}`}>Pdf Download</Link>
+                                <Link className="btn btn-primary" to={`/testreviewpdf/${path}`}>Pdf Download</Link>
                               </div>;
           }
         }
@@ -111,12 +113,14 @@ const Test = (props) => {
 Test.propTypes = {
   loggedInUser: PropTypes.object.isRequired,
   selectedQuestion: PropTypes.number.isRequired,
+  apiUrl: PropTypes.string.isRequired,
 }
 
 const mapStateToProps = state => (
   {
     loggedInUser: state.loggedInUser,
     selectedQuestion: state.selectedQuestion,
+    apiUrl: state.apiUrl,
   }
 );
 

@@ -10,6 +10,8 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 const UserTests = (props) => {
     const { dispatch, loggedInUser } = props;
     const path = props.path;
+    const resetTest = bindActionCreators(InterfaceActionCreators.resetTest, dispatch);
+
     let tests;
     loggedInUser.courses.map((course,index) => {
       if(course.path === path){
@@ -43,7 +45,9 @@ const UserTests = (props) => {
                     </div>
                     <div className="coursePriceCartAdd font-secondary">
                       <hr/>
-                      {(test.availability === "released") ? <Link className={`btn btn-primary`} to={`/courses/${test.path}`}>Take Test!</Link> : <Link className={`btn btn-primary disabled`} to={`/courses/${test.path}`}>Upcoming</Link>}
+
+                      {(test.availability === "released") ? (test.timeOver === false) ? <Link className={`btn btn-primary float-left`} to={`/courses/${test.path}`}>Take Test!</Link> : <button className="btn btn-primary" onClick={()=>resetTest(test.id)}>Retake Test</button>
+                        : <Link className={`btn btn-primary disabled`} to={`/courses/${test.path}`}>Upcoming</Link>}
                       <Link className="btn btn-primary" to={`/testreviewpdf/${test.path}`}>Pdf Download</Link>
                     </div>
                   </div>

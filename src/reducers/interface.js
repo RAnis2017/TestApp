@@ -114,18 +114,36 @@ export default function Interface(state=initialState, action) {
     		 	};
 	 	}
     case InterfaceActionTypes.QUESTION_NEXT: {
+          let oldCourses = [];
+          let makeRequest = false;
           let courses = state.loggedInUser.courses.map((outerCourse)=>{
             outerCourse.tests.map((course)=>{
               if(course.id === action.cid){
                 if(state.selectedQuestion === course.mcqQuantity){
                   course.timeOver = true;
+                  makeRequest = true;
                 }
               }
 
             });
+            let obj = {id: outerCourse.id, objFull: {...outerCourse}};
+            oldCourses.push(obj);
             return outerCourse;
 
           });
+          if(makeRequest === true){
+            axios
+              .post(`${state.apiUrl}saveUserState`, {
+                data: JSON.stringify({
+                  token: localStorage.getItem('genhex-auth-token'),
+                  user: {...state.loggedInUser},
+                  courses: oldCourses,
+                })
+              })
+              .then(response => {
+                console.log(response);
+              });
+          }
           return {
             ...state,
     				selectedQuestion: ++state.selectedQuestion,
@@ -186,6 +204,30 @@ export default function Interface(state=initialState, action) {
     				loggedInUser: { ...state.loggedInUser, totalMcqs: parseInt(state.loggedInUser.totalMcqs)+1, accuracy: accuracy, courses: courses }
     		 	};
 	 	}
+    case InterfaceActionTypes.RESET_TEST: {
+          let courses = state.loggedInUser.courses.map((outerCourse)=>{
+            outerCourse.tests.map((course)=>{
+              if(course.id === action.courseid){
+                  course.hours = 0;
+                  course.mins = 0;
+                  course.secs = 0;
+                  course.lastScore = 0.0;
+                  course.lastCorrect = 0;
+                  course.timeOver = false;
+                  course.lastIncorrect = 0;
+                  course.questions.map((question,key) => {
+                    question.selectedAnswer = 0;
+                  });
+              }
+            });
+            return outerCourse;
+          });
+          return {
+            ...state,
+    				loggedInUser: { ...state.loggedInUser, courses: courses }
+    		 	};
+	 	}
+
     case InterfaceActionTypes.SIGNUP_SUBMIT: {
         axios
           .post(`${state.apiUrl}signup`, {
@@ -210,9 +252,14 @@ export default function Interface(state=initialState, action) {
 	 	}
     case InterfaceActionTypes.LOAD_USER: {
           let courses = [];
+          let i = 0;
           state.courses.map((course, key)=>{
-            console.log(course);
-            if(course.id !== action.user.courses[key].id){
+            i = key;
+            if(typeof action.user.courses[i] !== 'undefined'){
+              if(course.id !== action.user.courses[i].id){
+                courses.push(course);
+              }
+            } else {
               courses.push(course);
             }
           });

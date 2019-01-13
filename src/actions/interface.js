@@ -126,7 +126,7 @@ export const loadLoggedInUser = () => {
         })
       })
       .then(response => {
-        // console.log(response);
+        console.log(response);
         if(response.data.success !== "0"){
           user = JSON.parse(response.data.user[0].obj);
           response.data.courses.map((course)=>{
@@ -222,13 +222,43 @@ export const selectAnswer = (courseid,qid,ansid) => {
   };
 };
 
-export const timeOver = (cid) => {
+export const resetTest = (courseid) => {
   return {
-    type: InterfaceActionTypes.TIMER_OVER,
-    cid
+    type: InterfaceActionTypes.RESET_TEST,
+    courseid
   };
 };
 
+export const timeOver = (cid) => {
+  return function action(dispatch) {
+    let oldCourses = [];
+    store.getState().loggedInUser.courses.map((outerCourse)=>{
+      outerCourse.tests.map((course)=>{
+        if(course.id === cid){
+          course.timeOver = true;
+        }
+      });
+      let obj = {id: outerCourse.id, objFull: {...outerCourse}};
+      oldCourses.push(obj);
+    });
+    axios
+      .post(`${store.getState().apiUrl}saveUserState`, {
+        data: JSON.stringify({
+          token: localStorage.getItem('genhex-auth-token'),
+          user: {...store.getState().loggedInUser},
+          courses: oldCourses,
+        })
+      })
+      .then(response => {
+        console.log(response);
+        dispatch({
+          type: InterfaceActionTypes.TIMER_OVER,
+          cid
+        });
+      });
+
+  }
+}
 export const nextPrevQuestion = (type,e,cid) => {
   e.preventDefault();
   if(type === "next"){
