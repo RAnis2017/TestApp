@@ -73,7 +73,8 @@ const Test = (props) => {
                                     <i className="fas fa-crosshairs attempted heading-min"></i> {score}% SCORE
                                   </div>
                                  </div>
-                                <Link className="btn btn-primary" to="/profile">Review Results</Link>
+                                <Link className="btn btn-primary" to={`/testreview/${path}`}>Review Results</Link>
+                                <Link className="btn btn-primary float-right" to={`/testreviewpdf/${path}`}>Pdf Download</Link>
                               </div>;
           }
         }

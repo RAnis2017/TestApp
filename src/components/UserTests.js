@@ -44,6 +44,7 @@ const UserTests = (props) => {
                     <div className="coursePriceCartAdd font-secondary">
                       <hr/>
                       {(test.availability === "released") ? <Link className={`btn btn-primary`} to={`/courses/${test.path}`}>Take Test!</Link> : <Link className={`btn btn-primary disabled`} to={`/courses/${test.path}`}>Upcoming</Link>}
+                      <Link className="btn btn-primary" to={`/testreviewpdf/${test.path}`}>Pdf Download</Link>
                     </div>
                   </div>
                 </div>
