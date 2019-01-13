@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as InterfaceActionCreators from '../actions/interface';
 import axios from "axios";
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 const Checkout = (props) => {
     const { dispatch, courses, apiUrl, loggedInUser } = props;
@@ -97,22 +98,30 @@ const Checkout = (props) => {
 
     return(
       <div>
-        <div className="hero-sm">
-            <div className="row justify-content-center fullview-sm">
-              <h1 className="font-primary align-self-center">Add Courses to the cart to buy them. More courses upcoming soon!</h1>
-            </div>
-        </div>
-        <div className="container fullview">
-          {ItemsJSX}
-          <div className="float-right">
-          <h3 className="text-center font-secondary">Total:</h3><h5 className="text-center font-accent">{total} {currency}</h5>
-          {
-            (loggedInUser.name.length < 1) ? <Link className={`btn btn-success`} to={`/`}>Login or Sign up first!</Link>
-            :
-            <PaypalExpressBtn env={env} client={client} currency={currency} total={total} onError={onError} onSuccess={onSuccess} onCancel={onCancel} shipping={1}/>
-          }
+      <ReactCSSTransitionGroup
+        transitionAppear={true}
+        transitionAppearTimeout={600}
+        transitionEnterTimeout={600}
+        transitionLeaveTimeout={200}
+        transitionName={props.match.path === '/checkout' ? 'SlideIn' : 'SlideOut'}
+      >
+          <div className="hero-sm">
+              <div className="row justify-content-center fullview-sm">
+                <h1 className="font-primary align-self-center">Add Courses to the cart to buy them. More courses upcoming soon!</h1>
+              </div>
           </div>
-        </div>
+          <div className="container fullview">
+            {ItemsJSX}
+            <div className="float-right">
+            <h3 className="text-center font-secondary">Total:</h3><h5 className="text-center font-accent">{total} {currency}</h5>
+            {
+              (loggedInUser.name.length < 1) ? <Link className={`btn btn-success`} to={`/`}>Login or Sign up first!</Link>
+              :
+              <PaypalExpressBtn env={env} client={client} currency={currency} total={total} onError={onError} onSuccess={onSuccess} onCancel={onCancel} shipping={1}/>
+            }
+            </div>
+          </div>
+        </ReactCSSTransitionGroup>
       </div>
     );
 }

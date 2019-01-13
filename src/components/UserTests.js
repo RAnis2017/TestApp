@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import * as InterfaceActionCreators from '../actions/interface';
 import { Link } from 'react-router-dom';
 import TestImg from '../images/test.png';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+
 const UserTests = (props) => {
     const { dispatch, loggedInUser } = props;
     const path = props.path;

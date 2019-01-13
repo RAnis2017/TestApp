@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import * as InterfaceActionCreators from '../actions/interface';
 import { Link } from 'react-router-dom'
 import Timer from './Timer';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 const Test = (props) => {
 
@@ -47,10 +48,11 @@ const Test = (props) => {
                     <hr />
                     <h5>Select Correct Answer:</h5>
                     <h6 className={`${(question.selectedAnswer != question.truthyOption && question.selectedAnswer != 0) ? "wrong" : "not-visible"}`}>Wrong Answer</h6>
-                    <p className={`answer ${(question.selectedAnswer === question.truthyOption && question.truthyOption === "1") ? "correct disabled" : ""} ${(question.selectedAnswer === 0) ? "" : "disabled" }`} onClick={()=>selectAnswer(course.id,question.id,1)}>{question.answer1}</p>
-                    <p className={`answer ${(question.selectedAnswer === question.truthyOption && question.truthyOption === "2") ? "correct disabled" : ""} ${(question.selectedAnswer === 0) ? "" : "disabled" }`} onClick={()=>selectAnswer(course.id,question.id,2)}>{question.answer2}</p>
-                    <p className={`answer ${(question.selectedAnswer === question.truthyOption && question.truthyOption === "3") ? "correct disabled" : ""} ${(question.selectedAnswer === 0) ? "" : "disabled" }`} onClick={()=>selectAnswer(course.id,question.id,3)}>{question.answer3}</p>
-                    <p className={`answer ${(question.selectedAnswer === question.truthyOption && question.truthyOption === "4") ? "correct disabled" : ""} ${(question.selectedAnswer === 0) ? "" : "disabled" }`} onClick={()=>selectAnswer(course.id,question.id,4)}>{question.answer4}</p>
+                    {/*<p className={`answer ${(question.selectedAnswer === question.truthyOption && question.truthyOption === "1") ? "correct disabled" : ""} ${(question.selectedAnswer === 0) ? "" : "disabled" }`} onClick={()=>selectAnswer(course.id,question.id,1)}>{question.answer1}</p>*/}
+                    <p className={`answer ${(question.selectedAnswer === question.truthyOption && question.truthyOption === "1") ? "disabled" : ""} ${(question.selectedAnswer === 0) ? "" : "disabled" } ${(question.selectedAnswer === "1") ? "selected" : "" }`} onClick={()=>selectAnswer(course.id,question.id,1)}>{question.answer1}</p>
+                    <p className={`answer ${(question.selectedAnswer === question.truthyOption && question.truthyOption === "2") ? "disabled" : ""} ${(question.selectedAnswer === 0) ? "" : "disabled" } ${(question.selectedAnswer === "2") ? "selected" : "" }`} onClick={()=>selectAnswer(course.id,question.id,2)}>{question.answer2}</p>
+                    <p className={`answer ${(question.selectedAnswer === question.truthyOption && question.truthyOption === "3") ? "disabled" : ""} ${(question.selectedAnswer === 0) ? "" : "disabled" } ${(question.selectedAnswer === "3") ? "selected" : "" }`} onClick={()=>selectAnswer(course.id,question.id,3)}>{question.answer3}</p>
+                    <p className={`answer ${(question.selectedAnswer === question.truthyOption && question.truthyOption === "4") ? "disabled" : ""} ${(question.selectedAnswer === 0) ? "" : "disabled" } ${(question.selectedAnswer === "4") ? "selected" : "" }`} onClick={()=>selectAnswer(course.id,question.id,4)}>{question.answer4}</p>
                   </div>
                 );
               }

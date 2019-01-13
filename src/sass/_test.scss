@@ -48,6 +48,10 @@
      pointer-events: none;
      cursor: default;
    }
+   .selected {
+     color: $text-color;
+     background-color: $primary-color;
+   }
    .wrong {
      color: $wrong-ans;
    }

@@ -3,7 +3,7 @@ import axios from "axios";
 import md5 from "md5";
 
 const initialState = {
-  apiUrl: "http://localhost:80/vinodkatrelaapi/public/",
+  apiUrl: "http://localhost:80/vinodkatrelaapi/public/", // localhost:80
   selectedForm: "LOGIN",
   loggedInUser: {email: "", name: "", password: "", courses: []},
   signupDone: false,
@@ -194,7 +194,7 @@ export default function Interface(state=initialState, action) {
             })
           })
           .then(response => {
-            console.log(response);
+            // console.log(response);
             localStorage.setItem('genhex-auth-token', response.data.token);
           });
           return {
@@ -209,18 +209,14 @@ export default function Interface(state=initialState, action) {
   		 	};
 	 	}
     case InterfaceActionTypes.LOAD_USER: {
-          let courses;
-          action.user.courses.map((userCourse)=>{
-          console.log(userCourse);
-
-          courses = state.courses.map((course)=>{
+          let courses = [];
+          state.courses.map((course, key)=>{
             console.log(course);
-            if(course.id !== userCourse.id){
-              return course;
+            if(course.id !== action.user.courses[key].id){
+              courses.push(course);
             }
-            return false;
           });
-        });
+
         return {
           ...state,
   				loggedInUser: action.user,

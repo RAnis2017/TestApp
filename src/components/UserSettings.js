@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as InterfaceActionCreators from '../actions/interface';
 import { Link } from 'react-router-dom'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 const UserPerformance = (props) => {
     const { dispatch, loggedInUser } = props;

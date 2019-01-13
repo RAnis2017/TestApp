@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as InterfaceActionCreators from '../actions/interface';
 import { Link } from 'react-router-dom'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 const UserCourse = (props) => {
     const { dispatch, loggedInUser } = props;
@@ -36,9 +37,9 @@ const UserCourse = (props) => {
     })
     return(
       <div className="tab-body">
-        <div className="row">
-          {ItemsJSX}
-        </div>
+          <div className="row">
+            {ItemsJSX}
+          </div>
       </div>
     );
 }

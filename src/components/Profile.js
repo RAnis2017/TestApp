@@ -7,12 +7,20 @@ import UserPerformance from './UserPerformance';
 import UserSettings from './UserSettings';
 import UserTests from './UserTests';
 import UserPosts from './UserPosts';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 const Profile = (props) => {
 
 
     return(
       <div className="profile-body">
+      <ReactCSSTransitionGroup
+        transitionAppear={true}
+        transitionAppearTimeout={600}
+        transitionEnterTimeout={600}
+        transitionLeaveTimeout={200}
+        transitionName={props.match.path === '/profile' ? 'SlideIn' : 'SlideOut'}
+      >
         <div className="hero-sm-profile">
             <div className="row justify-content-center fullview-sm">
             </div>
@@ -33,12 +41,13 @@ const Profile = (props) => {
             <div className="col-sm-12 col-lg-9">
               <div className="tab">
               {
-                (props.currentTab == 1) ? <UserCourses changeTab={props.changeTab} /> : (props.currentTab == 2) ? <UserPerformance height="600"/> : (props.currentTab == 3) ? <UserSettings /> : (props.currentTab == 4) ? <UserDashboard/> : (props.currentTab == 5) ? <UserTests path={props.path}/> : <UserPosts />
+                (props.currentTab == 1) ? <UserCourses changeTab={props.changeTab} path={props.path}/> : (props.currentTab == 2) ? <UserPerformance height="600" path={props.path}/> : (props.currentTab == 3) ? <UserSettings path={props.path}/> : (props.currentTab == 4) ? <UserDashboard path={props.path}/> : (props.currentTab == 5) ? <UserTests path={props.path}/> : <UserPosts path={props.path}/>
               }
               </div>
             </div>
           </div>
         </div>
+        </ReactCSSTransitionGroup>
       </div>
     );
 }

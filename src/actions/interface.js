@@ -28,7 +28,7 @@ export const formSubmit = (e,type) => {
           })
         })
         .then(response => {
-          console.log(response);
+          // console.log(response);
           localStorage.setItem('genhex-auth-token', response.data.token);
           user = JSON.parse(response.data.user[0].obj);
           response.data.courses.map((course)=>{
@@ -60,12 +60,12 @@ export const coursesMinGet = () => {
     axios
       .get(`${store.getState().apiUrl}getMinCourses`)
       .then(response => {
-        console.log(response);
+        // console.log(response);
         response.data.map((course)=>{
           courses.push({id:course.id,...JSON.parse(course.objMin)});
           // console.log(JSON.parse(course.objMin));
         })
-        console.log(courses);
+        // console.log(courses);
         dispatch({
           type: InterfaceActionTypes.COURSES_MIN_GET,
           courses
@@ -84,7 +84,7 @@ export const usersListGet = () => {
           users.push({id:user.id,...JSON.parse(user.obj)});
           // console.log(JSON.parse(course.objMin));
         })
-        console.log(response);
+        // console.log(response);
 
         dispatch({
           type: InterfaceActionTypes.USERS_LIST,
@@ -106,7 +106,7 @@ export const userSettingSubmit = (e) => {
         })
       })
       .then(response => {
-        console.log(response);
+        // console.log(response);
         dispatch({
           type: InterfaceActionTypes.USER_SETTING_SAVE
         });
@@ -126,7 +126,7 @@ export const loadLoggedInUser = () => {
         })
       })
       .then(response => {
-        console.log(response);
+        // console.log(response);
         if(response.data.success !== "0"){
           user = JSON.parse(response.data.user[0].obj);
           response.data.courses.map((course)=>{
