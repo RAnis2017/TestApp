@@ -45,6 +45,7 @@ export const formSubmit = (e,type) => {
             type: InterfaceActionTypes.LOGIN_SUBMIT,
             user
           });
+
         });
     }
   } else if(type === "signup") {

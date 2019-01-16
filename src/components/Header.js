@@ -5,10 +5,17 @@ import { connect } from 'react-redux';
 import * as InterfaceActionCreators from '../actions/interface';
 import { NavLink, Link } from 'react-router-dom'
 import Cart from './Cart';
+import { withRouter } from 'react-router-dom';
 
 const Header = (props) => {
-    const { dispatch, cartToggle, loggedInUser } = props;
+    const { dispatch, cartToggle, loggedInUser, courses } = props;
     const showCart = bindActionCreators(InterfaceActionCreators.showCart, dispatch);
+    let itemsCount = 0;
+    courses.map((course,index)=>{
+        if(course.inCart){
+          itemsCount++;
+        }
+    });
     return(
         <div>
           <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -72,7 +79,8 @@ const Header = (props) => {
                 </li>
               }
               <li className="nav-item">
-                <button type="button" className="btn" onClick={()=>showCart()}><i className="fas fa-shopping-cart"></i></button>
+                <button type="button" className="btn" onClick={()=>showCart()}><i className={`fas fa-shopping-cart ${(itemsCount > 0) ? "cartFilled": ""}`}></i></button>
+                <span className="cartAmount">{itemsCount}</span>
               </li>
             </ul>
             </div>
@@ -86,13 +94,15 @@ const Header = (props) => {
 
 Header.propTypes = {
   cartToggle: PropTypes.bool.isRequired,
-  loggedInUser: PropTypes.object.isRequired
+  loggedInUser: PropTypes.object.isRequired,
+  courses: PropTypes.array.isRequired,
 }
 
 const mapStateToProps = state => (
   {
     cartToggle: state.cartToggle,
     loggedInUser: state.loggedInUser,
+    courses: state.courses,
   }
 );
 

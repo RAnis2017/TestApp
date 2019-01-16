@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 const Home = (props) => {
-
     return(
       <div className="hero-bg">
         <ReactCSSTransitionGroup
@@ -23,7 +22,7 @@ const Home = (props) => {
               </Link>
             </div>
             <div className="col-lg-4 align-self-center">
-              <LoginSignUp />
+              <LoginSignUp history={props.history}/>
             </div>
           </div>
         </ReactCSSTransitionGroup>

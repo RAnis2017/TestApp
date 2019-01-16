@@ -14,6 +14,33 @@
     margin-left: 1.4em;
   }
 }
+.cartFilled {
+  animation-name: cartPulse;
+  animation-duration: 1s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate-reverse;
+  animation-delay: 0;
+  color: $accent-color;
+}
+.cartAmount {
+  color: $text-color;
+  position: relative;
+  padding: 2px;
+  font-size: 12px;
+  left: -13px;
+  top: -8px;
+  background-color: $secondary-color;
+  border-radius: 10%;
+}
+@keyframes cartPulse {
+  0% {
+    transform: rotate(15deg) scale(1.4);
+  }
+  100% {
+    transform: rotate(-15deg) scale(1);
+  }
+}
 .cart {
   position: absolute;
   left: 59%;

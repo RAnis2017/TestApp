@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom'
 const Cart = (props) => {
   const { dispatch, courses } = props;
   const removeCartItem = bindActionCreators(InterfaceActionCreators.removeCartItem, dispatch);
+
   let ItemsJSX;
   ItemsJSX = courses.map((course,index)=>{
       if(course.inCart){
@@ -16,11 +17,12 @@ const Cart = (props) => {
           <li key={index}>
             <div className="cartItemLink">
               <div className="row m-auto">
-                <div className="col-sm-3">
-                  <img src={course.imgSrc} className="cartImg" />
+              {index+1}.
+                <div className="col-sm-2">
+                   <img src={course.imgSrc} className="cartImg" />
                 </div>
                 <div className="col-sm-5">
-                  <p>{course.name} - Price: {course.price} {course.currency}</p>
+                  <p> {course.name} - Price: {course.price} {course.currency}</p>
                 </div>
                 <div className="col-sm-4">
                   <button className="btn btn-danger" onClick={()=>removeCartItem(course.id)}>Remove</button>

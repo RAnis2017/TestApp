@@ -11,7 +11,7 @@ const Form = (props) => {
     const keyPressedOnForm = bindActionCreators(InterfaceActionCreators.keyPressedOnForm, dispatch);
     let formJSX;
     if(selectedForm === "LOGIN"){
-      formJSX = <form className="loginFormDiv" onSubmit={(e)=>formSubmit(e,"login")}>
+      formJSX = <form className="loginFormDiv" onSubmit={(e)=>{formSubmit(e,"login"); props.history.push('/profile') }}>
                   <div className="form-group">
                     <label htmlFor="email">Email address</label>
                     <input type="email" className="form-control" id="email" aria-describedby="email" value={email} placeholder="Enter email" onChange={(e)=>keyPressedOnForm("email",e)}/>

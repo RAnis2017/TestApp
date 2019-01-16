@@ -11,7 +11,8 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 const Checkout = (props) => {
     const { dispatch, courses, apiUrl, loggedInUser } = props;
     const coursesBought = bindActionCreators(InterfaceActionCreators.coursesBought, dispatch);
-
+    const showCart = bindActionCreators(InterfaceActionCreators.showCart, dispatch);
+    showCart();
     const onSuccess = (payment) => {
         // Congratulation, it came here means everything's fine!
             let coursesIDs = "";
