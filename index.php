@@ -1,7 +1,10 @@
 <?php
 use ReallySimpleJWT\Token;
 use \Psr\Http\Message\ResponseInterface as Response;
-
+// Import PHPMailer classes into the global namespace
+// These must be at the top of your script, not inside a function
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 // $allowed_domains = [
 //     'http://www.maaclab.com'
@@ -92,6 +95,7 @@ $app->post('/signup', function (Request $request, Response $response, array $arg
     $initialObj = json_encode($data['obj']);
     $email = $data['obj']['email'];
     $password = $data['obj']['password'];
+    $name = $data['obj']['name'];
     $nullObj = json_encode([]);
     $sql = "INSERT INTO users (`email`,`password`,`obj`,`coursesObj`) VALUES (:email,:password,:obj,:cObj)";
     try {
@@ -104,15 +108,39 @@ $app->post('/signup', function (Request $request, Response $response, array $arg
         $stmt->bindParam(':cObj', $nullObj);
         $stmt->execute();
         $id = $db->lastInsertId();
+        $mail = new PHPMailer(true);                              // Passing `true` enables exceptions
 
         $db = null;
         $startDate = time();
 
-        $date = date('Y-m-d H:i:s', strtotime('+1 day', $startDate));
+        $date = date('Y-m-d H:i:s', strtotime('+30 day', $startDate));
 
         $token = Token::getToken('' . $id, 'se12!@2s23!=eT423*&', $date, 'razaanis');
+        try {
+            //Server settings
+            $mail->SMTPDebug = 2;                                 // Enable verbose debug output
+            $mail->isSMTP();                                      // Set mailer to use SMTP
+            $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
+            $mail->SMTPAuth = true;                               // Enable SMTP authentication
+            $mail->Username = 'genesishextester@gmail.com';                 // SMTP username
+            $mail->Password = 'genesishexdevs';                           // SMTP password
+            $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+            $mail->Port = 465;                                    // TCP port to connect to
 
-        echo '{"notice": {"text": "User Added"}, "token": "' . $token . '"}';
+            //Recipients
+            $mail->setFrom('admin@vinodkatrela.com', 'Vinod Katrela Website');
+            $mail->addAddress($email, $name);     // Add a recipient
+
+            //Content
+            $mail->isHTML(true);                                  // Set email format to HTML
+            $mail->Subject = 'Email Confirmation';
+            $mail->Body    = '<h3>Hi, <strong>'.$name.'!</strong></h3> <b>You have signed up for our website using this email. If it was you please follow the link below to confirm. Or simply ignore this message.</b><a href="http://genesishexdevs.com/vinodkatrelaapi/confirm-email/'.$token.'">http://genesishexdevs.com/vinodkatrelaapi/confirm-email/'.$token.'</a>';
+
+            $mail->send();
+            echo '{"notice": {"text": "User Added"}, "token": "' . $token . '"}';
+        } catch (Exception $e) {
+            echo 'Message could not be sent. Mailer Error: ', $mail->ErrorInfo;
+        }
     } catch (PDOException $e) {
         echo '{"error":{"text": ' . $e->getMessage() . '}}';
     }
@@ -125,7 +153,7 @@ $app->post('/login', function (Request $request, Response $response, array $args
     $data = json_decode($request->getParam('data'), true);
     $email = $data['obj']['email'];
     $password = $data['obj']['password'];
-    $sql = "SELECT * FROM users WHERE email=:email AND password=:password";
+    $sql = "SELECT * FROM users WHERE email=:email AND password=:password AND email_confirmed <> 0";
     try {
         $db = new db();
         $db = $db->connect();
@@ -135,15 +163,18 @@ $app->post('/login', function (Request $request, Response $response, array $args
         $stmt->execute();
         $user = $stmt->fetchAll(PDO::FETCH_OBJ);
         $db = null;
-        $data = json_encode($user);
-        $decoded = json_decode($data, true);
+        if(count($user) > 0){
+          $data = json_encode($user);
+          $decoded = json_decode($data, true);
 
-        $startDate = time();
-        $date = date('Y-m-d H:i:s', strtotime('+1 day', $startDate));
+          $startDate = time();
+          $date = date('Y-m-d H:i:s', strtotime('+1 day', $startDate));
 
-        $token = Token::getToken('' . $decoded[0]['id'], 'se12!@2s23!=eT423*&', $date, 'razaanis');
-        echo '{"notice": {"text": "User Logged In"}, "id": ' . $decoded[0]['id'] . ', "success": "1", "user": ' . $data . ', "courses": '. $decoded[0]['coursesObj'] .' ,"token":"' . $token . '"}';
-
+          $token = Token::getToken('' . $decoded[0]['id'], 'se12!@2s23!=eT423*&', $date, 'razaanis');
+          echo '{"notice": {"text": "User Logged In"}, "id": ' . $decoded[0]['id'] . ', "success": "1", "user": ' . $data . ', "courses": '. $decoded[0]['coursesObj'] .' ,"token":"' . $token . '"}';
+        } else {
+          echo '{"notice": {"text": "User Not Logged In"}, "success": "0"}';
+        }
     } catch (PDOException $e) {
         echo '{"error":{"text": ' . $e->getMessage() . '}}';
     }
@@ -174,6 +205,34 @@ $app->post('/authenticate', function (Request $request, Response $response, arra
 
             $token = Token::getToken('' . $decoded[0]['id'], 'se12!@2s23!=eT423*&', $date, 'razaanis');
             echo '{"notice": {"text": "User Authenticated"}, "success": "1", "user": ' . $data . ', "courses": '. $decoded[0]['coursesObj'] .'}';
+
+        } catch (PDOException $e) {
+            echo '{"error":{"text": ' . $e->getMessage() . '}}';
+        }
+
+    } else {
+        echo '{"notice": {"text": "User Not Authenticated"}, "success": "0"}';
+    }
+    return $response;
+});
+
+
+$app->post('/confirm-email/{token}', function (Request $request, Response $response, array $args) {
+    $token = $request->getAttribute('token');
+
+    $result = Token::validate($token, 'se12!@2s23!=eT423*&');
+    if ($result) {
+        $result = Token::getPayload($token);
+        $data = json_decode($result, true);
+        $sql = "UPDATE users SET
+            `email_confirmed`=1 WHERE id=" . $data['user_id'];
+        try {
+            $db = new db();
+            $db = $db->connect();
+            $stmt = $db->query($sql);
+            $stmt->execute();
+            $db = null;
+            echo '<h3>Your Email is Authorized you can go to this page and login</h3> <a href="http://genesishexdevs.com/">http://genesishexdevs.com/</a>';
 
         } catch (PDOException $e) {
             echo '{"error":{"text": ' . $e->getMessage() . '}}';

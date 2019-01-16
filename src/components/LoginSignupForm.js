@@ -5,13 +5,13 @@ import { connect } from 'react-redux';
 import * as InterfaceActionCreators from '../actions/interface';
 
 const Form = (props) => {
-    const { dispatch, selectedForm, email, password, name, signupDone } = props;
+    const { dispatch, selectedForm, email, password, name, signupDone, loggedInUser, loggedIn } = props;
     const changeForm = bindActionCreators(InterfaceActionCreators.changeForm, dispatch);
     const formSubmit = bindActionCreators(InterfaceActionCreators.formSubmit, dispatch);
     const keyPressedOnForm = bindActionCreators(InterfaceActionCreators.keyPressedOnForm, dispatch);
     let formJSX;
     if(selectedForm === "LOGIN"){
-      formJSX = <form className="loginFormDiv" onSubmit={(e)=>{formSubmit(e,"login"); props.history.push('/profile') }}>
+      formJSX = <form className="loginFormDiv" onSubmit={(e)=>{formSubmit(e,"login",()=>{props.history.push('/profile')}); }}>
                   <div className="form-group">
                     <label htmlFor="email">Email address</label>
                     <input type="email" className="form-control" id="email" aria-describedby="email" value={email} placeholder="Enter email" onChange={(e)=>keyPressedOnForm("email",e)}/>
@@ -64,6 +64,7 @@ Form.propTypes = {
   password: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   signupDone: PropTypes.bool.isRequired,
+  loggedInUser: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = state => (
@@ -73,6 +74,8 @@ const mapStateToProps = state => (
     password: state.password,
     name: state.name,
     signupDone: state.signupDone,
+    loggedInUser: state.loggedInUser,
+    loggedIn: state.loggedIn,
   }
 );
 

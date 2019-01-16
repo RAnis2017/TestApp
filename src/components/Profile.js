@@ -10,8 +10,7 @@ import UserPosts from './UserPosts';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 const Profile = (props) => {
-
-
+    
     return(
       <div className="profile-body">
       <ReactCSSTransitionGroup

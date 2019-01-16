@@ -14,6 +14,7 @@ const initialState = {
   selectedQuestion: 0,
   timeout: false,
   users: [],
+  loggedIn: false,
   courses: [
     {
       id: 1,
@@ -96,9 +97,11 @@ export default function Interface(state=initialState, action) {
     		 	};
 	 	}
     case InterfaceActionTypes.LOGIN_SUBMIT: {
+
           return {
             ...state,
-            loggedInUser: action.user
+            loggedInUser: action.user,
+            loggedIn: (action.user.name.length > 0),
           };
 	 	}
     case InterfaceActionTypes.SELECT_QUESTION: {
@@ -236,7 +239,7 @@ export default function Interface(state=initialState, action) {
             })
           })
           .then(response => {
-            // console.log(response);
+            console.log(response);
             localStorage.setItem('genhex-auth-token', response.data.token);
           });
           return {

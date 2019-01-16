@@ -15,7 +15,7 @@ export const changeForm = type => {
   }
 };
 
-export const formSubmit = (e,type) => {
+export const formSubmit = (e,type,callback: null) => {
   e.preventDefault();
   if(type === "login"){
     return function action(dispatch) {
@@ -28,18 +28,22 @@ export const formSubmit = (e,type) => {
           })
         })
         .then(response => {
-          // console.log(response);
-          localStorage.setItem('genhex-auth-token', response.data.token);
-          user = JSON.parse(response.data.user[0].obj);
-          response.data.courses.map((course)=>{
-            if (typeof course.objFull === 'string' || course.objFull instanceof String){
-              courses.push({id:course.id,...JSON.parse(course.objFull)});
-            }
-            else {
-              courses.push({id:course.id,...course.objFull});
-            }
-            // console.log(JSON.parse(course.objFull));
-          })
+          console.log(response);
+          if(response.data.success !== "0"){
+            localStorage.setItem('genhex-auth-token', response.data.token);
+            user = JSON.parse(response.data.user[0].obj);
+            response.data.courses.map((course)=>{
+              if (typeof course.objFull === 'string' || course.objFull instanceof String){
+                courses.push({id:course.id,...JSON.parse(course.objFull)});
+              }
+              else {
+                courses.push({id:course.id,...course.objFull});
+              }
+              // console.log(JSON.parse(course.objFull));
+
+            });
+            callback();
+          }
           user.courses = courses;
           dispatch({
             type: InterfaceActionTypes.LOGIN_SUBMIT,

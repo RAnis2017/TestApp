@@ -21,17 +21,16 @@ import {
 class Website extends Component {
   constructor(props) {
       super(props);
-
       this.state = {
         currentTab: 4,
         path: "",
         style: "Light",
         styleVar: "../css/style-light.css",
-        loggedIn: (localStorage.getItem('genhex-auth-token') != null) ? true : true
+        loggedIn: (localStorage.getItem('genhex-auth-token') != null) ? true : true,
       }
    }
   componentWillMount(){
-    const { dispatch } = this.props;
+    const { dispatch, loggedIn } = this.props;
     const coursesMinGet = bindActionCreators(InterfaceActionCreators.coursesMinGet, dispatch);
     const loadLoggedInUser = bindActionCreators(InterfaceActionCreators.loadLoggedInUser, dispatch);
     const loadUsers = bindActionCreators(InterfaceActionCreators.usersListGet, dispatch);
@@ -90,7 +89,7 @@ class Website extends Component {
 
 const mapStateToProps = state => (
   {
-
+    loggedInUser: state.loggedInUser,
   }
 );
 
