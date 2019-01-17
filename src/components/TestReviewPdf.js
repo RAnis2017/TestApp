@@ -6,13 +6,46 @@ import * as InterfaceActionCreators from '../actions/interface';
 import { Link } from 'react-router-dom'
 import html2canvas from 'html2canvas/dist/html2canvas.js';
 import jsPDF from 'jspdf/dist/jspdf.min.js';
+import Logo from '../images/smalllogo.png';
 
 const Test = (props) => {
+    const toDataURL = (url, callback) => {
+      var xhr = new XMLHttpRequest();
+      xhr.onload = function() {
+        var reader = new FileReader();
+        reader.onloadend = function() {
+          callback(reader.result);
+        }
+        reader.readAsDataURL(xhr.response);
+      };
+      xhr.open('GET', url);
+      xhr.responseType = 'blob';
+      xhr.send();
+    }
+    const addWaterMark = (doc,dataUrl) => {
+      var totalPages = doc.internal.getNumberOfPages();
+
+      for (let i = 1; i <= totalPages; i++) {
+        doc.setPage(i);
+        //doc.addImage(imgData, 'PNG', 40, 40, 75, 75);
+        doc.setTextColor(150);
+        doc.setFontSize(24);
+        doc.text('GENESIS HEX DEVS',10, doc.internal.pageSize.height-5 );
+        doc.setFontSize(12);
+        doc.text('http://www.genesishexdevs.com',130, doc.internal.pageSize.height-10 );
+        doc.addImage(dataUrl, "png", 180, 10, 20, 20, "image"+i, "NONE", 0);
+      }
+
+      return doc;
+    }
     const printDocument = () => {
       const input = document.getElementById('divToPrint');
-      const pdf = new jsPDF();
+      let pdf = new jsPDF();
       pdf.fromHTML(input, 1, 1);
-      pdf.save(props.match.params.path+".pdf");
+      toDataURL(Logo, function(dataUrl) {
+        pdf = addWaterMark(pdf,dataUrl);
+        pdf.save(props.match.params.path+".pdf");
+      });
       // html2canvas(input)
       //   .then((canvas) => {
       //     const imgData = canvas.toDataURL('image/png', 1.0);
@@ -62,10 +95,9 @@ const Test = (props) => {
         </div>
         <div className="container fullview">
         <hr />
-        <button onClick={printDocument} className="btn btn-primary btn-block">Print</button>
+        <button onClick={printDocument} className="btn btn-primary btn-block">Download as PDF</button>
           <div className="row test-content" >
             <div className="col-sm-12 col-lg-12" id="divToPrint">
-
               <div className="tab">
                 {currentQuestion}
               </div>

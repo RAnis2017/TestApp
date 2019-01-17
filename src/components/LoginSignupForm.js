@@ -3,15 +3,16 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as InterfaceActionCreators from '../actions/interface';
+import Loading from './Loading';
 
 const Form = (props) => {
-    const { dispatch, selectedForm, email, password, name, signupDone, loggedInUser, loggedIn } = props;
+    const { dispatch, selectedForm, email, password, name, signupDone, loggedInUser, loggedIn, loadingLogIn } = props;
     const changeForm = bindActionCreators(InterfaceActionCreators.changeForm, dispatch);
     const formSubmit = bindActionCreators(InterfaceActionCreators.formSubmit, dispatch);
     const keyPressedOnForm = bindActionCreators(InterfaceActionCreators.keyPressedOnForm, dispatch);
     let formJSX;
     if(selectedForm === "LOGIN"){
-      formJSX = <form className="loginFormDiv" onSubmit={(e)=>{formSubmit(e,"login",()=>{props.history.push('/profile')}); }}>
+      formJSX = <form className="loginFormDiv" onSubmit={(e)=>{formSubmit(e,"login",(routeToGo)=>{props.history.push('/'+routeToGo)}); }}>
                   <div className="form-group">
                     <label htmlFor="email">Email address</label>
                     <input type="email" className="form-control" id="email" aria-describedby="email" value={email} placeholder="Enter email" onChange={(e)=>keyPressedOnForm("email",e)}/>
@@ -21,7 +22,12 @@ const Form = (props) => {
                     <label htmlFor="password">Password</label>
                     <input type="password" className="form-control" id="password" placeholder="Password" value={password} onChange={(e)=>keyPressedOnForm("password",e)}/>
                   </div>
-                  <button type="submit" className="btn btn-block btn-primary" >Log In</button>
+                    {
+                      (loadingLogIn) ?
+                      <Loading type={"spinningBubbles"} color={"#ffffff"} />
+                      :
+                      <button type="submit" className="btn btn-block btn-primary" >Log In</button>
+                    }
                 </form>;
     } else {
       formJSX = <form className="loginFormDiv" onSubmit={(e)=>formSubmit(e,"signup")}>
@@ -42,7 +48,7 @@ const Form = (props) => {
                     </div>
                     <button type="submit" className="btn btn-block btn-primary">Sign Up</button>
                   </div>
-                : <h3 className="text-center">Signup Done! You can login now.</h3>}
+                : <h3 className="text-center">Signup Done! Check Email For Confirmation Link.</h3>}
               </form>;
     }
     return(
@@ -65,6 +71,7 @@ Form.propTypes = {
   name: PropTypes.string.isRequired,
   signupDone: PropTypes.bool.isRequired,
   loggedInUser: PropTypes.object.isRequired,
+  loadingLogIn: PropTypes.bool.isRequired,
 }
 
 const mapStateToProps = state => (
@@ -76,6 +83,7 @@ const mapStateToProps = state => (
     signupDone: state.signupDone,
     loggedInUser: state.loggedInUser,
     loggedIn: state.loggedIn,
+    loadingLogIn: state.loadingLogIn,
   }
 );
 

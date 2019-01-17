@@ -19,6 +19,9 @@ export const formSubmit = (e,type,callback: null) => {
   e.preventDefault();
   if(type === "login"){
     return function action(dispatch) {
+      dispatch({
+        type: InterfaceActionTypes.LOGIN_LOADING
+      });
       let user = {email: "", name: "", password: "", courses: []};
       let courses = [];
       axios
@@ -42,7 +45,11 @@ export const formSubmit = (e,type,callback: null) => {
               // console.log(JSON.parse(course.objFull));
 
             });
-            callback();
+            if(courses.length > 0){
+              callback("profile");
+            } else {
+              callback("courses");
+            }
           }
           user.courses = courses;
           dispatch({

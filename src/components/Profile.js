@@ -10,7 +10,7 @@ import UserPosts from './UserPosts';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 const Profile = (props) => {
-    
+
     return(
       <div className="profile-body">
       <ReactCSSTransitionGroup
@@ -34,7 +34,7 @@ const Profile = (props) => {
                 <a className="nav-link" href="#" onClick={()=>props.changeTab("posts")}><i className="fas fa-paste"></i> Posts</a>
                 <a className="nav-link" href="#" onClick={()=>props.changeTab("settings")}><i className="fas fa-cog"></i> Settings</a>
                 <a className="nav-link" href="#" onClick={()=>props.theme()}><i className="fas fa-brush"></i> Change Theme to {props.currentTheme === "Light" ? "Night" : "Light"}</a>
-                <a className="nav-link" href="#" onClick={()=>props.signOut()}><i className="fas fa-sign-out-alt"></i> Sign Out</a>
+                <a className="nav-link" href="#" onClick={()=>props.signOut(()=>props.history.push('/'))}><i className="fas fa-sign-out-alt"></i> Sign Out</a>
               </nav>
             </div>
             <div className="col-sm-12 col-lg-9">

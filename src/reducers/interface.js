@@ -15,6 +15,7 @@ const initialState = {
   timeout: false,
   users: [],
   loggedIn: false,
+  loadingLogIn: false,
   courses: [
     {
       id: 1,
@@ -102,6 +103,14 @@ export default function Interface(state=initialState, action) {
             ...state,
             loggedInUser: action.user,
             loggedIn: (action.user.name.length > 0),
+            loadingLogIn: false
+          };
+	 	}
+    case InterfaceActionTypes.LOGIN_LOADING: {
+
+          return {
+            ...state,
+            loadingLogIn: true
           };
 	 	}
     case InterfaceActionTypes.SELECT_QUESTION: {

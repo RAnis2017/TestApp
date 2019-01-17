@@ -118,15 +118,13 @@ $app->post('/signup', function (Request $request, Response $response, array $arg
         $token = Token::getToken('' . $id, 'se12!@2s23!=eT423*&', $date, 'razaanis');
         try {
             //Server settings
-            $mail->SMTPDebug = 2;                                 // Enable verbose debug output
-            $mail->isSMTP();                                      // Set mailer to use SMTP
-            $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
-            $mail->SMTPAuth = true;                               // Enable SMTP authentication
-            $mail->Username = 'genesishextester@gmail.com';                 // SMTP username
-            $mail->Password = 'genesishexdevs';                           // SMTP password
-            $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
-            $mail->Port = 465;                                    // TCP port to connect to
-
+            $mail->Host       = "relay-hosting.secureserver.net";
+            $mail->Port       = 25;
+            $mail->SMTPDebug  = 0;
+            $mail->SMTPSecure = "none";
+            $mail->SMTPAuth   = false;
+            $mail->Username   = "";
+            $mail->Password   = "";
             //Recipients
             $mail->setFrom('admin@vinodkatrela.com', 'Vinod Katrela Website');
             $mail->addAddress($email, $name);     // Add a recipient
@@ -134,7 +132,7 @@ $app->post('/signup', function (Request $request, Response $response, array $arg
             //Content
             $mail->isHTML(true);                                  // Set email format to HTML
             $mail->Subject = 'Email Confirmation';
-            $mail->Body    = '<h3>Hi, <strong>'.$name.'!</strong></h3> <b>You have signed up for our website using this email. If it was you please follow the link below to confirm. Or simply ignore this message.</b><a href="http://genesishexdevs.com/vinodkatrelaapi/confirm-email/'.$token.'">http://genesishexdevs.com/vinodkatrelaapi/confirm-email/'.$token.'</a>';
+            $mail->Body    = '<h3>Hi, <strong>'.$name.'!</strong></h3> <b>You have signed up for our website using this email. If it was you please follow the link below to confirm. Or simply ignore this message.</b><a href="http://genesishexdevs.com/vinodkatrelaapi/public/confirm-email/'.$token.'">http://genesishexdevs.com/vinodkatrelaapi/public/confirm-email/'.$token.'</a>';
 
             $mail->send();
             echo '{"notice": {"text": "User Added"}, "token": "' . $token . '"}';
@@ -217,7 +215,7 @@ $app->post('/authenticate', function (Request $request, Response $response, arra
 });
 
 
-$app->post('/confirm-email/{token}', function (Request $request, Response $response, array $args) {
+$app->get('/confirm-email/{token}', function (Request $request, Response $response, array $args) {
     $token = $request->getAttribute('token');
 
     $result = Token::validate($token, 'se12!@2s23!=eT423*&');

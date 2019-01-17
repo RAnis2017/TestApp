@@ -13,43 +13,27 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 // Resolves charts dependancy
 ReactFC.fcRoot(FusionCharts, Charts, FusionTheme);
 
-const dataSource = {
-  "chart": {
-    "caption": "Your Performance all the tests",
-    "subcaption": "",
-    "theme": "candy",
-    "yaxisname": "Marks Obtained",
-    "syaxisname": "Tests",
-    "decimals": "1",
-    "drawcrossline": "1"
-  },
-  "data": [
-    {
-      "label": "Test # 1",
-      "value": "80"
-    },
-    {
-      "label": "Test # 2",
-      "value": "22"
-    },
-    {
-      "label": "Test # 3",
-      "value": "62"
-    },
-    {
-      "label": "Test # 4",
-      "value": "90"
-    },
-    {
-      "label": "Test # 5",
-      "value": "100"
-    }
-  ]
-};
-
 
 const UserPerformance = (props) => {
     const { dispatch, loggedInUser } = props;
+    const data = [];
+    loggedInUser.courses.map((outerCourse,index) => {
+      outerCourse.tests.map((course,index) => {
+        data.push({"label":course.name,"value":`${course.lastScore}`});
+      });
+    });
+    const dataSource = {
+      "chart": {
+        "caption": "Your Performance all the tests",
+        "subcaption": "",
+        "theme": "candy",
+        "yaxisname": "Marks Obtained",
+        "syaxisname": "Tests",
+        "decimals": "1",
+        "drawcrossline": "1"
+      },
+      "data": data
+    };
     const chartConfigs = {
       type: "pareto2d",
       width: '100%',
@@ -65,10 +49,12 @@ const UserPerformance = (props) => {
 }
 
 UserPerformance.propTypes = {
+  loggedInUser: PropTypes.object.isRequired
 }
 
 const mapStateToProps = state => (
   {
+    loggedInUser: state.loggedInUser
   }
 );
 

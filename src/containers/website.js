@@ -9,6 +9,7 @@ import Test from '../components/Test';
 import TestReview from '../components/TestReview';
 import TestReviewPdf from '../components/TestReviewPdf';
 import Checkout from '../components/Checkout';
+import Cart from '../components/Cart';
 import { bindActionCreators } from 'redux';
 import * as InterfaceActionCreators from '../actions/interface';
 
@@ -64,21 +65,24 @@ class Website extends Component {
       this.setState({...this.state, currentTab: 6});
     }
   }
-  signOut = () => {
+  signOut = (callback) => {
     localStorage.removeItem("genhex-auth-token");
+    callback();
+    window.location.reload();
   }
   render() {
     return (
       <BrowserRouter>
         <div className="app">
           <link href={`${this.state.styleVar}`} rel="stylesheet" />
-          <Header />
+          <Route path="/" render={(props) => <Header signOut={this.signOut} {...props}/>}/>
           <Route exact path="/" render={Home} />
           <Route exact path="/courses" render={Courses} />
           <Route path="/courses/:path" component={Test} />
           <Route path="/testreview/:path" component={TestReview} />
           <Route path="/testreviewpdf/:path" component={TestReviewPdf} />
           <Route path="/checkout" component={Checkout} />
+          <Route path="/cart" component={Cart} />
           <Route path="/profile"  render={(props) => (this.state.loggedIn) ? <Profile {...props} signOut={this.signOut} changeTab={this.changeTab} currentTab={this.state.currentTab} path={this.state.path} theme={this.handleStyleButtonClick} currentTheme={this.state.style}/> : <Redirect to="/"/>}/>
           <Footer />
         </div>
