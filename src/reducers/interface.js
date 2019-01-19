@@ -3,12 +3,14 @@ import axios from "axios";
 import md5 from "md5";
 
 const initialState = {
-  apiUrl: "http://localhost:80/vinodkatrelaapi/public/", // localhost:80
+  apiUrl: "http://www.genesishexdevs.com/vinodkatrelaapi/public/", // localhost:80 genesishexdevs.com
   selectedForm: "LOGIN",
   loggedInUser: {email: "", name: "", password: "", courses: []},
   signupDone: false,
+  forgotPassDone: false,
   email: "",
   password: "",
+  confirmPassword: "",
   name: "",
   cartToggle: false,
   selectedQuestion: 0,
@@ -16,6 +18,7 @@ const initialState = {
   users: [],
   loggedIn: false,
   loadingLogIn: false,
+  markedForReview: [],
   courses: [
     {
       id: 1,
@@ -61,6 +64,12 @@ export default function Interface(state=initialState, action) {
     				selectedForm: "SIGNUP"
     		 	};
 	 	}
+    case InterfaceActionTypes.SELECT_FORGOT_PASS: {
+          return {
+            ...state,
+    				selectedForm: "FORGOTPASS"
+    		 	};
+	 	}
     case InterfaceActionTypes.TYPING_EMAIL: {
           return {
             ...state,
@@ -79,10 +88,24 @@ export default function Interface(state=initialState, action) {
     				name: action.value
     		 	};
 	 	}
+    case InterfaceActionTypes.MARK_REVIEW: {
+          let markedForReview = state.markedForReview;
+          markedForReview.push(action.qID);
+          return {
+            ...state,
+    				markedForReview: markedForReview
+    		 	};
+	 	}
     case InterfaceActionTypes.EDIT_TYPING_EMAIL: {
           return {
             ...state,
     				loggedInUser: {...state.loggedInUser, email: action.value }
+    		 	};
+	 	}
+    case InterfaceActionTypes.EDIT_CONFIRM_PASSWORD: {
+          return {
+            ...state,
+    				confirmPassword: action.value
     		 	};
 	 	}
     case InterfaceActionTypes.EDIT_TYPING_PASSWORD: {
@@ -254,6 +277,36 @@ export default function Interface(state=initialState, action) {
           return {
             ...state,
             signupDone: true
+          };
+	 	}
+    case InterfaceActionTypes.RESET_PASS_SUBMIT: {
+        axios
+          .post(`${state.apiUrl}resetPassword`, {
+            data: JSON.stringify({
+              obj:  {password: state.password},
+              token: action.token
+            })
+          })
+          .then(response => {
+            console.log(response);
+          });
+          return {
+            ...state,
+          };
+	 	}
+    case InterfaceActionTypes.FORGOT_PASS_SUBMIT: {
+        axios
+          .post(`${state.apiUrl}forgotpass`, {
+            data: JSON.stringify({
+              obj:  {email: state.email},
+            })
+          })
+          .then(response => {
+            console.log(response);
+          });
+          return {
+            ...state,
+            forgotPassDone: true
           };
 	 	}
     case InterfaceActionTypes.USER_SETTING_SAVE: {

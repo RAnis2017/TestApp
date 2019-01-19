@@ -6,6 +6,14 @@
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
+    &-resetPass{
+      @include fullscreendiv;
+      background-image: url('../images/forgotpass.jpg');
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
   }
   &-sm{
     max-height: 30vh;

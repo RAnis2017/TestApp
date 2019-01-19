@@ -6,7 +6,7 @@ import * as InterfaceActionCreators from '../actions/interface';
 import Loading from './Loading';
 
 const Form = (props) => {
-    const { dispatch, selectedForm, email, password, name, signupDone, loggedInUser, loggedIn, loadingLogIn } = props;
+    const { dispatch, selectedForm, email, password, name, signupDone, forgotPassDone, loggedInUser, loggedIn, loadingLogIn } = props;
     const changeForm = bindActionCreators(InterfaceActionCreators.changeForm, dispatch);
     const formSubmit = bindActionCreators(InterfaceActionCreators.formSubmit, dispatch);
     const keyPressedOnForm = bindActionCreators(InterfaceActionCreators.keyPressedOnForm, dispatch);
@@ -28,8 +28,9 @@ const Form = (props) => {
                       :
                       <button type="submit" className="btn btn-block btn-primary" >Log In</button>
                     }
+                    <a href="#" className="font-primary float-right" onClick={()=>changeForm("forgotpass")}>Forgot Password?</a>
                 </form>;
-    } else {
+    } else if (selectedForm === "SIGNUP"){
       formJSX = <form className="loginFormDiv" onSubmit={(e)=>formSubmit(e,"signup")}>
                   {(!signupDone) ?
                   <div>
@@ -47,8 +48,21 @@ const Form = (props) => {
                       <input type="password" className="form-control" id="password" placeholder="Password" value={password} onChange={(e)=>keyPressedOnForm("password",e)}/>
                     </div>
                     <button type="submit" className="btn btn-block btn-primary">Sign Up</button>
+                    <a href="#" className="font-primary float-right" onClick={()=>changeForm("forgotpass")}>Forgot Password?</a>
                   </div>
-                : <h3 className="text-center">Signup Done! Check Email For Confirmation Link.</h3>}
+                : <h4 className="text-center">Signup Done! Check Email For Confirmation Link. Also check spam folder if not arrived.</h4>}
+              </form>;
+    } else {
+      formJSX = <form className="loginFormDiv" onSubmit={(e)=>formSubmit(e,"forgotpass")}>
+                  {(!forgotPassDone) ?
+                  <div>
+                    <div className="form-group">
+                      <label htmlFor="email">Email address</label>
+                      <input type="email" className="form-control" id="email" aria-describedby="email" placeholder="Enter email" value={email} onChange={(e)=>keyPressedOnForm("email",e)}/>
+                    </div>
+                    <button type="submit" className="btn btn-block btn-primary">Send Recovery Email</button>
+                  </div>
+                : <h4 className="text-center">If Email is present on our Website we will send you an Email with reset link.</h4>}
               </form>;
     }
     return(
@@ -70,6 +84,7 @@ Form.propTypes = {
   password: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   signupDone: PropTypes.bool.isRequired,
+  forgotPassDone: PropTypes.bool.isRequired,
   loggedInUser: PropTypes.object.isRequired,
   loadingLogIn: PropTypes.bool.isRequired,
 }
@@ -81,6 +96,7 @@ const mapStateToProps = state => (
     password: state.password,
     name: state.name,
     signupDone: state.signupDone,
+    forgotPassDone: state.forgotPassDone,
     loggedInUser: state.loggedInUser,
     loggedIn: state.loggedIn,
     loadingLogIn: state.loadingLogIn,

@@ -95,6 +95,14 @@
   background-position: center;
   background-attachment: fixed;
 }
+.hero-bg-resetPass {
+  min-height: 100vh;
+  background-image: url("../images/forgotpass.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
 .hero-sm {
   max-height: 30vh;
   background-image: url("../images/courses-banner-small.png");
@@ -236,6 +244,9 @@ h1 {
 }
 .test-content .unattempted {
   color: #ff3f00 !important;
+}
+.test-content .marked {
+  color: blue !important;
 }
 .test-content .tab {
   background-color: #F3F3F4 !important;

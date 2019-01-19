@@ -13,9 +13,23 @@ export const changeForm = type => {
       type: InterfaceActionTypes.SELECT_SIGNUP,
     };
   }
+  else if(type === "forgotpass") {
+   return {
+     type: InterfaceActionTypes.SELECT_FORGOT_PASS,
+   };
+ }
 };
 
-export const formSubmit = (e,type,callback: null) => {
+export const markForReview = (e,qID) => {
+  e.preventDefault();
+
+  return {
+    type: InterfaceActionTypes.MARK_REVIEW,
+    qID
+  };
+};
+
+export const formSubmit = (e,type,callback: null, resetToken: null) => {
   e.preventDefault();
   if(type === "login"){
     return function action(dispatch) {
@@ -62,6 +76,16 @@ export const formSubmit = (e,type,callback: null) => {
   } else if(type === "signup") {
       return {
         type: InterfaceActionTypes.SIGNUP_SUBMIT,
+      };
+  } else if(type === "forgotpass") {
+      return {
+        type: InterfaceActionTypes.FORGOT_PASS_SUBMIT,
+      };
+  } else if(type === "reset") {
+      callback("");
+      return {
+        type: InterfaceActionTypes.RESET_PASS_SUBMIT,
+        token: resetToken
       };
   }
 }
@@ -214,6 +238,11 @@ export const keyPressedOnForm = (type,e) => {
     type: InterfaceActionTypes.EDIT_TYPING_NAME,
     value: e.target.value
   };
+} else if(type === "confirmPassword") {
+ return {
+   type: InterfaceActionTypes.EDIT_CONFIRM_PASSWORD,
+   value: e.target.value
+ };
 }
 };
 

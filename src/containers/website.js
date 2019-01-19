@@ -10,6 +10,7 @@ import TestReview from '../components/TestReview';
 import TestReviewPdf from '../components/TestReviewPdf';
 import Checkout from '../components/Checkout';
 import Cart from '../components/Cart';
+import ResetPassword from '../components/ResetPassword';
 import { bindActionCreators } from 'redux';
 import * as InterfaceActionCreators from '../actions/interface';
 
@@ -83,6 +84,7 @@ class Website extends Component {
           <Route path="/testreviewpdf/:path" component={TestReviewPdf} />
           <Route path="/checkout" component={Checkout} />
           <Route path="/cart" component={Cart} />
+          <Route path="/password-reset/:token" component={ResetPassword} />
           <Route path="/profile"  render={(props) => (this.state.loggedIn) ? <Profile {...props} signOut={this.signOut} changeTab={this.changeTab} currentTab={this.state.currentTab} path={this.state.path} theme={this.handleStyleButtonClick} currentTheme={this.state.style}/> : <Redirect to="/"/>}/>
           <Footer />
         </div>

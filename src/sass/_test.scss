@@ -25,6 +25,9 @@
     .unattempted {
       color: $wrong-ans;
     }
+    .marked {
+      color: $marked;
+    }
   }
   &-content .tab {
     background-color: $dark-profile-1;

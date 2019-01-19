@@ -10,11 +10,12 @@ import axios from "axios";
 
 const Test = (props) => {
 
-    const { dispatch, loggedInUser, selectedQuestion, apiUrl} = props;
+    const { dispatch, loggedInUser, selectedQuestion, apiUrl, markedForReview} = props;
     const selectQuestion = bindActionCreators(InterfaceActionCreators.selectQuestion, dispatch);
     const selectAnswer = bindActionCreators(InterfaceActionCreators.selectAnswer, dispatch);
     const timeOver = bindActionCreators(InterfaceActionCreators.timeOver, dispatch);
     const nextPrevQuestion = bindActionCreators(InterfaceActionCreators.nextPrevQuestion, dispatch);
+    const markForReview = bindActionCreators(InterfaceActionCreators.markForReview, dispatch);
     const path = props.match.params.path;
     let ogTime;
     let sideNav;
@@ -39,7 +40,7 @@ const Test = (props) => {
             mcqQuantity = course.mcqQuantity;
 
             sideNav = course.questions.map((question,key) => {
-              return (<a className={`nav-link`} href="#" key={key} onClick={(e)=>selectQuestion(e,question.id)}>{(question.selectedAnswer === 0) ? <i className="fas fa-question-circle unattempted" ></i> : <i className="fas fa-question-circle attempted" ></i> } {question.id} - {question.title}</a>);
+              return (<a className={`nav-link`} href="#" key={key} onClick={(e)=>selectQuestion(e,question.id)}>{(question.selectedAnswer === 0) ? <i className={`fas fa-question-circle unattempted ${(markedForReview.includes(question.id)) ? "marked" : ""}`} onClick={(e)=>markForReview(e,question.id)}></i> : <i className="fas fa-question-circle attempted" ></i> } {question.id} - {question.title}</a>);
             });
             currentQuestion = course.questions.map((question,key) => {
               if(question.id === selectedQuestion){
@@ -98,7 +99,6 @@ const Test = (props) => {
             <div className="col-sm-12 col-lg-9">
               <div className="tab">
                 <div className="ad"></div>
-
                 {currentQuestion}
                 <button type="button" className={"btn btn-success"+`${(selectedQuestion <= 1 && selectedQuestion > mcqQuantity) ? " disabled" : ""}`} onClick={(e)=>nextPrevQuestion("prev",e,null)}>Prev</button>
                 <button type="button" className={"btn btn-success float-right"+`${(selectedQuestion === mcqQuantity+1) ? " disabled" : ""}`} onClick={(e)=>nextPrevQuestion("next",e,currentCourse)}>{(selectedQuestion === mcqQuantity) ? " Finish" : "Next"}</button>
@@ -114,6 +114,7 @@ Test.propTypes = {
   loggedInUser: PropTypes.object.isRequired,
   selectedQuestion: PropTypes.number.isRequired,
   apiUrl: PropTypes.string.isRequired,
+  markedForReview: PropTypes.array.isRequired,
 }
 
 const mapStateToProps = state => (
@@ -121,6 +122,7 @@ const mapStateToProps = state => (
     loggedInUser: state.loggedInUser,
     selectedQuestion: state.selectedQuestion,
     apiUrl: state.apiUrl,
+    markedForReview: state.markedForReview,
   }
 );
 
