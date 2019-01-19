@@ -117,25 +117,26 @@ $app->post('/signup', function (Request $request, Response $response, array $arg
 
         $token = Token::getToken('' . $id, 'se12!@2s23!=eT423*&', $date, 'razaanis');
         try {
-            //Server settings
-            $mail->Host       = "relay-hosting.secureserver.net";
-            $mail->Port       = 25;
-            $mail->SMTPDebug  = 0;
-            $mail->SMTPSecure = "none";
-            $mail->SMTPAuth   = false;
-            $mail->Username   = "";
-            $mail->Password   = "";
-            //Recipients
-            $mail->setFrom('admin@vinodkatrela.com', 'Vinod Katrela Website');
-            $mail->addAddress($email, $name);     // Add a recipient
+          $mail->isHTML(true);
+          // $mail->isSMTP();
+          $mail->SMTPDebug = 4;
+          $mail->Host = 'smtp.gmail.com';
+          $mail->SMTPAuth = true;
+          $mail->SMTPSecure= "tls";
+          $mail->Username = "genesishextester@gmail.com";
+          $mail->Password = "genesishexdevs";
+          $mail->Port = 587;
+          //Recipients
+          $mail->setFrom('genesishextester@gmail.com', 'Genesis Hex Devs');
+          $mail->addAddress($email);     // Add a recipient
 
-            //Content
-            $mail->isHTML(true);                                  // Set email format to HTML
-            $mail->Subject = 'Email Confirmation';
-            $mail->Body    = '<h3>Hi, <strong>'.$name.'!</strong></h3> <b>You have signed up for our website using this email. If it was you please follow the link below to confirm. Or simply ignore this message.</b><a href="http://genesishexdevs.com/vinodkatrelaapi/public/confirm-email/'.$token.'">http://genesishexdevs.com/vinodkatrelaapi/public/confirm-email/'.$token.'</a>';
+          //Content
+          $mail->isHTML(true);                                  // Set email format to HTML
+          $mail->Subject = 'Email Confirmation';
+          $mail->Body    = '<h3>Hi, <strong>'.$name.'!</strong></h3> <b>You have signed up for our website using this email. If it was you please follow the link below to confirm. Or simply ignore this message.</b><hr><a href="http://www.genesishexdevs.com/vinodkatrelaapi/public/confirm-email/'.$token.'">http://genesishexdevs.com/vinodkatrelaapi/public/confirm-email/'.$token.'</a>';
 
-            $mail->send();
-            echo '{"notice": {"text": "User Added"}, "token": "' . $token . '"}';
+          $mail->send();
+          echo '{"notice": {"text": "User Added"}, "token": "' . $token . '"}';
         } catch (Exception $e) {
             echo 'Message could not be sent. Mailer Error: ', $mail->ErrorInfo;
         }
@@ -146,6 +147,94 @@ $app->post('/signup', function (Request $request, Response $response, array $arg
     return $response;
 });
 
+$app->post('/forgotpass', function (Request $request, Response $response, array $args) {
+    $data = json_decode($request->getParam('data'), true);
+    $initialObj = json_encode($data['obj']);
+    $email = $data['obj']['email'];
+    $nullObj = json_encode([]);
+    $sql = "SELECT * FROM users WHERE `email`=:email";
+    try {
+        $db = new db();
+        $db = $db->connect();
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
+        $user = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $db = null;
+        if(count($user) > 0){
+          $data = json_encode($user);
+          $decoded = json_decode($data, true);
+
+          $mail = new PHPMailer(true);                              // Passing `true` enables exceptions
+
+          $db = null;
+          $startDate = time();
+          $date = date('Y-m-d H:i:s', strtotime('+1 day', $startDate));
+
+          $token = Token::getToken('' . $decoded[0]['id'], 'se12!@2s23!=eT423*&', $date, 'razaanis');
+          try {
+            $mail->isHTML(true);
+            // $mail->isSMTP();
+            $mail->SMTPDebug = 4;
+            $mail->Host = 'smtp.gmail.com';
+            $mail->SMTPAuth = true;
+            $mail->SMTPSecure= "tls";
+            $mail->Username = "genesishextester@gmail.com";
+            $mail->Password = "genesishexdevs";
+            $mail->Port = 587;
+            //Recipients
+            $mail->setFrom('genesishextester@gmail.com', 'Genesis Hex Devs');
+            $mail->addAddress($email);     // Add a recipient
+
+            //Content
+            $mail->isHTML(true);                                  // Set email format to HTML
+            $mail->Subject = 'Email Password Recovery';
+            $mail->Body    = '<h3>Hi, <strong>'.$name.'!</strong></h3> <b>You have requeted for a password reset. If it was you please follow the link below to confirm. Or simply ignore this message.</b><hr><a href="http://www.genesishexdevs.com/password-reset/'.$token.'">http://www.genesishexdevs.com/password-reset/'.$token.'</a>';
+
+            $mail->send();
+            echo '{"notice": {"text": "Confirmation Email Sent"}, "token": "' . $token . '"}';
+          } catch (Exception $e) {
+              echo 'Message could not be sent. Mailer Error: ', $mail->ErrorInfo;
+          }        } else {
+          echo '{"notice": {"text": "No Email Present Like that"}, "success": "0"}';
+        }
+    } catch (PDOException $e) {
+        echo '{"error":{"text": ' . $e->getMessage() . '}}';
+    }
+
+    return $response;
+});
+
+$app->post('/resetPassword', function (Request $request, Response $response, array $args) {
+    $data = json_decode($request->getParam('data'), true);
+    $initialObj = json_encode($data['obj']);
+    $password = md5($data['obj']['password']);
+    $token = $data['token'];
+    $result = Token::validate($token, 'se12!@2s23!=eT423*&');
+    if ($result) {
+        $result = Token::getPayload($token);
+        $data = json_decode($result, true);
+        $sql = "UPDATE users SET
+            `password`=:password WHERE id=" . $data['user_id'];
+        try {
+            $db = new db();
+            $db = $db->connect();
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam(':password', $password);
+            $stmt->execute();
+
+            $db = null;
+
+            echo '{"notice": {"text": "User Updated"}}';
+        } catch (PDOException $e) {
+            echo '{"error":{"text": ' . $e->getMessage() . '}}';
+        }
+
+    } else {
+        echo '{"notice": {"text": "User Not Authenticated"}, "success": "0"}';
+    }
+    return $response;
+});
 
 $app->post('/login', function (Request $request, Response $response, array $args) {
     $data = json_decode($request->getParam('data'), true);
@@ -416,13 +505,8 @@ $app->post('/saveSetting', function (Request $request, Response $response, array
     } else {
         echo '{"notice": {"text": "User Not Authenticated"}, "success": "0"}';
     }
-
-
-
     return $response;
 });
-
-
 
 $app->get('/trainers/getAllWhere/{id}', function (Request $request, Response $response, array $args) {
     $id = $request->getAttribute('id');
