@@ -243,10 +243,11 @@ h1 {
   color: #3ffc55 !important;
 }
 .test-content .unattempted {
-  color: #ff3f00 !important;
+  color: #ffe900 !important;
 }
 .test-content .marked {
-  color: blue !important;
+  background-color: blue !important;
+  color: #FF6B6B !important;
 }
 .test-content .tab {
   background-color: #F3F3F4 !important;
@@ -264,6 +265,7 @@ h1 {
 }
 .test-content .tab .answer:hover {
   background-color: #ffffff !important;
+  color: #FF6B6B !important;
 }
 .test-content .tab .correct {
   color: #1A535C !important;
@@ -277,8 +279,12 @@ h1 {
   color: #F7FFF7 !important;
   background-color: #1A535C !important;
 }
+.test-content .tab .selected:hover {
+  background-color: #1A535C !important;
+  color: #FF6B6B !important;
+}
 .test-content .tab .wrong {
-  color: #ff3f00 !important;
+  color: #ffe900 !important;
 }
 .test-content .tab .not-visible {
   display: none;

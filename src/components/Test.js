@@ -35,27 +35,28 @@ const Test = (props) => {
           correct = course.lastCorrect;
           wrong = course.lastIncorrect;
           score = course.lastScore;
+          mcqQuantity = course.mcqQuantity;
+
           if(course.timeOver != true){
             currentCourse = course.id;
-            mcqQuantity = course.mcqQuantity;
 
             sideNav = course.questions.map((question,key) => {
-              return (<a className={`nav-link`} href="#" key={key} onClick={(e)=>selectQuestion(e,question.id)}>{(question.selectedAnswer === 0) ? <i className={`fas fa-question-circle unattempted ${(markedForReview.includes(question.id)) ? "marked" : ""}`} onClick={(e)=>markForReview(e,question.id)}></i> : <i className="fas fa-question-circle attempted" ></i> } {question.id} - {question.title}</a>);
+              return (<a className={`${(markedForReview.includes(question.id)) ? "marked" : ""} nav-link `} href="#" key={key} onClick={(e)=>selectQuestion(e,question.id)}>{(question.selectedAnswer === 0) ? <i className={`fas fa-question-circle unattempted`} onClick={(e)=>markForReview(e,question.id)}></i> : <i className="fas fa-question-circle attempted" ></i> } {question.id} - {question.title}</a>);
             });
             currentQuestion = course.questions.map((question,key) => {
               if(question.id === selectedQuestion){
                 return (
                   <div key={key}>
                     <Timer timeOver={timeOver} path={path} loggedInUser={loggedInUser} testId={currentCourse}/>
-                    <h3  className="question">Q: {question.question}</h3>
+                    <h3  className="question">Q: {question.question} <a href="#" className="btn btn-info font-secondary" onClick={(e)=>markForReview(e,question.id)}>{(markedForReview.includes(question.id)) ? "Marked" : "Mark for Review"}</a></h3>
                     <hr />
                     <h5>Select Correct Answer:</h5>
                     {/*<h6 className={`${(question.selectedAnswer != question.truthyOption && question.selectedAnswer != 0) ? "wrong" : "not-visible"}`}>Wrong Answer</h6>*/}
                     {/*<p className={`answer ${(question.selectedAnswer === question.truthyOption && question.truthyOption === "1") ? "correct disabled" : ""} ${(question.selectedAnswer === 0) ? "" : "disabled" }`} onClick={()=>selectAnswer(course.id,question.id,1)}>{question.answer1}</p>*/}
-                    <p className={`answer ${(question.selectedAnswer === question.truthyOption && question.truthyOption === "1") ? "disabled" : ""} ${(question.selectedAnswer === 0) ? "" : "disabled" } ${(question.selectedAnswer === "1") ? "selected" : "" }`} onClick={()=>selectAnswer(course.id,question.id,1)}>{question.answer1}</p>
-                    <p className={`answer ${(question.selectedAnswer === question.truthyOption && question.truthyOption === "2") ? "disabled" : ""} ${(question.selectedAnswer === 0) ? "" : "disabled" } ${(question.selectedAnswer === "2") ? "selected" : "" }`} onClick={()=>selectAnswer(course.id,question.id,2)}>{question.answer2}</p>
-                    <p className={`answer ${(question.selectedAnswer === question.truthyOption && question.truthyOption === "3") ? "disabled" : ""} ${(question.selectedAnswer === 0) ? "" : "disabled" } ${(question.selectedAnswer === "3") ? "selected" : "" }`} onClick={()=>selectAnswer(course.id,question.id,3)}>{question.answer3}</p>
-                    <p className={`answer ${(question.selectedAnswer === question.truthyOption && question.truthyOption === "4") ? "disabled" : ""} ${(question.selectedAnswer === 0) ? "" : "disabled" } ${(question.selectedAnswer === "4") ? "selected" : "" }`} onClick={()=>selectAnswer(course.id,question.id,4)}>{question.answer4}</p>
+                    <p className={`answer ${(question.selectedAnswer === "1") ? "selected" : "" }`} onClick={()=>selectAnswer(course.id,question.id,1)}>{question.answer1}</p>
+                    <p className={`answer ${(question.selectedAnswer === "2") ? "selected" : "" }`} onClick={()=>selectAnswer(course.id,question.id,2)}>{question.answer2}</p>
+                    <p className={`answer ${(question.selectedAnswer === "3") ? "selected" : "" }`} onClick={()=>selectAnswer(course.id,question.id,3)}>{question.answer3}</p>
+                    <p className={`answer ${(question.selectedAnswer === "4") ? "selected" : "" }`} onClick={()=>selectAnswer(course.id,question.id,4)}>{question.answer4}</p>
                   </div>
                 );
               }
@@ -72,7 +73,13 @@ const Test = (props) => {
                                   </div>
                                  </div>
                                  <div className="row">
-                                  <div className="col-lg-6">
+                                  <div className="col-lg-4">
+                                   <i className="fas fa-times unattempted heading-min"></i> {parseInt(mcqQuantity)-(wrong+correct)} UNATTEMPTED
+                                  </div>
+                                  <div className="col-lg-4">
+                                   <i className="fas fa-check unattempted heading-min"></i> {markedForReview.length} Marked for Review
+                                  </div>
+                                  <div className="col-lg-4">
                                     <i className="fas fa-crosshairs attempted heading-min"></i> {score}% SCORE
                                   </div>
                                  </div>
@@ -98,6 +105,21 @@ const Test = (props) => {
             </div>
             <div className="col-sm-12 col-lg-9">
               <div className="tab">
+                <div className="guide">
+                  <h4>Different colors of Questions Represent their State as Follows:</h4>
+                  <div className="row">
+                    <div className="col-sm-4 col-lg-4 m-auto">
+                      <button type="button" className="btn btn-success">Attempted</button>
+                    </div>
+                    <div className="col-sm-4 col-lg-4 m-auto">
+                      <button type="button" className="btn btn-warning">Un-Attempted</button>
+                    </div>
+                    <div className="col-sm-4 col-lg-4 m-auto">
+                      <button type="button" className="btn btn-info">Marked For Review</button>
+                    </div>
+                  </div>
+                </div>
+                <hr />
                 <div className="ad"></div>
                 {currentQuestion}
                 <button type="button" className={"btn btn-success"+`${(selectedQuestion <= 1 && selectedQuestion > mcqQuantity) ? " disabled" : ""}`} onClick={(e)=>nextPrevQuestion("prev",e,null)}>Prev</button>

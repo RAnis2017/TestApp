@@ -20,6 +20,13 @@ export const changeForm = type => {
  }
 };
 
+export const signOut = callback => {
+ callback();
+ return {
+   type: InterfaceActionTypes.SIGN_OUT,
+ };
+};
+
 export const markForReview = (e,qID) => {
   e.preventDefault();
 

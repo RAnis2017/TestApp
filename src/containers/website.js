@@ -29,6 +29,7 @@ class Website extends Component {
         style: "Light",
         styleVar: "../css/style-light.css",
         loggedIn: (localStorage.getItem('genhex-auth-token') != null) ? true : true,
+        signOut: null,
       }
    }
   componentWillMount(){
@@ -36,10 +37,12 @@ class Website extends Component {
     const coursesMinGet = bindActionCreators(InterfaceActionCreators.coursesMinGet, dispatch);
     const loadLoggedInUser = bindActionCreators(InterfaceActionCreators.loadLoggedInUser, dispatch);
     const loadUsers = bindActionCreators(InterfaceActionCreators.usersListGet, dispatch);
+    const signOut = bindActionCreators(InterfaceActionCreators.signOut, dispatch);
 
     loadLoggedInUser();
     coursesMinGet();
     loadUsers();
+    this.setState({...this.state, signOut: signOut});
   }
   handleStyleButtonClick = () => {
       if(this.state.style == "Light") {
@@ -66,17 +69,12 @@ class Website extends Component {
       this.setState({...this.state, currentTab: 6});
     }
   }
-  signOut = (callback) => {
-    localStorage.removeItem("genhex-auth-token");
-    callback();
-    window.location.reload();
-  }
   render() {
     return (
       <BrowserRouter>
         <div className="app">
           <link href={`${this.state.styleVar}`} rel="stylesheet" />
-          <Route path="/" render={(props) => <Header signOut={this.signOut} {...props}/>}/>
+          <Route path="/" render={(props) => <Header {...props}/>}/>
           <Route exact path="/" render={Home} />
           <Route exact path="/courses" render={Courses} />
           <Route path="/courses/:path" component={Test} />
@@ -85,7 +83,7 @@ class Website extends Component {
           <Route path="/checkout" component={Checkout} />
           <Route path="/cart" component={Cart} />
           <Route path="/password-reset/:token" component={ResetPassword} />
-          <Route path="/profile"  render={(props) => (this.state.loggedIn) ? <Profile {...props} signOut={this.signOut} changeTab={this.changeTab} currentTab={this.state.currentTab} path={this.state.path} theme={this.handleStyleButtonClick} currentTheme={this.state.style}/> : <Redirect to="/"/>}/>
+          <Route path="/profile"  render={(props) => (this.state.loggedIn) ? <Profile {...props} signOut={this.state.signOut} changeTab={this.changeTab} currentTab={this.state.currentTab} path={this.state.path} theme={this.handleStyleButtonClick} currentTheme={this.state.style}/> : <Redirect to="/"/>}/>
           <Footer />
         </div>
       </BrowserRouter>

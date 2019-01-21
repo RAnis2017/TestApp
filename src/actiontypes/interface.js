@@ -28,3 +28,4 @@ export const LOGIN_LOADING = 'interface/LOGIN_LOADING';
 export const MARK_REVIEW = 'interface/MARK_REVIEW';
 export const FORGOT_PASS_SUBMIT = 'interface/FORGOT_PASS_SUBMIT';
 export const RESET_PASS_SUBMIT = 'interface/RESET_PASS_SUBMIT';
+export const SIGN_OUT = 'interface/SIGN_OUT';

@@ -10,8 +10,15 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 const UserDashboard = (props) => {
     const { dispatch, loggedInUser, users } = props;
     let recentPackages;
+    let totalCorrectMcqs = 0;
     if(loggedInUser.name.length > 1) {
       recentPackages = loggedInUser.recentPackages.map((recentPackage,key)=><li key={key}><Link className={``} to={`/courses/${recentPackage.path}`}>{recentPackage.name}</Link></li>);
+      loggedInUser.courses.map((outerCourse)=>{
+        outerCourse.tests.map((course)=>{
+          totalCorrectMcqs += course.firstTimeCorrect;
+        });
+        return outerCourse;
+      });
     }
     let usersSorted = users.sort(function(obj1, obj2) {
             	// Ascending: first age less than the previous
@@ -26,7 +33,7 @@ const UserDashboard = (props) => {
               {key} . <i className="fas fa-user-circle heading-min"></i>
             </div>
             <div className="col-lg-8">
-              <h6>{user.name}</h6><span><i className="fas fa-crosshairs"></i> {user.accuracy}% | <i className="fas fa-tachometer-alt"></i> {user.totalMcqs}</span>
+              <h6>{user.name}</h6><span><i className="fas fa-crosshairs"></i> {user.accuracy}% | <i className="fas fa-tachometer-alt"></i> {(user.email === loggedInUser.email) ? totalCorrectMcqs : user.totalMcqs}</span>
             </div>
             <hr />
           </div>
@@ -84,7 +91,7 @@ const UserDashboard = (props) => {
                   <i className="fas fa-tachometer-alt heading-min"></i>
                 </div>
                 <div className="col-lg-10">
-                  <h6>{loggedInUser.totalMcqs} Mcqs</h6>
+                  <h6>{totalCorrectMcqs} Mcqs</h6>
                   <p>ATTEMPTED</p>
                 </div>
               </div>

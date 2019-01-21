@@ -26,7 +26,8 @@
       color: $wrong-ans;
     }
     .marked {
-      color: $marked;
+      background-color: $marked;
+      color: $accent-color;
     }
   }
   &-content .tab {
@@ -41,6 +42,7 @@
       border-radius: 3px;
       &:hover{
         background-color: $dark-profile;
+        color: $accent-color;
       }
     }
     .correct {
@@ -54,6 +56,10 @@
    .selected {
      color: $text-color;
      background-color: $primary-color;
+     &:hover{
+       background-color: $primary-color;
+       color: $accent-color;
+     }
    }
    .wrong {
      color: $wrong-ans;

@@ -9,6 +9,7 @@ import { withRouter } from 'react-router-dom';
 const Header = (props) => {
     const { dispatch, cartToggle, loggedInUser, courses } = props;
     const showCart = bindActionCreators(InterfaceActionCreators.showCart, dispatch);
+    const signOut = bindActionCreators(InterfaceActionCreators.signOut, dispatch);
     let itemsCount = 0;
     courses.map((course,index)=>{
         if(course.inCart){
@@ -89,7 +90,7 @@ const Header = (props) => {
               ""
               :
               <li className="nav-item">
-                <a className="nav-link" href="#" onClick={()=>props.signOut(()=>props.history.push('/'))}><i className="fas fa-sign-out-alt"></i> Sign Out</a>
+                <a className="nav-link" href="#" onClick={()=>signOut(()=>props.history.push('/'))}><i className="fas fa-sign-out-alt"></i> Sign Out</a>
               </li>
               }
               <li className="nav-item">

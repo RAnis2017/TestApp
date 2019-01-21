@@ -3,7 +3,7 @@ import axios from "axios";
 import md5 from "md5";
 
 const initialState = {
-  apiUrl: "http://www.genesishexdevs.com/vinodkatrelaapi/public/", // localhost:80 genesishexdevs.com
+  apiUrl: "http://localhost:80/vinodkatrelaapi/public/", // localhost:80 genesishexdevs.com
   selectedForm: "LOGIN",
   loggedInUser: {email: "", name: "", password: "", courses: []},
   signupDone: false,
@@ -90,10 +90,24 @@ export default function Interface(state=initialState, action) {
 	 	}
     case InterfaceActionTypes.MARK_REVIEW: {
           let markedForReview = state.markedForReview;
-          markedForReview.push(action.qID);
+          if (!markedForReview.includes(action.qID)) { markedForReview.push(action.qID) }
+          let courses = state.loggedInUser.courses.map((outerCourse)=>{
+            outerCourse.tests.map((course)=>{
+
+            });
+            return outerCourse;
+          });
           return {
             ...state,
-    				markedForReview: markedForReview
+    				markedForReview: markedForReview,
+            loggedInUser: { ...state.loggedInUser, courses: courses }
+    		 	};
+	 	}
+    case InterfaceActionTypes.SIGN_OUT: {
+          localStorage.removeItem("genhex-auth-token");
+          return {
+            ...state,
+            loggedInUser: {email: "", name: "", password: "", courses: []}
     		 	};
 	 	}
     case InterfaceActionTypes.EDIT_TYPING_EMAIL: {
@@ -157,6 +171,9 @@ export default function Interface(state=initialState, action) {
                 if(state.selectedQuestion === course.mcqQuantity){
                   course.timeOver = true;
                   makeRequest = true;
+                  if(course.firstTimeCorrect === 0){
+                    course.firstTimeCorrect = course.lastCorrect;
+                  }
                 }
               }
 
@@ -236,7 +253,7 @@ export default function Interface(state=initialState, action) {
           });
           return {
             ...state,
-    				loggedInUser: { ...state.loggedInUser, totalMcqs: parseInt(state.loggedInUser.totalMcqs)+1, accuracy: accuracy, courses: courses }
+    				loggedInUser: { ...state.loggedInUser, accuracy: accuracy, courses: courses }
     		 	};
 	 	}
     case InterfaceActionTypes.RESET_TEST: {
