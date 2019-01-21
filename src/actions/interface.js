@@ -66,10 +66,15 @@ export const formSubmit = (e,type,callback: null, resetToken: null) => {
               // console.log(JSON.parse(course.objFull));
 
             });
-            if(courses.length > 0){
-              callback("profile");
+            if(response.data.role === 1){
+              callback("admin");
+              user.admin = true;
             } else {
-              callback("courses");
+              if(courses.length > 0){
+                callback("profile");
+              } else {
+                callback("courses");
+              }
             }
           }
           user.courses = courses;
@@ -157,6 +162,26 @@ export const userSettingSubmit = (e) => {
   }
 }
 
+export const adminCourseSubmit = (e) => {
+  e.preventDefault();
+  return function action(dispatch) {
+    let user = store.getState().loggedInUser;
+    axios
+      .post(`${store.getState().apiUrl}saveSetting`, {
+        data: JSON.stringify({
+          obj:  user,
+          token: localStorage.getItem('genhex-auth-token'),
+        })
+      })
+      .then(response => {
+        // console.log(response);
+        dispatch({
+          type: InterfaceActionTypes.USER_SETTING_SAVE
+        });
+      });
+  }
+}
+
 export const loadLoggedInUser = () => {
   return function action(dispatch) {
     let user = {email: "", name: "", password: "", courses: []};
@@ -180,6 +205,9 @@ export const loadLoggedInUser = () => {
               courses.push({id:course.id,...course.objFull});
             }
           })
+          if(response.data.role === 1){
+            user.admin = true;
+          }
           user.courses = courses;
         }
         dispatch({
@@ -213,6 +241,11 @@ export const addCartItem = (id) => {
   };
 };
 
+export const adminAddTest = () => {
+  return {
+    type: InterfaceActionTypes.ADMIN_TEST_ADD,
+  };
+};
 
 export const keyPressedOnForm = (type,e) => {
   if(type === "email"){
@@ -276,6 +309,37 @@ export const resetTest = (courseid) => {
     courseid
   };
 };
+
+
+export const convertFileToCSV = (e) => {
+  return function action(dispatch) {
+    const data = new FormData();
+    let questions = [];
+    data.append('file', e.target.files[0]);
+    // '/files' is your node.js route that triggers our middleware
+    axios.post(`${store.getState().apiUrl}convertFile`, data).then((response) => {
+      console.log(response); // do something with the response
+      response.data.data.map((test)=>{
+        questions.push({
+          id: test[0],
+          title: test[1],
+          question: test[2],
+          answer1: test[3],
+          answer2: test[4],
+          answer3: test[5],
+          answer4: test[6],
+          truthyOption: test[7],
+          selectedAnswer: 0
+        })
+      });
+      dispatch({
+        type: InterfaceActionTypes.CONVERT_FILE,
+        questions
+      });
+    });
+
+  }
+}
 
 export const timeOver = (cid) => {
   return function action(dispatch) {

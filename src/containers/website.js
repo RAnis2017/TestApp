@@ -11,6 +11,7 @@ import TestReviewPdf from '../components/TestReviewPdf';
 import Checkout from '../components/Checkout';
 import Cart from '../components/Cart';
 import ResetPassword from '../components/ResetPassword';
+import Admin from '../components/Admin';
 import { bindActionCreators } from 'redux';
 import * as InterfaceActionCreators from '../actions/interface';
 
@@ -25,6 +26,7 @@ class Website extends Component {
       super(props);
       this.state = {
         currentTab: 4,
+        currentAdminTab: 1,
         path: "",
         style: "Light",
         styleVar: "../css/style-light.css",
@@ -69,6 +71,16 @@ class Website extends Component {
       this.setState({...this.state, currentTab: 6});
     }
   }
+  changeAdminTab = (type,path = null) => {
+    let currentTab;
+    if(type === "add-courses") {
+      this.setState({...this.state, currentAdminTab: 1});
+    } else if (type === "add-posts") {
+      this.setState({...this.state, currentAdminTab: 2});
+    } else if (type === "add-coupons") {
+      this.setState({...this.state, currentAdminTab: 3});
+    }
+  }
   render() {
     return (
       <BrowserRouter>
@@ -84,6 +96,7 @@ class Website extends Component {
           <Route path="/cart" component={Cart} />
           <Route path="/password-reset/:token" component={ResetPassword} />
           <Route path="/profile"  render={(props) => (this.state.loggedIn) ? <Profile {...props} signOut={this.state.signOut} changeTab={this.changeTab} currentTab={this.state.currentTab} path={this.state.path} theme={this.handleStyleButtonClick} currentTheme={this.state.style}/> : <Redirect to="/"/>}/>
+          <Route path="/admin"  render={(props) => <Admin {...props} signOut={this.state.signOut} changeTab={this.changeAdminTab} currentTab={this.state.currentAdminTab} theme={this.handleStyleButtonClick} currentTheme={this.state.style}/>}/>
           <Footer />
         </div>
       </BrowserRouter>

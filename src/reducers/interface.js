@@ -19,6 +19,12 @@ const initialState = {
   loggedIn: false,
   loadingLogIn: false,
   markedForReview: [],
+  newTest: {
+    questions: []
+  },
+  newCourse: {
+    currency: "USD",
+  },
   courses: [
     {
       id: 1,
@@ -162,6 +168,12 @@ export default function Interface(state=initialState, action) {
     				users: action.users
     		 	};
 	 	}
+    case InterfaceActionTypes.ADMIN_TEST_ADD: {
+          return {
+            ...state,
+    				newTest: {}
+    		 	};
+	 	}
     case InterfaceActionTypes.QUESTION_NEXT: {
           let oldCourses = [];
           let makeRequest = false;
@@ -244,7 +256,9 @@ export default function Interface(state=initialState, action) {
                         course.lastIncorrect++;
                       }
                       course.lastScore = (course.lastCorrect/course.mcqQuantity) * 100;
-                      accuracy += ((parseInt(state.loggedInUser.totalMcqs)+1)/course.lastScore)*100;
+                      if(course.firstTimeCorrect === 0){
+                        accuracy += ((parseInt(state.loggedInUser.totalMcqs)+1)/course.lastScore)*100;
+                      }
                     }
                 });
               }
@@ -294,6 +308,13 @@ export default function Interface(state=initialState, action) {
           return {
             ...state,
             signupDone: true
+          };
+	 	}
+    case InterfaceActionTypes.CONVERT_FILE: {
+
+          return {
+            ...state,
+            newTest: { ...state.newTest, questions: action.questions}
           };
 	 	}
     case InterfaceActionTypes.RESET_PASS_SUBMIT: {

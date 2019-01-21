@@ -189,7 +189,7 @@ $app->post('/forgotpass', function (Request $request, Response $response, array 
             //Content
             $mail->isHTML(true);                                  // Set email format to HTML
             $mail->Subject = 'Email Password Recovery';
-            $mail->Body    = '<h3>Hi, <strong>'.$name.'!</strong></h3> <b>You have requeted for a password reset. If it was you please follow the link below to confirm. Or simply ignore this message.</b><hr><a href="http://www.genesishexdevs.com/password-reset/'.$token.'">http://www.genesishexdevs.com/password-reset/'.$token.'</a>';
+            $mail->Body    = '<h3>Hi,</h3> <b>You have requeted for a password reset. If it was you please follow the link below to confirm. Or simply ignore this message.</b><hr><a href="http://www.genesishexdevs.com/password-reset/'.$token.'">http://www.genesishexdevs.com/password-reset/'.$token.'</a>';
 
             $mail->send();
             echo '{"notice": {"text": "Confirmation Email Sent"}, "token": "' . $token . '"}';
@@ -258,7 +258,7 @@ $app->post('/login', function (Request $request, Response $response, array $args
           $date = date('Y-m-d H:i:s', strtotime('+1 day', $startDate));
 
           $token = Token::getToken('' . $decoded[0]['id'], 'se12!@2s23!=eT423*&', $date, 'razaanis');
-          echo '{"notice": {"text": "User Logged In"}, "id": ' . $decoded[0]['id'] . ', "success": "1", "user": ' . $data . ', "courses": '. $decoded[0]['coursesObj'] .' ,"token":"' . $token . '"}';
+          echo '{"notice": {"text": "User Logged In"}, "id": ' . $decoded[0]['id'] . ', "success": "1", "user": ' . $data . ', "role": ' . $decoded[0]['role'] . ', "courses": '. $decoded[0]['coursesObj'] .' ,"token":"' . $token . '"}';
         } else {
           echo '{"notice": {"text": "User Not Logged In"}, "success": "0"}';
         }
@@ -291,7 +291,7 @@ $app->post('/authenticate', function (Request $request, Response $response, arra
             $date = date('Y-m-d H:i:s', strtotime('+1 day', $startDate));
 
             $token = Token::getToken('' . $decoded[0]['id'], 'se12!@2s23!=eT423*&', $date, 'razaanis');
-            echo '{"notice": {"text": "User Authenticated"}, "success": "1", "user": ' . $data . ', "courses": '. $decoded[0]['coursesObj'] .'}';
+            echo '{"notice": {"text": "User Authenticated"}, "success": "1", "user": ' . $data . ', "role": ' . $decoded[0]['role'] . ', "courses": '. $decoded[0]['coursesObj'] .'}';
 
         } catch (PDOException $e) {
             echo '{"error":{"text": ' . $e->getMessage() . '}}';
@@ -335,6 +335,17 @@ $app->get('/confirm-email/{token}', function (Request $request, Response $respon
 //  LOGIN AND SIGNUP CODE ABOVE
 //
 //
+
+$app->post('/convertFile', function (Request $request, Response $response, array $args) {
+    $uploadedFiles = $request->getUploadedFiles();
+    $csv= file_get_contents($uploadedFiles['file']->file);
+    $array = array_map("str_getcsv", explode("\n", $csv));
+    $json = json_encode($array);
+
+    echo '{"notice": {"text": "File Converted"}, "success": "1", "data": '.$json.' }';
+
+    return $response;
+});
 
 $app->post('/saveUserState', function (Request $request, Response $response, array $args) {
     $data = json_decode($request->getParam('data'), true);

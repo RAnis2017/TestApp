@@ -41,7 +41,7 @@ const Test = (props) => {
             currentCourse = course.id;
 
             sideNav = course.questions.map((question,key) => {
-              return (<a className={`${(markedForReview.includes(question.id)) ? "marked" : ""} nav-link `} href="#" key={key} onClick={(e)=>selectQuestion(e,question.id)}>{(question.selectedAnswer === 0) ? <i className={`fas fa-question-circle unattempted`} onClick={(e)=>markForReview(e,question.id)}></i> : <i className="fas fa-question-circle attempted" ></i> } {question.id} - {question.title}</a>);
+              return (<a className={` nav-link `} href="#" key={key} onClick={(e)=>selectQuestion(e,question.id)}>{(question.selectedAnswer === 0) ? <i className={`fas fa-question-circle ${(markedForReview.includes(question.id)) ? "marked" : ""} unattempted`} onClick={(e)=>markForReview(e,question.id)}></i> : <i className={`fas fa-question-circle attempted ${(markedForReview.includes(question.id)) ? "marked" : ""}`} ></i> } {question.id} - {question.title}</a>);
             });
             currentQuestion = course.questions.map((question,key) => {
               if(question.id === selectedQuestion){

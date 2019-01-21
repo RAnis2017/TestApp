@@ -29,3 +29,6 @@ export const MARK_REVIEW = 'interface/MARK_REVIEW';
 export const FORGOT_PASS_SUBMIT = 'interface/FORGOT_PASS_SUBMIT';
 export const RESET_PASS_SUBMIT = 'interface/RESET_PASS_SUBMIT';
 export const SIGN_OUT = 'interface/SIGN_OUT';
+export const ADMIN_COURSE_ADD = 'interface/ADMIN_COURSE_ADD';
+export const ADMIN_TEST_ADD = 'interface/ADMIN_TEST_ADD';
+export const CONVERT_FILE = 'interface/CONVERT_FILE';

@@ -76,13 +76,22 @@ const Header = (props) => {
                           className="nav-link"> SignIn/SignUp
                   </NavLink>
                 </li>
-                :
+                : (!loggedInUser.hasOwnProperty('admin')) ?
                   <li className="nav-item">
                     <NavLink
                             exact
                             to="/profile"
                             activeClassName="active"
                             className="nav-link"> Profile
+                    </NavLink>
+                  </li>
+                  :
+                  <li className="nav-item">
+                    <NavLink
+                            exact
+                            to="/admin"
+                            activeClassName="active"
+                            className="nav-link"> Admin
                     </NavLink>
                   </li>
               }
