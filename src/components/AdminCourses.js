@@ -7,10 +7,12 @@ import { Link } from 'react-router-dom'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 const AdminCourses = (props) => {
-    const { dispatch, loggedInUser, newCourse, newTest } = props;
+    const { dispatch, loggedInUser, newCourse, newTest, courseSaved } = props;
     const adminCourseSubmit = bindActionCreators(InterfaceActionCreators.adminCourseSubmit, dispatch);
     const keyPressedOnForm = bindActionCreators(InterfaceActionCreators.keyPressedOnForm, dispatch);
     const convertFileToCSV = bindActionCreators(InterfaceActionCreators.convertFileToCSV, dispatch);
+    const addTest = bindActionCreators(InterfaceActionCreators.addTest, dispatch);
+
     return(
       <div className="tab-body">
         <form className="" >
@@ -30,6 +32,7 @@ const AdminCourses = (props) => {
               <div className="form-group">
                 <label htmlFor="availability">Course Availability</label>
                 <select className="form-control" id="availability" aria-describedby="availability" value={newCourse.availability} onChange={(e)=>keyPressedOnForm("course-availability",e)}>
+                  <option value="">Select a option</option>
                   <option value="released">Released</option>
                   <option value="upcoming">Upcoming</option>
                 </select>
@@ -64,6 +67,7 @@ const AdminCourses = (props) => {
               <div className="form-group">
                 <label htmlFor="availability">Test Availability</label>
                 <select className="form-control" id="availability" aria-describedby="availability" value={newTest.availability} onChange={(e)=>keyPressedOnForm("test-availability",e)}>
+                  <option value="">Select an option</option>
                   <option value="released">Released</option>
                   <option value="upcoming">Upcoming</option>
                 </select>
@@ -94,8 +98,9 @@ const AdminCourses = (props) => {
             </div>
           </div>
           <h6>Make Sure to Add Tests first before Saving Changes</h6>
-          <button type="submit" className="btn btn-block btn-warning" >Add Test</button>
-          <button type="submit" className="btn btn-block btn-success" onClick={(e)=>adminCourseSubmit(e)}>Save Changes</button>
+          <button type="submit" className={`btn btn-block btn-warning ${(newTest.questions.length > 0) ? "" : "disabled"}`} onClick={(e)=>addTest(e)}>Add Test</button>
+          <button type="submit" className={`btn btn-block btn-success`} onClick={(e)=>adminCourseSubmit(e)}>Save Changes</button>
+          {(courseSaved) ? <h6 className="font-accent text-center">Changes have been saved. You can enter another course now</h6> : ""}
         </form>
       </div>
     );
@@ -105,13 +110,15 @@ AdminCourses.propTypes = {
   loggedInUser: PropTypes.object.isRequired,
   newCourse: PropTypes.object.isRequired,
   newTest: PropTypes.object.isRequired,
+  courseSaved: PropTypes.bool.isRequired,
 }
 
 const mapStateToProps = state => (
   {
     loggedInUser: state.loggedInUser,
     newCourse: state.newCourse,
-    newTest: state.newTest
+    newTest: state.newTest,
+    courseSaved: state.courseSaved
   }
 );
 

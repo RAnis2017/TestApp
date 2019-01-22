@@ -122,8 +122,8 @@ const Test = (props) => {
                 <hr />
                 <div className="ad"></div>
                 {currentQuestion}
-                <button type="button" className={"btn btn-success"+`${(selectedQuestion <= 1 && selectedQuestion > mcqQuantity) ? " disabled" : ""}`} onClick={(e)=>nextPrevQuestion("prev",e,null)}>Prev</button>
-                <button type="button" className={"btn btn-success float-right"+`${(selectedQuestion === mcqQuantity+1) ? " disabled" : ""}`} onClick={(e)=>nextPrevQuestion("next",e,currentCourse)}>{(selectedQuestion === mcqQuantity) ? " Finish" : "Next"}</button>
+                <button type="button" className={"btn btn-success"+`${(parseInt(selectedQuestion) <= 1 && parseInt(selectedQuestion) > mcqQuantity) ? " disabled" : ""}`} onClick={(e)=>nextPrevQuestion("prev",e,null)}>Prev</button>
+                <button type="button" className={"btn btn-success float-right"+`${(parseInt(selectedQuestion) === mcqQuantity+1) ? " disabled" : ""}`} onClick={(e)=>nextPrevQuestion("next",e,currentCourse)}>{(parseInt(selectedQuestion) === mcqQuantity) ? " Finish" : "Next"}</button>
               </div>
             </div>
           </div>

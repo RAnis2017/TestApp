@@ -108,12 +108,12 @@ export const coursesMinGet = () => {
     axios
       .get(`${store.getState().apiUrl}getMinCourses`)
       .then(response => {
-        // console.log(response);
+        console.log(response);
         response.data.map((course)=>{
           courses.push({id:course.id,...JSON.parse(course.objMin)});
           // console.log(JSON.parse(course.objMin));
         })
-        // console.log(courses);
+        console.log(courses);
         dispatch({
           type: InterfaceActionTypes.COURSES_MIN_GET,
           courses
@@ -143,26 +143,6 @@ export const usersListGet = () => {
 }
 
 export const userSettingSubmit = (e) => {
-  e.preventDefault();
-  return function action(dispatch) {
-    let user = store.getState().loggedInUser;
-    axios
-      .post(`${store.getState().apiUrl}saveSetting`, {
-        data: JSON.stringify({
-          obj:  user,
-          token: localStorage.getItem('genhex-auth-token'),
-        })
-      })
-      .then(response => {
-        // console.log(response);
-        dispatch({
-          type: InterfaceActionTypes.USER_SETTING_SAVE
-        });
-      });
-  }
-}
-
-export const adminCourseSubmit = (e) => {
   e.preventDefault();
   return function action(dispatch) {
     let user = store.getState().loggedInUser;
@@ -240,6 +220,12 @@ export const addCartItem = (id) => {
     id
   };
 };
+export const addTest = (e) => {
+  e.preventDefault();
+  return {
+    type: InterfaceActionTypes.ADD_TEST,
+  };
+};
 
 export const adminAddTest = () => {
   return {
@@ -283,6 +269,18 @@ export const keyPressedOnForm = (type,e) => {
    type: InterfaceActionTypes.EDIT_CONFIRM_PASSWORD,
    value: e.target.value
  };
+} else if(type.includes("course-")) {
+  return {
+    type: InterfaceActionTypes.TYPING_COURSE,
+    value: e.target.value,
+    propertyType: type
+  };
+} else if(type.includes("test-")) {
+  return {
+    type: InterfaceActionTypes.TYPING_TEST,
+    value: e.target.value,
+    propertyType: type
+  };
 }
 };
 
@@ -319,19 +317,21 @@ export const convertFileToCSV = (e) => {
     // '/files' is your node.js route that triggers our middleware
     axios.post(`${store.getState().apiUrl}convertFile`, data).then((response) => {
       console.log(response); // do something with the response
-      response.data.data.map((test)=>{
-        questions.push({
-          id: test[0],
-          title: test[1],
-          question: test[2],
-          answer1: test[3],
-          answer2: test[4],
-          answer3: test[5],
-          answer4: test[6],
-          truthyOption: test[7],
-          selectedAnswer: 0
-        })
-      });
+      if(Array.isArray(response.data.data)){
+        response.data.data.map((test)=>{
+          questions.push({
+            id: test[0],
+            title: test[1],
+            question: test[2],
+            answer1: test[3],
+            answer2: test[4],
+            answer3: test[5],
+            answer4: test[6],
+            truthyOption: test[7],
+            selectedAnswer: 0
+          })
+        });
+      }
       dispatch({
         type: InterfaceActionTypes.CONVERT_FILE,
         questions
@@ -340,7 +340,29 @@ export const convertFileToCSV = (e) => {
 
   }
 }
+export const adminCourseSubmit = (e) => {
+  e.preventDefault();
+  return function action(dispatch) {
+    let objFull = store.getState().newCourse;
+    let objMin = { id:objFull.id, name:objFull.name, price:objFull.price, currency:objFull.currency, availability:objFull.availability, duration:objFull.duration, mcqQuantity:objFull.mcqQuantity, inCart:objFull.inCart, path:objFull.path, imgSrc:objFull.imgSrc};
+    axios
+      .post(`${store.getState().apiUrl}saveCourse`, {
+        data: JSON.stringify({
+          objMin,
+          objFull
+        })
+      })
+      .then(response => {
+        console.log(response);
 
+        dispatch({
+          type: InterfaceActionTypes.SAVE_COURSE,
+          success: response.data.success
+        });
+      });
+
+  }
+}
 export const timeOver = (cid) => {
   return function action(dispatch) {
     let oldCourses = [];

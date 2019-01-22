@@ -32,3 +32,7 @@ export const SIGN_OUT = 'interface/SIGN_OUT';
 export const ADMIN_COURSE_ADD = 'interface/ADMIN_COURSE_ADD';
 export const ADMIN_TEST_ADD = 'interface/ADMIN_TEST_ADD';
 export const CONVERT_FILE = 'interface/CONVERT_FILE';
+export const TYPING_COURSE = 'interface/TYPING_COURSE';
+export const TYPING_TEST = 'interface/TYPING_TEST';
+export const ADD_TEST = 'interface/ADD_TEST';
+export const SAVE_COURSE = 'interface/SAVE_COURSE';

@@ -19,11 +19,25 @@ const initialState = {
   loggedIn: false,
   loadingLogIn: false,
   markedForReview: [],
+  courseSaved: false,
   newTest: {
+    hours: 0,
+    mins: 0,
+    secs: 0,
+    lastTakenDate: "",
+    lastScore: 0,
+    lastCorrect: 0,
+    lastIncorrect: 0,
+    timerOver: false,
+    firstTimeCorrect: 0,
+    timeOver: false,
     questions: []
   },
   newCourse: {
     currency: "USD",
+    timeOver: false,
+    inCart: false,
+    tests: [],
   },
   courses: [
     {
@@ -180,7 +194,7 @@ export default function Interface(state=initialState, action) {
           let courses = state.loggedInUser.courses.map((outerCourse)=>{
             outerCourse.tests.map((course)=>{
               if(course.id === action.cid){
-                if(state.selectedQuestion === course.mcqQuantity){
+                if(parseInt(state.selectedQuestion) === course.mcqQuantity){
                   course.timeOver = true;
                   makeRequest = true;
                   if(course.firstTimeCorrect === 0){
@@ -210,7 +224,7 @@ export default function Interface(state=initialState, action) {
           }
           return {
             ...state,
-    				selectedQuestion: ++state.selectedQuestion,
+    				selectedQuestion: `${++state.selectedQuestion}`,
             loggedInUser: { ...state.loggedInUser, courses: courses }
     		 	};
 	 	}
@@ -317,6 +331,27 @@ export default function Interface(state=initialState, action) {
             newTest: { ...state.newTest, questions: action.questions}
           };
 	 	}
+    case InterfaceActionTypes.ADD_TEST: {
+          let newCourse = state.newCourse;
+          newCourse.tests.push({id: newCourse.tests.length+1,...state.newTest});
+          return {
+            ...state,
+            newCourse,
+            newTest: {
+              hours: 0,
+              mins: 0,
+              secs: 0,
+              lastTakenDate: "",
+              lastScore: 0,
+              lastCorrect: 0,
+              lastIncorrect: 0,
+              timerOver: false,
+              firstTimeCorrect: 0,
+              timeOver: false,
+              questions: []
+            }
+          };
+	 	}
     case InterfaceActionTypes.RESET_PASS_SUBMIT: {
         axios
           .post(`${state.apiUrl}resetPassword`, {
@@ -345,6 +380,28 @@ export default function Interface(state=initialState, action) {
           return {
             ...state,
             forgotPassDone: true
+          };
+	 	}
+    case InterfaceActionTypes.TYPING_COURSE: {
+          let newCourse = state.newCourse;
+          newCourse[action.propertyType.split("-")[1]] = (action.propertyType.split("-")[1] === "mcqQuantity" || action.propertyType.split("-")[1] === "duration") ? parseInt(action.value) : action.value;
+          return {
+            ...state,
+            newCourse,
+          };
+	 	}
+    case InterfaceActionTypes.TYPING_TEST: {
+          let newTest = state.newTest;
+          newTest[action.propertyType.split("-")[1]] = (action.propertyType.split("-")[1] === "mcqQuantity" || action.propertyType.split("-")[1] === "duration") ? parseInt(action.value) : action.value;
+          return {
+            ...state,
+            newTest,
+          };
+	 	}
+    case InterfaceActionTypes.SAVE_COURSE: {
+          return {
+            ...state,
+            courseSaved: (action.success === "1"),
           };
 	 	}
     case InterfaceActionTypes.USER_SETTING_SAVE: {

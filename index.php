@@ -6,14 +6,6 @@ use \Psr\Http\Message\ResponseInterface as Response;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-// $allowed_domains = [
-//     'http://www.maaclab.com'
-// ];
-//
-// if (in_array($origin, $allowed_domains)) {
-//     header('Access-Control-Allow-Origin: ' . $origin);
-// }
-
 require '../vendor/autoload.php';
 require '../src/config/db.php';
 require 'src/Token.php';
@@ -52,9 +44,7 @@ $app->post('/workouts/addworkoutgroup', function (Request $request, Response $re
 
 function save_base64_image($base64_image_string, $output_file_without_extension, $path_with_end_slash = "")
 {
-    //usage:  if( substr( $img_src, 0, 5 ) === "data:" ) {  $filename=save_base64_image($base64_image_string, $output_file_without_extentnion, getcwd() . "/application/assets/pins/$user_id/"); }
-    //
-    //data is like:    data:image/png;base64,asdfasdfasdf
+
     $splited = explode(',', substr($base64_image_string, 5), 2);
     $mime = $splited[0];
     $data = $splited[1];
@@ -375,6 +365,32 @@ $app->post('/saveUserState', function (Request $request, Response $response, arr
 
     } else {
         echo '{"notice": {"text": "User Not Authenticated"}, "success": "0"}';
+    }
+
+    return $response;
+});
+
+$app->post('/saveCourse', function (Request $request, Response $response, array $args) {
+    $data = json_decode($request->getParam('data'), true);
+    $objMin = json_encode($data['objMin']);
+    $objFull = json_encode($data['objFull']);
+
+    $sql = "INSERT INTO courses (`objMin`,`objFull`) VALUES (:objMin,:objFull)";
+    try {
+        $db = new db();
+        $db = $db->connect();
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(':objMin', $objMin);
+        $stmt->bindParam(':objFull', $objFull);
+        $stmt->execute();
+        $id = $db->lastInsertId();
+
+        $db = null;
+
+        echo '{"notice": {"text": "Course Added"}, "success": "1"}';
+
+    } catch (PDOException $e) {
+      echo '{"notice": {"text": "Course Not Added"}, "success": "0"}';
     }
 
     return $response;
