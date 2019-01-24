@@ -326,6 +326,26 @@ $app->get('/confirm-email/{token}', function (Request $request, Response $respon
 //
 //
 
+$app->get('/adminCourses', function (Request $request, Response $response, array $args) {
+
+    $sql = "SELECT * FROM courses";
+    try {
+        $db = new db();
+        $db = $db->connect();
+        $stmt = $db->query($sql);
+        $courses = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $db = null;
+        $data = json_encode($courses);
+
+        echo '{"notice": {"text": "All Admin Courses"}, "success": "1", "data": ' . $data . '}';
+
+    } catch (PDOException $e) {
+        echo '{"error":{"text": ' . $e->getMessage() . '}}';
+    }
+
+    return $response;
+});
+
 $app->post('/convertFile', function (Request $request, Response $response, array $args) {
     $uploadedFiles = $request->getUploadedFiles();
     $csv= file_get_contents($uploadedFiles['file']->file);
@@ -391,6 +411,51 @@ $app->post('/saveCourse', function (Request $request, Response $response, array 
 
     } catch (PDOException $e) {
       echo '{"notice": {"text": "Course Not Added"}, "success": "0"}';
+    }
+
+    return $response;
+});
+
+$app->post('/updateCourse', function (Request $request, Response $response, array $args) {
+    $data = json_decode($request->getParam('data'), true);
+    $objMin = json_encode($data['objMin']);
+    $objFull = json_encode($data['objFull']);
+    $userIds = $data['userIds'];
+    $userCourses = $data['userCourses'];
+    $id = $data['id'];
+    $sql = "UPDATE courses SET
+        `objMin`=:objMin,
+        `objFull`=:objFull WHERE id=" . $id;
+    try {
+        $db = new db();
+        $db = $db->connect();
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(':objMin', $objMin);
+        $stmt->bindParam(':objFull', $objFull);
+        $stmt->execute();
+
+        $db = null;
+        $i = 0;
+        foreach ($userIds as $uid) {
+          $sql = "UPDATE users SET
+              `coursesObj`=:cObj WHERE id=" . $uid;
+          try {
+            $courseObj = json_encode($userCourses[$i]);
+            $db = new db();
+            $db = $db->connect();
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam(':cObj', $courseObj);
+            $stmt->execute();
+
+            $db = null;
+            $i++;
+          } catch (PDOException $e) {
+              echo '{"error":{"text": ' . $e->getMessage() . '}}';
+          }
+        }
+        echo '{"notice": {"text": "Course Updated"}}';
+    } catch (PDOException $e) {
+        echo '{"error":{"text": ' . $e->getMessage() . '}}';
     }
 
     return $response;
@@ -535,117 +600,5 @@ $app->post('/saveSetting', function (Request $request, Response $response, array
     return $response;
 });
 
-$app->get('/trainers/getAllWhere/{id}', function (Request $request, Response $response, array $args) {
-    $id = $request->getAttribute('id');
-    $result = true;
-    if ($result) {
-      $sql = "SELECT * FROM users WHERE type=1 AND id=$id";
-      try {
-          $db = new db();
-          $db = $db->connect();
-          $stmt = $db->query($sql);
-          $user = $stmt->fetchAll(PDO::FETCH_OBJ);
-          $db = null;
-          $data = json_encode($user);
-          echo '{"notice": {"text": "Trainers Retrieved"}, "success": "1", "user": ' . $data . '}';
-
-      } catch (PDOException $e) {
-          echo '{"error":{"text": ' . $e->getMessage() . '}}';
-      }
-    } else {
-      echo '{"error":{"text": "You are not allowed to access this api endpoint"}}';
-    }
-
-    return $response;
-});
-
-
-$app->delete('/deleteuser/{id}', function (Request $request, Response $response, array $args) {
-    $id = $request->getAttribute('id');
-    $sql = "DELETE FROM users
-            WHERE id = $id";
-    try {
-        $db = new db();
-        $db = $db->connect();
-        $stmt = $db->query($sql);
-        $workoutsg = $stmt->fetchAll(PDO::FETCH_OBJ);
-        $db = null;
-
-        echo '{"notice": {"text": "Trainer Deleted"}}';
-    } catch (PDOException $e) {
-        echo '{"error":{"text": ' . $e->getMessage() . '}}';
-    }
-
-  return $response;
-});
-
-$app->put('/recipes/updaterecipe', function (Request $request, Response $response, array $args) {
-    $id = $request->getParam('id');
-    $name = $request->getParam('name');
-    $short = $request->getParam('short');
-    $description = $request->getParam('description');
-    $time = $request->getParam('time');
-    $carbs = $request->getParam('carbs');
-    $proteins = $request->getParam('proteins');
-    $fats = $request->getParam('fat');
-    $servings = $request->getParam('servings');
-    $ingredients = $request->getParam('ingredients');
-    $directions = $request->getParam('directions');
-
-    $image = $request->getParam('image');
-    if (strlen($image)>26) {
-    $image = save_base64_image($image, randomKey(20), '../../newman/public/recipes/');
-    }
-    $directionspics = json_decode($directions, true);
-        for($idx = 0; $idx < count($directionspics); $idx++){
-            $objtpictures = (Array)$directionspics[$idx]['image'];
-
-            if (strlen($directionspics[$idx]['image'])>26) {
-                $directionspics[$idx]['image'] = save_base64_image($directionspics[$idx]['image'], randomKey(20), '../../newman/public/recipes/');
-            }
-        }
-        $directionspics = json_encode($directionspics);
-
-    $sql = "INSERT INTO recipes (`name`,`short`,`description`,`time`,`carbs`,`proteins`,`fats`,`servings`,`ingredients`,`directions`,`image`) VALUES
-    (:name,:short,:description,:time,:carbs,:proteins,:fats,:servings,:ingredients,:directions,:image)";
-    $sql = "UPDATE recipes SET
-    `name` = :name,
-    `short` = :short,
-    `description` = :description,
-    `time` = :time,
-    `carbs` = :carbs,
-    `proteins` = :proteins,
-    `fats` = :fats,
-    `servings` = :servings,
-    `ingredients` = :ingredients,
-    `directions` = :directions,
-    `image` = :image
-WHERE id = $id";
-
-    try {
-        $db = new db();
-        $db = $db->connect();
-        $stmt = $db->prepare($sql);
-        $stmt->bindParam(':name', $name);
-        $stmt->bindParam(':short', $short);
-        $stmt->bindParam(':description', $description);
-        $stmt->bindParam(':time', $time);
-        $stmt->bindParam(':carbs', $carbs);
-        $stmt->bindParam(':proteins', $proteins);
-        $stmt->bindParam(':fats', $fats);
-        $stmt->bindParam(':servings', $servings);
-        $stmt->bindParam(':ingredients', $ingredients);
-        $stmt->bindParam(':directions', $directionspics);
-        $stmt->bindParam(':image', $image);
-
-        $stmt->execute();
-        $db = null;
-        echo '{"notice": {"text": "Recipe Updated"}}';
-    } catch (PDOException $e) {
-        echo '{"error":{"text": ' . $e->getMessage() . '}}';
-    }
-
-    return $response;
-});
 
 $app->run();
