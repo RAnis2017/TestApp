@@ -423,7 +423,6 @@ export const adminUpdateCourseSubmit = (e) => {
         }
       });
     });
-
     store.getState().users.map((user)=>{
       if(userIds.includes(parseInt(user.id))) {
         user.courses.map((course)=>{
@@ -455,6 +454,52 @@ export const adminUpdateCourseSubmit = (e) => {
 
   }
 }
+
+export const adminDeleteCourseSubmit = (e,cID) => {
+  e.preventDefault();
+  return function action(dispatch) {
+    let userIds = [];
+    let userCoursesObj = [];
+    let userCourses = [];
+    store.getState().users.map((user)=>{
+      user.courses.map((course)=>{
+        if(parseInt(course.id) === parseInt(cID)){
+          userIds.push(parseInt(user.id));
+        }
+      });
+    });
+    store.getState().users.map((user)=>{
+      if(userIds.includes(parseInt(user.id))) {
+        user.courses.map((course)=>{
+          if(parseInt(course.id) !== parseInt(cID)){
+            userCoursesObj.push({id:parseInt(course.id), objFull:course});
+          }
+        });
+        userCourses.push(userCoursesObj);
+      }
+    });
+    console.log(userIds);
+    console.log(userCourses);
+    axios
+      .post(`${store.getState().apiUrl}deleteCourse`, {
+        data: JSON.stringify({
+          cID,
+          userIds,
+          userCourses,
+        })
+      })
+      .then(response => {
+        console.log(response);
+
+        dispatch({
+          type: InterfaceActionTypes.DELETE_COURSE,
+          success: response.data.success
+        });
+      });
+
+  }
+};
+
 export const timeOver = (cid) => {
   return function action(dispatch) {
     let oldCourses = [];

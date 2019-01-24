@@ -212,6 +212,39 @@ export default function Interface(state=initialState, action) {
     				newTest
     		 	};
 	 	}
+    case InterfaceActionTypes.DELETE_COURSE: {
+
+          return {
+            ...state,
+            newCourse: {
+              currency: "USD",
+              timeOver: false,
+              inCart: false,
+              tests: [],
+              id: "",
+            },
+            newTest: {
+              id: "",
+              name: "",
+              mcqQuantity: 0,
+              availability: "",
+              duration: 0,
+              passRequirementPercentage: "",
+              path: "",
+              hours: 0,
+              mins: 0,
+              secs: 0,
+              lastTakenDate: "",
+              lastScore: 0,
+              lastCorrect: 0,
+              lastIncorrect: 0,
+              timerOver: false,
+              firstTimeCorrect: 0,
+              timeOver: false,
+              questions: []
+            }
+    		 	};
+	 	}
     case InterfaceActionTypes.QUESTION_NEXT: {
           let oldCourses = [];
           let makeRequest = false;

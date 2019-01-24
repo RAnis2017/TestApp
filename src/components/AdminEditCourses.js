@@ -14,6 +14,7 @@ const AdminEditCourses = (props) => {
     const addTest = bindActionCreators(InterfaceActionCreators.addTest, dispatch);
     const adminCourseSelect = bindActionCreators(InterfaceActionCreators.adminCourseSelect, dispatch);
     const adminTestSelect = bindActionCreators(InterfaceActionCreators.adminTestSelect, dispatch);
+    const adminDeleteCourseSubmit = bindActionCreators(InterfaceActionCreators.adminDeleteCourseSubmit, dispatch);
 
     let coursesEdit = loggedInUser.courses.map((course, key)=>{
       return(<div className="col-sm-4 col-lg-2" key={key}><button type="submit" className={`btn btn-block btn-info`} onClick={(e)=>adminCourseSelect(e,course.id)}>{course.name}</button></div>);
@@ -114,7 +115,7 @@ const AdminEditCourses = (props) => {
           <h6>Make Sure to Add Tests first before Saving Changes</h6>
           <button type="submit" className={`btn btn-block btn-warning ${(newTest.questions.length > 0) ? "" : "disabled"}`} onClick={(e)=>addTest(e)}>Update Test</button>
           <button type="submit" className={`btn btn-block btn-success`} onClick={(e)=>adminUpdateCourseSubmit(e)}>Update Changes</button>
-          <button type="submit" className={`btn btn-block btn-danger`} onClick={(e)=>adminUpdateCourseSubmit(e)}>Delete</button>
+          <button type="submit" className={`btn btn-block btn-danger`} onClick={(e)=>adminDeleteCourseSubmit(e,newCourse.id)}>Delete</button>
           {(courseSaved) ? <h6 className="font-accent text-center">Changes have been saved.</h6> : ""}
         </form>
       </div>

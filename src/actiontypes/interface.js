@@ -39,3 +39,4 @@ export const SAVE_COURSE = 'interface/SAVE_COURSE';
 export const SELECT_COURSE = 'interface/SELECT_COURSE';
 export const SELECT_TEST = 'interface/SELECT_TEST';
 export const UPDATE_COURSE = 'interface/UPDATE_COURSE';
+export const DELETE_COURSE = 'interface/DELETE_COURSE';
