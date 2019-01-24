@@ -58,7 +58,7 @@ export const formSubmit = (e,type,callback: null, resetToken: null) => {
             user = JSON.parse(response.data.user[0].obj);
             response.data.courses.map((course)=>{
               if (typeof course.objFull === 'string' || course.objFull instanceof String){
-                courses.push({id:course.id,...JSON.parse(course.objFull)});
+                courses.push({id:parseInt(course.id),...JSON.parse(course.objFull)});
               }
               else {
                 courses.push({id:course.id,...course.objFull});
@@ -69,6 +69,21 @@ export const formSubmit = (e,type,callback: null, resetToken: null) => {
             if(response.data.role === 1){
               callback("admin");
               user.admin = true;
+              axios
+                .get(`${store.getState().apiUrl}adminCourses`)
+                .then(response => {
+                  console.log(response);
+                  response.data.data.map((course)=>{
+                    courses.push({id:parseInt(course.id),...JSON.parse(course.objFull)});
+                    // console.log(JSON.parse(course.objMin));
+                  })
+                  console.log(courses);
+                  user.courses = courses;
+                  dispatch({
+                    type: InterfaceActionTypes.LOGIN_SUBMIT,
+                    user
+                  });
+                });
             } else {
               if(courses.length > 0){
                 callback("profile");
@@ -179,7 +194,7 @@ export const loadLoggedInUser = () => {
           user = JSON.parse(response.data.user[0].obj);
           response.data.courses.map((course)=>{
             if (typeof course.objFull === 'string' || course.objFull instanceof String){
-              courses.push({id:course.id,...JSON.parse(course.objFull)});
+              courses.push({id:parseInt(course.id),...JSON.parse(course.objFull)});
             }
             else {
               courses.push({id:course.id,...course.objFull});
@@ -187,6 +202,21 @@ export const loadLoggedInUser = () => {
           })
           if(response.data.role === 1){
             user.admin = true;
+            axios
+              .get(`${store.getState().apiUrl}adminCourses`)
+              .then(response => {
+                console.log(response);
+                response.data.data.map((course)=>{
+                  courses.push({id:parseInt(course.id),...JSON.parse(course.objFull)});
+                  // console.log(JSON.parse(course.objMin));
+                })
+                console.log(courses);
+                user.courses = courses;
+                dispatch({
+                  type: InterfaceActionTypes.LOGIN_SUBMIT,
+                  user
+                });
+              });
           }
           user.courses = courses;
         }
@@ -232,7 +262,20 @@ export const adminAddTest = () => {
     type: InterfaceActionTypes.ADMIN_TEST_ADD,
   };
 };
-
+export const adminCourseSelect = (e,cID) => {
+  e.preventDefault();
+  return {
+    type: InterfaceActionTypes.SELECT_COURSE,
+    cID
+  };
+};
+export const adminTestSelect = (e,tID) => {
+  e.preventDefault();
+  return {
+    type: InterfaceActionTypes.SELECT_TEST,
+    tID
+  };
+};
 export const keyPressedOnForm = (type,e) => {
   if(type === "email"){
     return {
@@ -357,6 +400,55 @@ export const adminCourseSubmit = (e) => {
 
         dispatch({
           type: InterfaceActionTypes.SAVE_COURSE,
+          success: response.data.success
+        });
+      });
+
+  }
+}
+export const adminUpdateCourseSubmit = (e) => {
+  e.preventDefault();
+  return function action(dispatch) {
+    let objFull = store.getState().newCourse;
+    let objMin = { id:objFull.id, name:objFull.name, price:objFull.price, currency:objFull.currency, availability:objFull.availability, duration:objFull.duration, mcqQuantity:objFull.mcqQuantity, inCart:objFull.inCart, path:objFull.path, imgSrc:objFull.imgSrc};
+    let id = objFull.id;
+    let userIds = [];
+    let userCoursesObj = [];
+    let userCourses = [];
+    store.getState().users.map((user)=>{
+      user.courses.map((course)=>{
+        if(parseInt(course.id) === id){
+          userIds.push(parseInt(user.id));
+          course = objFull;
+        }
+      });
+    });
+
+    store.getState().users.map((user)=>{
+      if(userIds.includes(parseInt(user.id))) {
+        user.courses.map((course)=>{
+          userCoursesObj.push({id:parseInt(course.id), objFull:course});
+        });
+        userCourses.push(userCoursesObj);
+      }
+    });
+    console.log(userIds);
+    console.log(userCourses);
+    axios
+      .post(`${store.getState().apiUrl}updateCourse`, {
+        data: JSON.stringify({
+          id,
+          userIds,
+          userCourses,
+          objMin,
+          objFull
+        })
+      })
+      .then(response => {
+        console.log(response);
+
+        dispatch({
+          type: InterfaceActionTypes.UPDATE_COURSE,
           success: response.data.success
         });
       });

@@ -36,3 +36,6 @@ export const TYPING_COURSE = 'interface/TYPING_COURSE';
 export const TYPING_TEST = 'interface/TYPING_TEST';
 export const ADD_TEST = 'interface/ADD_TEST';
 export const SAVE_COURSE = 'interface/SAVE_COURSE';
+export const SELECT_COURSE = 'interface/SELECT_COURSE';
+export const SELECT_TEST = 'interface/SELECT_TEST';
+export const UPDATE_COURSE = 'interface/UPDATE_COURSE';

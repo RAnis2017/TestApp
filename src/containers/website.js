@@ -75,10 +75,12 @@ class Website extends Component {
     let currentTab;
     if(type === "add-courses") {
       this.setState({...this.state, currentAdminTab: 1});
-    } else if (type === "add-posts") {
+    } else if (type === "edit-courses") {
       this.setState({...this.state, currentAdminTab: 2});
-    } else if (type === "add-coupons") {
+    } else if (type === "add-posts") {
       this.setState({...this.state, currentAdminTab: 3});
+    }  else if (type === "add-coupons") {
+      this.setState({...this.state, currentAdminTab: 4});
     }
   }
   render() {

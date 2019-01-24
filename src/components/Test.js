@@ -44,7 +44,7 @@ const Test = (props) => {
               return (<a className={` nav-link `} href="#" key={key} onClick={(e)=>selectQuestion(e,question.id)}>{(question.selectedAnswer === 0) ? <i className={`fas fa-question-circle ${(markedForReview.includes(question.id)) ? "marked" : ""} unattempted`} onClick={(e)=>markForReview(e,question.id)}></i> : <i className={`fas fa-question-circle attempted ${(markedForReview.includes(question.id)) ? "marked" : ""}`} ></i> } {question.id} - {question.title}</a>);
             });
             currentQuestion = course.questions.map((question,key) => {
-              if(question.id === selectedQuestion){
+              if(parseInt(question.id) === parseInt(selectedQuestion)){
                 return (
                   <div key={key}>
                     <Timer timeOver={timeOver} path={path} loggedInUser={loggedInUser} testId={currentCourse}/>

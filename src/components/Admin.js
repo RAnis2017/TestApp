@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom'
 import AdminCourses from './AdminCourses';
+import AdminEditCourses from './AdminEditCourses';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 const Admin = (props) => {
@@ -13,7 +14,7 @@ const Admin = (props) => {
         transitionAppearTimeout={600}
         transitionEnterTimeout={600}
         transitionLeaveTimeout={200}
-        transitionName={props.match.path === '/profile' ? 'SlideIn' : 'SlideOut'}
+        transitionName={props.match.path === '/admin' ? 'SlideIn' : 'SlideOut'}
       >
         <div className="hero-sm-profile">
             <div className="row justify-content-center fullview-sm">
@@ -24,6 +25,7 @@ const Admin = (props) => {
             <div className="col-sm-12 col-lg-3">
               <nav className="nav flex-column">
                 <a className="nav-link active" href="#" onClick={()=>props.changeTab("add-courses")}><i className="fas fa-book"></i> Add Courses</a>
+                <a className="nav-link active" href="#" onClick={()=>props.changeTab("edit-courses")}><i className="fas fa-book"></i> Edit Courses</a>
                 <a className="nav-link active" href="#" onClick={()=>props.changeTab("add-posts")}><i className="fas fa-book"></i> Add Posts</a>
                 <a className="nav-link" href="#" onClick={()=>props.changeTab("add-coupons")}><i className="fas fa-book"></i> Add Coupons</a>
                 <a className="nav-link" href="#" onClick={()=>props.theme()}><i className="fas fa-brush"></i> Change Theme to {props.currentTheme === "Light" ? "Night" : "Light"}</a>
@@ -33,7 +35,7 @@ const Admin = (props) => {
             <div className="col-sm-12 col-lg-9">
               <div className="tab">
               {
-                (props.currentAdminTab == 1) ? <AdminCourses /> : (props.currentAdminTab == 2) ? <AdminCourses /> : <AdminCourses />
+                (props.currentTab == 1) ? <AdminCourses /> : <AdminEditCourses />
               }
               </div>
             </div>

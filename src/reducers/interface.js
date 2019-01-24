@@ -173,7 +173,7 @@ export default function Interface(state=initialState, action) {
     case InterfaceActionTypes.SELECT_QUESTION: {
           return {
             ...state,
-    				selectedQuestion: action.id
+    				selectedQuestion: parseInt(action.id)
     		 	};
 	 	}
     case InterfaceActionTypes.USERS_LIST: {
@@ -188,13 +188,37 @@ export default function Interface(state=initialState, action) {
     				newTest: {}
     		 	};
 	 	}
+    case InterfaceActionTypes.SELECT_COURSE: {
+          let newCourse;
+          state.loggedInUser.courses.map((course)=>{
+            if(course.id === action.cID){
+              newCourse = course;
+            }
+          });
+          return {
+            ...state,
+    				newCourse
+    		 	};
+	 	}
+    case InterfaceActionTypes.SELECT_TEST: {
+          let newTest;
+          state.newCourse.tests.map((test)=>{
+            if(test.id === action.tID){
+              newTest = test;
+            }
+          });
+          return {
+            ...state,
+    				newTest
+    		 	};
+	 	}
     case InterfaceActionTypes.QUESTION_NEXT: {
           let oldCourses = [];
           let makeRequest = false;
           let courses = state.loggedInUser.courses.map((outerCourse)=>{
             outerCourse.tests.map((course)=>{
               if(course.id === action.cid){
-                if(parseInt(state.selectedQuestion) === course.mcqQuantity){
+                if(parseInt(state.selectedQuestion) === parseInt(course.mcqQuantity)){
                   course.timeOver = true;
                   makeRequest = true;
                   if(course.firstTimeCorrect === 0){
@@ -224,7 +248,7 @@ export default function Interface(state=initialState, action) {
           }
           return {
             ...state,
-    				selectedQuestion: `${++state.selectedQuestion}`,
+    				selectedQuestion: parseInt(state.selectedQuestion)+1,
             loggedInUser: { ...state.loggedInUser, courses: courses }
     		 	};
 	 	}
@@ -258,6 +282,9 @@ export default function Interface(state=initialState, action) {
 	 	}
     case InterfaceActionTypes.SELECT_ANSWER: {
           let accuracy = parseInt(state.loggedInUser.accuracy);
+          if(isNaN(accuracy)){
+            accuracy = 0;
+          }
           let courses = state.loggedInUser.courses.map((outerCourse)=>{
             outerCourse.tests.map((course)=>{
               if(course.id === action.courseid){
@@ -271,7 +298,8 @@ export default function Interface(state=initialState, action) {
                       }
                       course.lastScore = (course.lastCorrect/course.mcqQuantity) * 100;
                       if(course.firstTimeCorrect === 0){
-                        accuracy += ((parseInt(state.loggedInUser.totalMcqs)+1)/course.lastScore)*100;
+                        accuracy += ((course.lastCorrect)/course.mcqQuantity)*100;
+                        console.log("Accuracy should change ",accuracy);
                       }
                     }
                 });
@@ -333,11 +361,18 @@ export default function Interface(state=initialState, action) {
 	 	}
     case InterfaceActionTypes.ADD_TEST: {
           let newCourse = state.newCourse;
+          newCourse.tests = newCourse.tests.filter((test)=>(test.id !== state.newTest.id));
           newCourse.tests.push({id: newCourse.tests.length+1,...state.newTest});
           return {
             ...state,
             newCourse,
             newTest: {
+              name: "",
+              mcqQuantity: 0,
+              availability: "",
+              duration: 0,
+              passRequirementPercentage: "",
+              path: "",
               hours: 0,
               mins: 0,
               secs: 0,
@@ -399,6 +434,12 @@ export default function Interface(state=initialState, action) {
           };
 	 	}
     case InterfaceActionTypes.SAVE_COURSE: {
+          return {
+            ...state,
+            courseSaved: (action.success === "1"),
+          };
+	 	}
+    case InterfaceActionTypes.UPDATE_COURSE: {
           return {
             ...state,
             courseSaved: (action.success === "1"),
