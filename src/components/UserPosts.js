@@ -7,8 +7,7 @@ import { Link } from 'react-router-dom'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 const UserPosts = (props) => {
-    const { dispatch, loggedInUser } = props;
-    const posts = loggedInUser.posts;
+    const { dispatch, loggedInUser, posts } = props;
     let ItemsJSX;
     ItemsJSX = posts.map((post,index)=>{
 
@@ -18,13 +17,12 @@ const UserPosts = (props) => {
                 <div className="row">
                   <div className="col col-lg-2">
                     <div className="courseImg text-center">
-                      <img src={post.userpic} className="img-fluid" />
-                      <h4>{post.poster}</h4>
+                      <h4>Admin</h4>
                     </div>
                   </div>
                   <div className="col col-lg-10">
                     <div className="courseName font-primary">
-                      <h4>{post.title} | Date: {post.dated}</h4>
+                      <h4>{post.title} | Date: {post.date}</h4>
                       <hr />
                       <h6>{post.description}</h6>
                     </div>
@@ -43,11 +41,13 @@ const UserPosts = (props) => {
 
 UserPosts.propTypes = {
   loggedInUser: PropTypes.object.isRequired,
+  posts: PropTypes.array.isRequired,
 }
 
 const mapStateToProps = state => (
   {
     loggedInUser: state.loggedInUser,
+    posts: state.posts,
   }
 );
 

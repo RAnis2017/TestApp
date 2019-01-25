@@ -157,6 +157,19 @@ export const usersListGet = () => {
   }
 }
 
+export const loadPosts = () => {
+  return function action(dispatch) {
+    axios
+      .get(`${store.getState().apiUrl}getPosts`)
+      .then(response => {
+        dispatch({
+          type: InterfaceActionTypes.GET_POSTS,
+          posts: response.data.posts
+        });
+      });
+  }
+}
+
 export const userSettingSubmit = (e) => {
   e.preventDefault();
   return function action(dispatch) {
@@ -172,6 +185,43 @@ export const userSettingSubmit = (e) => {
         // console.log(response);
         dispatch({
           type: InterfaceActionTypes.USER_SETTING_SAVE
+        });
+      });
+  }
+}
+
+export const adminPostSubmit = (e) => {
+  e.preventDefault();
+  return function action(dispatch) {
+    let newPost = store.getState().newPost;
+    axios
+      .post(`${store.getState().apiUrl}savePost`, {
+        data: JSON.stringify({
+          post:  newPost,
+        })
+      })
+      .then(response => {
+        // console.log(response);
+        dispatch({
+          type: InterfaceActionTypes.SAVE_POST,
+          posts: response.data.posts,
+        });
+      });
+  }
+}
+
+export const adminPostDelete = (e,id) => {
+  e.preventDefault();
+  return function action(dispatch) {
+    axios
+      .post(`${store.getState().apiUrl}deletePost`, {
+        id
+      })
+      .then(response => {
+        // console.log(response);
+        dispatch({
+          type: InterfaceActionTypes.GET_POSTS,
+          posts: response.data.posts,
         });
       });
   }
@@ -324,7 +374,13 @@ export const keyPressedOnForm = (type,e) => {
     value: e.target.value,
     propertyType: type
   };
-}
+} else if(type.includes("post-")) {
+  return {
+    type: InterfaceActionTypes.TYPING_POST,
+    value: e.target.value,
+    propertyType: type
+  };
+ }
 };
 
 export const selectQuestion = (e,id) => {

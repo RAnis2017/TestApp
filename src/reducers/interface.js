@@ -20,6 +20,9 @@ const initialState = {
   loadingLogIn: false,
   markedForReview: [],
   courseSaved: false,
+  newPost: {},
+  posts: [],
+  postSaved: false,
   newTest: {
     hours: 0,
     mins: 0,
@@ -186,6 +189,20 @@ export default function Interface(state=initialState, action) {
           return {
             ...state,
     				newTest: {}
+    		 	};
+	 	}
+    case InterfaceActionTypes.SAVE_POST: {
+          return {
+            ...state,
+    				newPost: {},
+            posts: action.posts,
+            postSaved: true,
+    		 	};
+	 	}
+    case InterfaceActionTypes.GET_POSTS: {
+          return {
+            ...state,
+            posts: action.posts,
     		 	};
 	 	}
     case InterfaceActionTypes.SELECT_COURSE: {
@@ -464,6 +481,15 @@ export default function Interface(state=initialState, action) {
           return {
             ...state,
             newTest,
+          };
+	 	}
+    case InterfaceActionTypes.TYPING_POST: {
+          let newPost = state.newPost;
+          newPost[action.propertyType.split("-")[1]] = action.value;
+
+          return {
+            ...state,
+            newPost
           };
 	 	}
     case InterfaceActionTypes.SAVE_COURSE: {

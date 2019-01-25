@@ -40,3 +40,7 @@ export const SELECT_COURSE = 'interface/SELECT_COURSE';
 export const SELECT_TEST = 'interface/SELECT_TEST';
 export const UPDATE_COURSE = 'interface/UPDATE_COURSE';
 export const DELETE_COURSE = 'interface/DELETE_COURSE';
+export const SAVE_POST = 'interface/SAVE_POST';
+export const DELETE_POST = 'interface/DELETE_POST';
+export const TYPING_POST = 'interface/TYPING_POST';
+export const GET_POSTS = 'interface/GET_POSTS';

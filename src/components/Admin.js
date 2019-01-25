@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom'
 import AdminCourses from './AdminCourses';
+import AdminPosts from './AdminPosts';
 import AdminEditCourses from './AdminEditCourses';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
@@ -35,7 +36,7 @@ const Admin = (props) => {
             <div className="col-sm-12 col-lg-9">
               <div className="tab">
               {
-                (props.currentTab == 1) ? <AdminCourses /> : <AdminEditCourses />
+                (props.currentTab == 1) ? <AdminCourses /> : (props.currentTab == 2) ? <AdminEditCourses /> : <AdminPosts />
               }
               </div>
             </div>

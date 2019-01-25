@@ -416,6 +416,140 @@ $app->post('/saveCourse', function (Request $request, Response $response, array 
     return $response;
 });
 
+$app->post('/savePost', function (Request $request, Response $response, array $args) {
+    $data = json_decode($request->getParam('data'), true);
+    $postTitle = $data['post']['title'];
+    $postDescription = $data['post']['description'];
+
+    $sql = "INSERT INTO posts (`title`,`description`) VALUES (:title,:description)";
+    try {
+        $db = new db();
+        $db = $db->connect();
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(':title', $postTitle);
+        $stmt->bindParam(':description', $postDescription);
+        $stmt->execute();
+
+        $db = null;
+        $sql = "SELECT * FROM posts";
+        try {
+            $db = new db();
+            $db = $db->connect();
+            $stmt = $db->query($sql);
+            $data = $stmt->fetchAll(PDO::FETCH_OBJ);
+            $db = null;
+            $data = json_encode($data);
+
+            $db = null;
+
+            echo '{"notice": {"text": "Post Added"}, "success": "1", "posts": '.$data.'}';
+
+        } catch (PDOException $e) {
+          echo '{"notice": {"text": "Post Not Added"}, "success": "0"}';
+        }
+    } catch (PDOException $e) {
+      echo '{"notice": {"text": "Post Not Added"}, "success": "0"}';
+    }
+
+    return $response;
+});
+
+$app->get('/getPosts', function (Request $request, Response $response, array $args) {
+
+    $sql = "SELECT * FROM posts";
+    try {
+        $db = new db();
+        $db = $db->connect();
+        $stmt = $db->query($sql);
+        $data = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $db = null;
+        $data = json_encode($data);
+
+        $db = null;
+
+        echo '{"notice": {"text": "Posts Retrieved"}, "success": "1", "posts": '.$data.'}';
+
+    } catch (PDOException $e) {
+      echo '{"notice": {"text": "Posts Not Retrieved"}, "success": "0"}';
+    }
+
+    return $response;
+});
+
+$app->post('/deletePost', function (Request $request, Response $response, array $args) {
+  $id = $request->getParam('id');
+  $sql = "DELETE FROM posts WHERE `id`=:id";
+  try {
+      $db = new db();
+      $db = $db->connect();
+      $stmt = $db->prepare($sql);
+      $stmt->bindParam(':id', $id);
+      $stmt->execute();
+
+      $db = null;
+      $sql = "SELECT * FROM posts";
+      try {
+          $db = new db();
+          $db = $db->connect();
+          $stmt = $db->query($sql);
+          $data = $stmt->fetchAll(PDO::FETCH_OBJ);
+          $db = null;
+          $data = json_encode($data);
+
+          $db = null;
+
+          echo '{"notice": {"text": "Posts Retrieved"}, "success": "1", "posts": '.$data.'}';
+
+      } catch (PDOException $e) {
+        echo '{"notice": {"text": "Posts Not Retrieved"}, "success": "0"}';
+      }
+  } catch (PDOException $e) {
+      echo '{"error":{"text": ' . $e->getMessage() . '}}';
+  }
+
+  return $response;
+});
+
+$app->post('/deleteCourse', function (Request $request, Response $response, array $args) {
+  $data = json_decode($request->getParam('data'), true);
+  $userIds = $data['userIds'];
+  $userCourses = $data['userCourses'];
+  $id = $data['cID'];
+  $sql = "DELETE FROM courses WHERE `id`=:id";
+  try {
+      $db = new db();
+      $db = $db->connect();
+      $stmt = $db->prepare($sql);
+      $stmt->bindParam(':id', $id);
+      $stmt->execute();
+
+      $db = null;
+      $i = 0;
+      foreach ($userIds as $uid) {
+        $sql = "UPDATE users SET
+            `coursesObj`=:cObj WHERE id=" . $uid;
+        try {
+          $courseObj = json_encode($userCourses[$i]);
+          $db = new db();
+          $db = $db->connect();
+          $stmt = $db->prepare($sql);
+          $stmt->bindParam(':cObj', $courseObj);
+          $stmt->execute();
+
+          $db = null;
+          $i++;
+        } catch (PDOException $e) {
+            echo '{"error":{"text": ' . $e->getMessage() . '}}';
+        }
+      }
+      echo '{"notice": {"text": "Course Deleted"}}';
+  } catch (PDOException $e) {
+      echo '{"error":{"text": ' . $e->getMessage() . '}}';
+  }
+
+  return $response;
+});
+
 $app->post('/updateCourse', function (Request $request, Response $response, array $args) {
     $data = json_decode($request->getParam('data'), true);
     $objMin = json_encode($data['objMin']);
