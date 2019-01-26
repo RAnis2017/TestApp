@@ -510,6 +510,120 @@ $app->post('/deletePost', function (Request $request, Response $response, array 
   return $response;
 });
 
+$app->post('/saveCoupon', function (Request $request, Response $response, array $args) {
+    $data = json_decode($request->getParam('data'), true);
+    $code = $data['coupon']['code'];
+    $off = $data['coupon']['off'];
+
+    $sql = "INSERT INTO coupons (`code`,`off`) VALUES (:code,:off)";
+    try {
+        $db = new db();
+        $db = $db->connect();
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(':code', $code);
+        $stmt->bindParam(':off', $off);
+        $stmt->execute();
+
+        $db = null;
+        $sql = "SELECT * FROM coupons";
+        try {
+            $db = new db();
+            $db = $db->connect();
+            $stmt = $db->query($sql);
+            $data = $stmt->fetchAll(PDO::FETCH_OBJ);
+            $db = null;
+            $data = json_encode($data);
+
+            $db = null;
+
+            echo '{"notice": {"text": "Coupon Added"}, "success": "1", "coupons": '.$data.'}';
+
+        } catch (PDOException $e) {
+          echo '{"notice": {"text": "Coupon Not Added"}, "success": "0"}';
+        }
+    } catch (PDOException $e) {
+      echo '{"notice": {"text": "Coupon Not Added"}, "success": "0"}';
+    }
+
+    return $response;
+});
+
+$app->get('/getCoupons', function (Request $request, Response $response, array $args) {
+
+    $sql = "SELECT * FROM coupons";
+    try {
+        $db = new db();
+        $db = $db->connect();
+        $stmt = $db->query($sql);
+        $data = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $db = null;
+        $data = json_encode($data);
+
+        $db = null;
+
+        echo '{"notice": {"text": "Coupons Retrieved"}, "success": "1", "coupons": '.$data.'}';
+
+    } catch (PDOException $e) {
+      echo '{"notice": {"text": "Coupons Not Retrieved"}, "success": "0"}';
+    }
+
+    return $response;
+});
+
+$app->post('/deleteCoupon', function (Request $request, Response $response, array $args) {
+  $id = $request->getParam('id');
+  $sql = "DELETE FROM coupons WHERE `id`=:id";
+  try {
+      $db = new db();
+      $db = $db->connect();
+      $stmt = $db->prepare($sql);
+      $stmt->bindParam(':id', $id);
+      $stmt->execute();
+
+      $db = null;
+      $sql = "SELECT * FROM coupons";
+      try {
+          $db = new db();
+          $db = $db->connect();
+          $stmt = $db->query($sql);
+          $data = $stmt->fetchAll(PDO::FETCH_OBJ);
+          $db = null;
+          $data = json_encode($data);
+
+          $db = null;
+
+          echo '{"notice": {"text": "Coupons Retrieved"}, "success": "1", "coupons": '.$data.'}';
+
+      } catch (PDOException $e) {
+        echo '{"notice": {"text": "Coupons Not Retrieved"}, "success": "0"}';
+      }
+  } catch (PDOException $e) {
+      echo '{"error":{"text": ' . $e->getMessage() . '}}';
+  }
+
+  return $response;
+});
+
+$app->post('/checkCoupon', function (Request $request, Response $response, array $args) {
+  $code = $request->getParam('code');
+  $sql = "SELECT off FROM coupons WHERE code='$code'";
+  try {
+      $db = new db();
+      $db = $db->connect();
+      $stmt = $db->query($sql);
+      $data = $stmt->fetchAll(PDO::FETCH_OBJ);
+      $db = null;
+      $data = json_encode($data);
+
+      echo '{"notice": {"text": "Coupon Valid"}, "success": "1", "off": '.$data.'}';
+
+  } catch (PDOException $e) {
+    echo '{"notice": {"text": "Coupon Invalid"}, "success": "0", "off": '.$data.'}';
+  }
+
+  return $response;
+});
+
 $app->post('/deleteCourse', function (Request $request, Response $response, array $args) {
   $data = json_decode($request->getParam('data'), true);
   $userIds = $data['userIds'];

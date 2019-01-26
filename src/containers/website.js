@@ -40,12 +40,14 @@ class Website extends Component {
     const loadLoggedInUser = bindActionCreators(InterfaceActionCreators.loadLoggedInUser, dispatch);
     const loadUsers = bindActionCreators(InterfaceActionCreators.usersListGet, dispatch);
     const loadPosts = bindActionCreators(InterfaceActionCreators.loadPosts, dispatch);
+    const loadCoupons = bindActionCreators(InterfaceActionCreators.loadCoupons, dispatch);
     const signOut = bindActionCreators(InterfaceActionCreators.signOut, dispatch);
 
     loadLoggedInUser();
     coursesMinGet();
     loadUsers();
     loadPosts();
+    loadCoupons();
     this.setState({...this.state, signOut: signOut});
   }
   handleStyleButtonClick = () => {

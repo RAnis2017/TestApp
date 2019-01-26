@@ -227,6 +227,77 @@ export const adminPostDelete = (e,id) => {
   }
 }
 
+export const adminCouponSubmit = (e) => {
+  e.preventDefault();
+  return function action(dispatch) {
+    let newCoupon = store.getState().newCoupon;
+    axios
+      .post(`${store.getState().apiUrl}saveCoupon`, {
+        data: JSON.stringify({
+          coupon:  newCoupon,
+        })
+      })
+      .then(response => {
+        // console.log(response);
+        dispatch({
+          type: InterfaceActionTypes.SAVE_COUPON,
+          coupons: response.data.coupons,
+        });
+      });
+  }
+}
+
+export const adminCouponDelete = (e,id) => {
+  e.preventDefault();
+  return function action(dispatch) {
+    axios
+      .post(`${store.getState().apiUrl}deleteCoupon`, {
+        id
+      })
+      .then(response => {
+        // console.log(response);
+        dispatch({
+          type: InterfaceActionTypes.GET_COUPONS,
+          coupons: response.data.coupons,
+        });
+      });
+  }
+}
+
+export const checkCouponCode = (e) => {
+  e.preventDefault();
+  return function action(dispatch) {
+    axios
+      .post(`${store.getState().apiUrl}checkCoupon`, {
+        code: store.getState().coupon
+      })
+      .then(response => {
+        console.log(response);
+        let off = "";
+        if(response.data.off.length > 0){
+          off = response.data.off[0].off;
+        }
+        dispatch({
+          type: InterfaceActionTypes.CHECK_COUPON_CODE,
+          off,
+        });
+      });
+  }
+}
+
+export const loadCoupons = () => {
+  return function action(dispatch) {
+    axios
+      .get(`${store.getState().apiUrl}getCoupons`)
+      .then(response => {
+        dispatch({
+          type: InterfaceActionTypes.GET_COUPONS,
+          coupons: response.data.coupons
+        });
+      });
+  }
+}
+
 export const loadLoggedInUser = () => {
   return function action(dispatch) {
     let user = {email: "", name: "", password: "", courses: []};
@@ -287,6 +358,11 @@ export const removeCartItem = (id) => {
   return {
     type: InterfaceActionTypes.REMOVE_CART_ITEM,
     id
+  };
+};
+export const checkTotal = () => {
+  return {
+    type: InterfaceActionTypes.CHECK_TOTAL,
   };
 };
 export const coursesBought = () => {
@@ -380,7 +456,18 @@ export const keyPressedOnForm = (type,e) => {
     value: e.target.value,
     propertyType: type
   };
- }
+} else if(type.includes("coupon-")) {
+   return {
+     type: InterfaceActionTypes.TYPING_COUPON,
+     value: e.target.value,
+     propertyType: type
+   };
+} else if(type === "coupon") {
+     return {
+       type: InterfaceActionTypes.TYPING_COUPON_CODE,
+       value: e.target.value
+     };
+}
 };
 
 export const selectQuestion = (e,id) => {

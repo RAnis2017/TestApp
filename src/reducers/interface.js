@@ -16,13 +16,20 @@ const initialState = {
   selectedQuestion: 0,
   timeout: false,
   users: [],
+  total: 0,
   loggedIn: false,
   loadingLogIn: false,
   markedForReview: [],
   courseSaved: false,
+  coupon: "",
+  couponOff: "",
+  couponSuccess: "",
   newPost: {},
+  newCoupon: {},
   posts: [],
+  coupons: [],
   postSaved: false,
+  couponSaved: false,
   newTest: {
     hours: 0,
     mins: 0,
@@ -97,6 +104,12 @@ export default function Interface(state=initialState, action) {
           return {
             ...state,
     				email: action.value
+    		 	};
+	 	}
+    case InterfaceActionTypes.TYPING_COUPON_CODE: {
+          return {
+            ...state,
+    				coupon: action.value
     		 	};
 	 	}
     case InterfaceActionTypes.TYPING_PASSWORD: {
@@ -199,10 +212,24 @@ export default function Interface(state=initialState, action) {
             postSaved: true,
     		 	};
 	 	}
+    case InterfaceActionTypes.SAVE_COUPON: {
+          return {
+            ...state,
+    				newCoupon: {},
+            coupons: action.coupons,
+            couponSaved: true,
+    		 	};
+	 	}
     case InterfaceActionTypes.GET_POSTS: {
           return {
             ...state,
             posts: action.posts,
+    		 	};
+	 	}
+    case InterfaceActionTypes.GET_COUPONS: {
+          return {
+            ...state,
+            coupons: action.coupons,
     		 	};
 	 	}
     case InterfaceActionTypes.SELECT_COURSE: {
@@ -492,6 +519,40 @@ export default function Interface(state=initialState, action) {
             newPost
           };
 	 	}
+    case InterfaceActionTypes.TYPING_COUPON: {
+          let newCoupon = state.newCoupon;
+          newCoupon[action.propertyType.split("-")[1]] = action.value;
+
+          return {
+            ...state,
+            newCoupon
+          };
+	 	}
+    case InterfaceActionTypes.CHECK_COUPON_CODE: {
+
+          return {
+            ...state,
+            couponOff: action.off,
+            total: state.total*((100-parseInt(action.off))/100),
+            couponSuccess: (action.off.length > 0) ? "1" : "0"
+          };
+	 	}
+    case InterfaceActionTypes.CHECK_TOTAL: {
+          let total=0;
+          if(state.couponOff.length > 0){
+            total = state.total;
+          } else {
+            state.courses.map((course,index)=>{
+                if(course.inCart){
+                  total += parseInt(course.price);
+                }
+            })
+          }
+          return {
+            ...state,
+            total: total,
+          };
+	 	}
     case InterfaceActionTypes.SAVE_COURSE: {
           return {
             ...state,
@@ -518,6 +579,8 @@ export default function Interface(state=initialState, action) {
             if(typeof action.user.courses[i] !== 'undefined'){
               if(course.id !== action.user.courses[i].id){
                 courses.push(course);
+              } else {
+                courses.push(false);
               }
             } else {
               courses.push(course);

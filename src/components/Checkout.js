@@ -9,10 +9,14 @@ import axios from "axios";
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 const Checkout = (props) => {
-    const { dispatch, courses, apiUrl, loggedInUser } = props;
+    const { dispatch, courses, apiUrl, loggedInUser, coupon, couponOff, total, couponSuccess } = props;
     const coursesBought = bindActionCreators(InterfaceActionCreators.coursesBought, dispatch);
     const showCart = bindActionCreators(InterfaceActionCreators.showCart, dispatch);
+    const checkCouponCode = bindActionCreators(InterfaceActionCreators.checkCouponCode, dispatch);
+    const checkTotal = bindActionCreators(InterfaceActionCreators.checkTotal, dispatch);
+    const keyPressedOnForm = bindActionCreators(InterfaceActionCreators.keyPressedOnForm, dispatch);
     showCart();
+    checkTotal();
     const onSuccess = (payment) => {
         // Congratulation, it came here means everything's fine!
             let coursesIDs = "";
@@ -76,10 +80,8 @@ const Checkout = (props) => {
     // NB. You can also have many Paypal express checkout buttons on page, just pass in the correct amount and they will work!
 
     let ItemsJSX;
-    let total=0;
     ItemsJSX = courses.map((course,index)=>{
         if(course.inCart){
-          total += parseInt(course.price);
           return (
 
               <div className="checkout" key={index}>
@@ -113,14 +115,19 @@ const Checkout = (props) => {
           </div>
           <div className="container fullview">
             {ItemsJSX}
-            <div className="float-right">
+            <div className="float-right text-center">
             <h3 className="text-center font-secondary">Total:</h3><h5 className="text-center font-accent">{total} {currency}</h5>
             {
               (loggedInUser.name.length < 1) ? <Link className={`btn btn-success`} to={`/`}>Login or Sign up first!</Link>
               :
               <PaypalExpressBtn env={env} client={client} currency={currency} total={total} onError={onError} onSuccess={onSuccess} onCancel={onCancel} shipping={1}/>
             }
+            <hr />
+            <input type="text" className="form-control" id="coupon" aria-describedby="coupon" placeholder="Coupon Code" value={coupon} onChange={(e)=>keyPressedOnForm("coupon",e)}/>
+             {(couponOff.length > 0) ? "" : <button type="submit" className={`btn btn-block btn-success`} onClick={(e)=>checkCouponCode(e)}>Apply</button>}
+             {(couponSuccess === "1") ? <p className="text-center font-primary">Coupon Applied</p> : (couponSuccess === "0") ? <p className="text-center font-primary">Coupon Invalid</p> : ""}
             </div>
+
           </div>
         </ReactCSSTransitionGroup>
       </div>
@@ -130,7 +137,11 @@ const Checkout = (props) => {
 Checkout.propTypes = {
   courses: PropTypes.array.isRequired,
   apiUrl: PropTypes.string.isRequired,
+  coupon: PropTypes.string.isRequired,
+  couponOff: PropTypes.string.isRequired,
+  couponSuccess: PropTypes.string.isRequired,
   loggedInUser: PropTypes.object.isRequired,
+  total: PropTypes.number.isRequired,
 }
 
 const mapStateToProps = state => (
@@ -138,6 +149,10 @@ const mapStateToProps = state => (
     courses: state.courses,
     apiUrl: state.apiUrl,
     loggedInUser: state.loggedInUser,
+    coupon: state.coupon,
+    couponOff: state.couponOff,
+    couponSuccess: state.couponSuccess,
+    total: state.total,
   }
 );
 
