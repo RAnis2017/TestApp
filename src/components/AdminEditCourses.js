@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import * as InterfaceActionCreators from '../actions/interface';
 import { Link } from 'react-router-dom'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css' // Import css
 
 const AdminEditCourses = (props) => {
     const { dispatch, loggedInUser, newCourse, newTest, courseSaved } = props;
@@ -15,7 +17,23 @@ const AdminEditCourses = (props) => {
     const adminCourseSelect = bindActionCreators(InterfaceActionCreators.adminCourseSelect, dispatch);
     const adminTestSelect = bindActionCreators(InterfaceActionCreators.adminTestSelect, dispatch);
     const adminDeleteCourseSubmit = bindActionCreators(InterfaceActionCreators.adminDeleteCourseSubmit, dispatch);
-
+    let submit = (e,id) => {
+        e.preventDefault();
+        confirmAlert({
+          title: 'Confirm to Delete',
+          message: 'Are you sure to delete this course?',
+          buttons: [
+            {
+              label: 'Delete',
+              onClick: () => adminDeleteCourseSubmit(e,id)
+            },
+            {
+              label: 'Cancel',
+              onClick: () => console.log('Click No')
+            }
+          ]
+        })
+    };
     let coursesEdit = loggedInUser.courses.map((course, key)=>{
       return(<div className="col-sm-4 col-lg-2" key={key}><button type="submit" className={`btn btn-block btn-info`} onClick={(e)=>adminCourseSelect(e,course.id)}>{course.name}</button></div>);
     });
@@ -39,14 +57,15 @@ const AdminEditCourses = (props) => {
                 <input type="text" className="form-control" id="price" aria-describedby="price" placeholder="Enter Course Price" defaultValue={newCourse.price} onChange={(e)=>keyPressedOnForm("course-price",e)}/>
               </div>
               <div className="form-group">
-                <input type="hidden" className="form-control" defaultValue={newCourse.currency} />
+                <label htmlFor="currency">Course Currency</label>
+                <input type="text" className="form-control" id="currency" aria-describedby="currency" placeholder="Enter Course Currency" defaultValue={newCourse.currency} onChange={(e)=>keyPressedOnForm("course-currency",e)}/>
               </div>
               <div className="form-group">
                 <label htmlFor="availability">Course Availability</label>
                 <select className="form-control" id="availability" aria-describedby="availability" defaultValue={newCourse.availability} onChange={(e)=>keyPressedOnForm("course-availability",e)}>
                   <option value="">Select a option</option>
-                  <option value="released" selected={newCourse.availability == "released"}>Released</option>
-                  <option value="upcoming" selected={newCourse.availability == "upcoming"}>Upcoming</option>
+                  <option value="released" >Released</option>
+                  <option value="upcoming" >Upcoming</option>
                 </select>
               </div>
               <div className="form-group">
@@ -83,8 +102,8 @@ const AdminEditCourses = (props) => {
                 <label htmlFor="availability">Test Availability</label>
                 <select className="form-control" id="availability" aria-describedby="availability" defaultValue={newTest.availability} onChange={(e)=>keyPressedOnForm("test-availability",e)}>
                   <option value="">Select an option</option>
-                  <option value="released" selected={newTest.availability == "released"}>Released</option>
-                  <option value="upcoming" selected={newTest.availability == "upcoming"}>Upcoming</option>
+                  <option value="released" >Released</option>
+                  <option value="upcoming">Upcoming</option>
                 </select>
               </div>
               <div className="form-group">
@@ -109,13 +128,20 @@ const AdminEditCourses = (props) => {
                 <label htmlFor="path">Test Path (eg: sat-test-2019-1)</label>
                 <input type="text" className="form-control" id="path" aria-describedby="mcq" placeholder="Enter Test Path" defaultValue={newTest.path} onChange={(e)=>keyPressedOnForm("test-path",e)}/>
               </div>
-
+              <div className="form-group">
+                <label htmlFor="Pdf">Pdf Availability</label>
+                <select className="form-control" id="pdf" aria-describedby="pdf" defaultValue={newTest.pdf} onChange={(e)=>keyPressedOnForm("test-pdf",e)}>
+                  <option value="">Select an option</option>
+                  <option value="no">No</option>
+                  <option value="yes">Yes</option>
+                </select>
+              </div>
             </div>
           </div>
           <h6>Make Sure to Add Tests first before Saving Changes</h6>
           <button type="submit" className={`btn btn-block btn-warning ${(newTest.questions.length > 0) ? "" : "disabled"}`} onClick={(e)=>addTest(e)}>Update Test</button>
           <button type="submit" className={`btn btn-block btn-success`} onClick={(e)=>adminUpdateCourseSubmit(e)}>Update Changes</button>
-          <button type="submit" className={`btn btn-block btn-danger`} onClick={(e)=>adminDeleteCourseSubmit(e,newCourse.id)}>Delete</button>
+          <button type="submit" className={`btn btn-block btn-danger`} onClick={(e)=>submit(e,newCourse.id)}>Delete</button>
           {(courseSaved) ? <h6 className="font-accent text-center">Changes have been saved.</h6> : ""}
         </form>
       </div>

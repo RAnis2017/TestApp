@@ -76,7 +76,7 @@ const Header = (props) => {
                           className="nav-link"> SignIn/SignUp
                   </NavLink>
                 </li>
-                : (!loggedInUser.hasOwnProperty('admin')) ?
+                : (!loggedInUser.admin) ?
                   <li className="nav-item">
                     <NavLink
                             exact
@@ -89,7 +89,7 @@ const Header = (props) => {
                   <li className="nav-item">
                     <NavLink
                             exact
-                            to="/admin"
+                            to="/admin-login"
                             activeClassName="active"
                             className="nav-link"> Admin
                     </NavLink>

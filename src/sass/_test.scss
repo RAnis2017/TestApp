@@ -28,6 +28,9 @@
     .marked {
       color: $marked;
     }
+    .fas {
+      font-size: 1.5em;
+    }
   }
   &-content .tab {
     background-color: $dark-profile-1;
@@ -46,6 +49,7 @@
     }
     .correct {
      color: $primary-color;
+     font-weight: bolder;
      background-color: $correct-ans;
    }
    .disabled {

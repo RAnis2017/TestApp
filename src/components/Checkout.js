@@ -80,16 +80,18 @@ const Checkout = (props) => {
     // NB. You can also have many Paypal express checkout buttons on page, just pass in the correct amount and they will work!
 
     let ItemsJSX;
+    let inCartCount = 0;
     ItemsJSX = courses.map((course,index)=>{
         if(course.inCart){
+          inCartCount++;
           return (
 
               <div className="checkout" key={index}>
-                <div className="row m-auto">
-                  <div className="col-lg-3">
-                    <img src={course.imgSrc} className="checkoutImg" />
+                <div className="row">
+                  <div className="col-lg-2">
+                    <img src={course.imgSrc} className="img-fluid" />
                   </div>
-                  <div className="col-lg-9">
+                  <div className="col-lg-8">
                     <h3 className="font-primary">{course.name} - Price: {course.price} {course.currency}</h3>
                   </div>
                 </div>
@@ -123,8 +125,8 @@ const Checkout = (props) => {
               <PaypalExpressBtn env={env} client={client} currency={currency} total={total} onError={onError} onSuccess={onSuccess} onCancel={onCancel} shipping={1}/>
             }
             <hr />
-            <input type="text" className="form-control" id="coupon" aria-describedby="coupon" placeholder="Coupon Code" value={coupon} onChange={(e)=>keyPressedOnForm("coupon",e)}/>
-             {(couponOff.length > 0) ? "" : <button type="submit" className={`btn btn-block btn-success`} onClick={(e)=>checkCouponCode(e)}>Apply</button>}
+            {(inCartCount > 0) ? <input type="text" className="form-control" id="coupon" aria-describedby="coupon" placeholder="Coupon Code" value={coupon} onChange={(e)=>keyPressedOnForm("coupon",e)}/> : "" }
+             {(inCartCount > 0) ? (couponOff.length > 0) ? "" : <button type="submit" className={`btn btn-block btn-success`} onClick={(e)=>checkCouponCode(e)}>Apply</button> : ""}
              {(couponSuccess === "1") ? <p className="text-center font-primary">Coupon Applied</p> : (couponSuccess === "0") ? <p className="text-center font-primary">Coupon Invalid</p> : ""}
             </div>
 

@@ -22,7 +22,7 @@ const Cart = (props) => {
                   {index+1}.
                 </div>
                 <div className="col-lg-2">
-                   <img src={course.imgSrc} className="cartImg" />
+                   <img src={course.imgSrc} className="cartImg img-fluid" />
                 </div>
                 <div className="col-lg-3">
                   <p className="heading-min"> {course.name} - Price: {course.price} {course.currency}</p>

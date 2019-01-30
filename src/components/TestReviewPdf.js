@@ -33,7 +33,7 @@ const Test = (props) => {
         doc.text('GENESIS HEX DEVS',10, doc.internal.pageSize.height-5 );
         doc.setFontSize(12);
         doc.text('http://www.genesishexdevs.com',130, doc.internal.pageSize.height-10 );
-        doc.addImage(dataUrl, "png", 180, 10, 20, 20, "image"+i, "NONE", 0);
+        doc.addImage(dataUrl, "png", 5, 5, 20, 20, "image"+i, "NONE", 0);
       }
 
       return doc;
@@ -81,6 +81,7 @@ const Test = (props) => {
                 <p className={`answer ${(question.truthyOption === "2") ? "correct disabled" : ""} ${(question.selectedAnswer === 0) ? "disabled" : "disabled" }`}>{question.answer2}</p>
                 <p className={`answer ${(question.truthyOption === "3") ? "correct disabled" : ""} ${(question.selectedAnswer === 0) ? "disabled" : "disabled" }`}>{question.answer3}</p>
                 <p className={`answer ${(question.truthyOption === "4") ? "correct disabled" : ""} ${(question.selectedAnswer === 0) ? "disabled" : "disabled" }`}>{question.answer4}</p>
+                <p className={``}>Explanation: {question.explanation}</p>
               </div>
             );
           });
@@ -98,6 +99,16 @@ const Test = (props) => {
         <button onClick={printDocument} className="btn btn-primary btn-block">Download as PDF</button>
           <div className="row test-content" >
             <div className="col-sm-12 col-lg-12" id="divToPrint">
+              <br />
+              <br />
+              <br />
+              <br />
+              <br />
+              <br />
+              <br />
+              <br />
+              <br />
+              <br />
               <div className="tab">
                 {currentQuestion}
               </div>

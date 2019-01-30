@@ -16,15 +16,15 @@ const UserPerformance = (props) => {
         <form className="" onSubmit={(e)=>userSettingSubmit(e)}>
           <div className="form-group">
             <label htmlFor="name">Full Name</label>
-            <input type="text" className="form-control" id="name" aria-describedby="name" placeholder="Enter name" value={loggedInUser.name} onChange={(e)=>keyPressedOnForm("edit-name",e)}/>
+            <input type="text" className="form-control" id="name" aria-describedby="name" placeholder="Enter name" defaultValue={loggedInUser.name} onChange={(e)=>keyPressedOnForm("edit-name",e)}/>
           </div>
           <div className="form-group">
             <label htmlFor="email">Email address</label>
-            <input type="email" className="form-control" id="email" aria-describedby="email" value={loggedInUser.email} placeholder="Enter email" onChange={(e)=>keyPressedOnForm("edit-email",e)}/>
+            <input type="email" className="form-control" id="email" aria-describedby="email" defaultValue={loggedInUser.email} placeholder="Enter email" onChange={(e)=>keyPressedOnForm("edit-email",e)}/>
           </div>
           <div className="form-group">
             <label htmlFor="password">Password</label>
-            <input type="password" className="form-control" id="password" placeholder="Password" value={loggedInUser.password} onChange={(e)=>keyPressedOnForm("edit-password",e)}/>
+            <input type="password" className="form-control" id="password" placeholder="Password" defaultValue={loggedInUser.password} onChange={(e)=>keyPressedOnForm("edit-password",e)}/>
           </div>
           <button type="submit" className="btn btn-block btn-success" >Save Changes</button>
         </form>

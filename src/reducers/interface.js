@@ -31,6 +31,12 @@ const initialState = {
   postSaved: false,
   couponSaved: false,
   newTest: {
+    name: "",
+    availability: "",
+    mcqQuantity: "",
+    duration: "",
+    path: "",
+    passRequirementPercentage: "",
     hours: 0,
     mins: 0,
     secs: 0,
@@ -41,13 +47,21 @@ const initialState = {
     timerOver: false,
     firstTimeCorrect: 0,
     timeOver: false,
-    questions: []
+    questions: [],
+    file: ""
   },
   newCourse: {
+    name: "",
+    price: "",
+    availability: "",
+    imgSrc: "",
+    mcqQuantity: "",
+    duration: "",
+    path: "",
     currency: "USD",
     timeOver: false,
     inCart: false,
-    tests: [],
+    tests: []
   },
   courses: [
     {
@@ -443,25 +457,6 @@ export default function Interface(state=initialState, action) {
           return {
             ...state,
             newCourse,
-            newTest: {
-              name: "",
-              mcqQuantity: 0,
-              availability: "",
-              duration: 0,
-              passRequirementPercentage: "",
-              path: "",
-              hours: 0,
-              mins: 0,
-              secs: 0,
-              lastTakenDate: "",
-              lastScore: 0,
-              lastCorrect: 0,
-              lastIncorrect: 0,
-              timerOver: false,
-              firstTimeCorrect: 0,
-              timeOver: false,
-              questions: []
-            }
           };
 	 	}
     case InterfaceActionTypes.RESET_PASS_SUBMIT: {

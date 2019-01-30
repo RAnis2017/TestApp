@@ -35,7 +35,7 @@ class Website extends Component {
       }
    }
   componentWillMount(){
-    const { dispatch, loggedIn } = this.props;
+    const { dispatch, loggedIn, loggedInUser } = this.props;
     const coursesMinGet = bindActionCreators(InterfaceActionCreators.coursesMinGet, dispatch);
     const loadLoggedInUser = bindActionCreators(InterfaceActionCreators.loadLoggedInUser, dispatch);
     const loadUsers = bindActionCreators(InterfaceActionCreators.usersListGet, dispatch);
@@ -48,6 +48,7 @@ class Website extends Component {
     loadUsers();
     loadPosts();
     loadCoupons();
+
     this.setState({...this.state, signOut: signOut});
   }
   handleStyleButtonClick = () => {
@@ -83,8 +84,10 @@ class Website extends Component {
       this.setState({...this.state, currentAdminTab: 2});
     } else if (type === "add-posts") {
       this.setState({...this.state, currentAdminTab: 3});
-    }  else if (type === "add-coupons") {
+    } else if (type === "add-coupons") {
       this.setState({...this.state, currentAdminTab: 4});
+    } else if (type === "settings") {
+      this.setState({...this.state, currentAdminTab: 5});
     }
   }
   render() {
@@ -102,7 +105,7 @@ class Website extends Component {
           <Route path="/cart" component={Cart} />
           <Route path="/password-reset/:token" component={ResetPassword} />
           <Route path="/profile"  render={(props) => (this.state.loggedIn) ? <Profile {...props} signOut={this.state.signOut} changeTab={this.changeTab} currentTab={this.state.currentTab} path={this.state.path} theme={this.handleStyleButtonClick} currentTheme={this.state.style}/> : <Redirect to="/"/>}/>
-          <Route path="/admin"  render={(props) => <Admin {...props} signOut={this.state.signOut} changeTab={this.changeAdminTab} currentTab={this.state.currentAdminTab} theme={this.handleStyleButtonClick} currentTheme={this.state.style}/>}/>
+          <Route path="/admin-login"  render={(props) => (this.state.loggedIn) ? <Admin {...props} signOut={this.state.signOut} changeTab={this.changeAdminTab} currentTab={this.state.currentAdminTab} theme={this.handleStyleButtonClick} currentTheme={this.state.style}/> : <Redirect to="/"/>}/>
           <Footer />
         </div>
       </BrowserRouter>

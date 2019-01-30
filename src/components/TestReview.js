@@ -27,6 +27,7 @@ const Test = (props) => {
                 <p className={`answer ${(question.truthyOption === "2") ? "correct disabled" : ""} ${(question.selectedAnswer === 0) ? "disabled" : "disabled" }`}>{question.answer2}</p>
                 <p className={`answer ${(question.truthyOption === "3") ? "correct disabled" : ""} ${(question.selectedAnswer === 0) ? "disabled" : "disabled" }`}>{question.answer3}</p>
                 <p className={`answer ${(question.truthyOption === "4") ? "correct disabled" : ""} ${(question.selectedAnswer === 0) ? "disabled" : "disabled" }`}>{question.answer4}</p>
+                <p className={``}>Explanation: {question.explanation}</p>
               </div>
             );
           });

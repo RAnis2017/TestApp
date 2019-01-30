@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom'
 import Timer from './Timer';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import axios from "axios";
+import AdSense from 'react-adsense';
 
 const Test = (props) => {
 
@@ -41,7 +42,7 @@ const Test = (props) => {
             currentCourse = course.id;
 
             sideNav = course.questions.map((question,key) => {
-              return (<a className={` nav-link `} href="#" key={key} onClick={(e)=>selectQuestion(e,question.id)}>{(question.selectedAnswer === 0) ? <i className={`fas fa-question-circle ${(markedForReview.includes(question.id)) ? "marked" : ""} unattempted`} onClick={(e)=>markForReview(e,question.id)}></i> : <i className={`fas fa-question-circle attempted ${(markedForReview.includes(question.id)) ? "marked" : ""}`} ></i> } {question.id} - {question.title}</a>);
+              return (<a className={` nav-link `} href="#" key={key} onClick={(e)=>selectQuestion(e,question.id)}>{(question.selectedAnswer === 0) ? <i className={`fas fa-square ${(markedForReview.includes(question.id)) ? "marked" : ""} unattempted`} onClick={(e)=>markForReview(e,question.id)}></i> : <i className={`fas fa-square attempted ${(markedForReview.includes(question.id)) ? "marked" : ""}`} ></i> } {question.id} - {question.title}</a>);
             });
             currentQuestion = course.questions.map((question,key) => {
               if(parseInt(question.id) === parseInt(selectedQuestion)){
@@ -120,7 +121,13 @@ const Test = (props) => {
                   </div>
                 </div>
                 <hr />
-                <div className="ad"></div>
+                <AdSense.Google
+                  client='ca-pub-7576678146235861'
+                  slot='7806394673'
+                  style={{ display: 'block' }}
+                  format='auto'
+                  responsive='true'
+                />
                 {currentQuestion}
                 <button type="button" className={"btn btn-success"+`${(parseInt(selectedQuestion) <= 1 && parseInt(selectedQuestion) > mcqQuantity) ? " disabled" : ""}`} onClick={(e)=>nextPrevQuestion("prev",e,null)}>Prev</button>
                 <button type="button" className={"btn btn-success float-right"+`${(parseInt(selectedQuestion) === mcqQuantity+1) ? " disabled" : ""}`} onClick={(e)=>nextPrevQuestion("next",e,currentCourse)}>{(parseInt(selectedQuestion) === mcqQuantity) ? " Finish" : "Next"}</button>

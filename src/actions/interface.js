@@ -66,8 +66,9 @@ export const formSubmit = (e,type,callback: null, resetToken: null) => {
               // console.log(JSON.parse(course.objFull));
 
             });
+            user.password = "";
             if(response.data.role === 1){
-              callback("admin");
+              callback("admin-login");
               user.admin = true;
               axios
                 .get(`${store.getState().apiUrl}adminCourses`)
@@ -85,6 +86,7 @@ export const formSubmit = (e,type,callback: null, resetToken: null) => {
                   });
                 });
             } else {
+              user.admin = false;
               if(courses.length > 0){
                 callback("profile");
               } else {
@@ -321,6 +323,7 @@ export const loadLoggedInUser = () => {
               courses.push({id:course.id,...course.objFull});
             }
           })
+          user.password = "";
           if(response.data.role === 1){
             user.admin = true;
             axios
@@ -338,6 +341,8 @@ export const loadLoggedInUser = () => {
                   user
                 });
               });
+          } else {
+            user.admin = false;
           }
           user.courses = courses;
         }
@@ -496,6 +501,7 @@ export const resetTest = (courseid) => {
 
 
 export const convertFileToCSV = (e) => {
+  e.preventDefault();
   return function action(dispatch) {
     const data = new FormData();
     let questions = [];
@@ -514,6 +520,7 @@ export const convertFileToCSV = (e) => {
             answer3: test[5],
             answer4: test[6],
             truthyOption: test[7],
+            explanation: test[8],
             selectedAnswer: 0
           })
         });
@@ -530,7 +537,7 @@ export const adminCourseSubmit = (e) => {
   e.preventDefault();
   return function action(dispatch) {
     let objFull = store.getState().newCourse;
-    let objMin = { id:objFull.id, name:objFull.name, price:objFull.price, currency:objFull.currency, availability:objFull.availability, duration:objFull.duration, mcqQuantity:objFull.mcqQuantity, inCart:objFull.inCart, path:objFull.path, imgSrc:objFull.imgSrc};
+    let objMin = { id:objFull.id, name:objFull.name, testCount: objFull.tests.length, price:objFull.price, currency:objFull.currency, availability:objFull.availability, duration:objFull.duration, mcqQuantity:objFull.mcqQuantity, inCart:objFull.inCart, path:objFull.path, imgSrc:objFull.imgSrc};
     axios
       .post(`${store.getState().apiUrl}saveCourse`, {
         data: JSON.stringify({
@@ -553,7 +560,7 @@ export const adminUpdateCourseSubmit = (e) => {
   e.preventDefault();
   return function action(dispatch) {
     let objFull = store.getState().newCourse;
-    let objMin = { id:objFull.id, name:objFull.name, price:objFull.price, currency:objFull.currency, availability:objFull.availability, duration:objFull.duration, mcqQuantity:objFull.mcqQuantity, inCart:objFull.inCart, path:objFull.path, imgSrc:objFull.imgSrc};
+    let objMin = { id:objFull.id, name:objFull.name, price:objFull.price, testCount: objFull.tests.length, currency:objFull.currency, availability:objFull.availability, duration:objFull.duration, mcqQuantity:objFull.mcqQuantity, inCart:objFull.inCart, path:objFull.path, imgSrc:objFull.imgSrc};
     let id = objFull.id;
     let userIds = [];
     let userCoursesObj = [];
@@ -572,6 +579,7 @@ export const adminUpdateCourseSubmit = (e) => {
           userCoursesObj.push({id:parseInt(course.id), objFull:course});
         });
         userCourses.push(userCoursesObj);
+        userCoursesObj = [];
       }
     });
     console.log(userIds);
@@ -600,6 +608,7 @@ export const adminUpdateCourseSubmit = (e) => {
 
 export const adminDeleteCourseSubmit = (e,cID) => {
   e.preventDefault();
+  console.log(cID);
   return function action(dispatch) {
     let userIds = [];
     let userCoursesObj = [];
