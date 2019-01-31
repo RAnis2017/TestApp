@@ -570,6 +570,67 @@ $app->get('/getCoupons', function (Request $request, Response $response, array $
     return $response;
 });
 
+$app->post('/saveAd', function (Request $request, Response $response, array $args) {
+    $data = json_decode($request->getParam('data'), true);
+    $client = $data['ad']['client'];
+    $slot = $data['ad']['slot'];
+
+    $sql = "INSERT INTO ad (`client`,`slot`) VALUES (:client,:slot)";
+    try {
+        $db = new db();
+        $db = $db->connect();
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(':client', $client);
+        $stmt->bindParam(':slot', $slot);
+        $stmt->execute();
+
+        $db = null;
+        $sql = "SELECT * FROM ad ORDER BY id DESC LIMIT 1";
+        try {
+            $db = new db();
+            $db = $db->connect();
+            $stmt = $db->query($sql);
+            $data = $stmt->fetchAll(PDO::FETCH_OBJ);
+            $db = null;
+            $data = json_encode($data);
+
+            $db = null;
+
+            echo '{"notice": {"text": "Ad Added"}, "success": "1", "ad": '.$data.'}';
+
+        } catch (PDOException $e) {
+          echo '{"notice": {"text": "Ad Not Added"}, "success": "0"}';
+        }
+    } catch (PDOException $e) {
+      echo '{"notice": {"text": "AD Not Added"}, "success": "0"}';
+    }
+
+    return $response;
+});
+
+$app->get('/getAd', function (Request $request, Response $response, array $args) {
+
+    $sql = "SELECT * FROM ad ORDER BY id DESC LIMIT 1";
+    try {
+        $db = new db();
+        $db = $db->connect();
+        $stmt = $db->query($sql);
+        $data = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $db = null;
+        $data = json_encode($data);
+
+        $db = null;
+
+        echo '{"notice": {"text": "Ad Retrieved"}, "success": "1", "ad": '.$data.'}';
+
+    } catch (PDOException $e) {
+      echo '{"notice": {"text": "Ad Not Retrieved"}, "success": "0"}';
+    }
+
+    return $response;
+});
+
+
 $app->post('/deleteCoupon', function (Request $request, Response $response, array $args) {
   $id = $request->getParam('id');
   $sql = "DELETE FROM coupons WHERE `id`=:id";
@@ -816,23 +877,35 @@ $app->post('/saveSetting', function (Request $request, Response $response, array
     $data = json_decode($request->getParam('data'), true);
     $initialObj = json_encode($data['obj']);
     $email = $data['obj']['email'];
-    $password = md5($data['obj']['password']);
+    if(strlen($data['obj']['password']) > 1){
+      $password = md5($data['obj']['password']);
+    } else {
+      $password = "";
+    }
     $token = $data['token'];
     $result = Token::validate($token, 'se12!@2s23!=eT423*&');
     if ($result) {
         $result = Token::getPayload($token);
         $data = json_decode($result, true);
-        $sql = "UPDATE users SET
-            `email`=:email,
-            `password`=:password,
-            `obj`=:obj WHERE id=" . $data['user_id'];
+        if(strlen($password) > 1){
+          $sql = "UPDATE users SET
+              `email`=:email,
+              `password`=:password,
+              `obj`=:obj WHERE id=" . $data['user_id'];
+        } else {
+          $sql = "UPDATE users SET
+              `email`=:email,
+              `obj`=:obj WHERE id=" . $data['user_id'];
+        }
         try {
             $db = new db();
             $db = $db->connect();
             $stmt = $db->prepare($sql);
             $stmt->bindParam(':obj', $initialObj);
             $stmt->bindParam(':email', $email);
-            $stmt->bindParam(':password', $password);
+            if(strlen($password) > 1){
+              $stmt->bindParam(':password', $password);
+            }
             $stmt->execute();
 
             $db = null;

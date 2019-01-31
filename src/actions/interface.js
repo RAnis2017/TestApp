@@ -184,7 +184,7 @@ export const userSettingSubmit = (e) => {
         })
       })
       .then(response => {
-        // console.log(response);
+        console.log(response);
         dispatch({
           type: InterfaceActionTypes.USER_SETTING_SAVE
         });
@@ -249,6 +249,26 @@ export const adminCouponSubmit = (e) => {
   }
 }
 
+export const adminAdSubmit = (e) => {
+  e.preventDefault();
+  return function action(dispatch) {
+    let ad = store.getState().ad;
+    axios
+      .post(`${store.getState().apiUrl}saveAd`, {
+        data: JSON.stringify({
+          ad
+        })
+      })
+      .then(response => {
+        console.log(response);
+        dispatch({
+          type: InterfaceActionTypes.SAVE_AD,
+          ad: response.data.ad[0]
+        });
+      });
+  }
+}
+
 export const adminCouponDelete = (e,id) => {
   e.preventDefault();
   return function action(dispatch) {
@@ -295,6 +315,19 @@ export const loadCoupons = () => {
         dispatch({
           type: InterfaceActionTypes.GET_COUPONS,
           coupons: response.data.coupons
+        });
+      });
+  }
+}
+
+export const loadAd = () => {
+  return function action(dispatch) {
+    axios
+      .get(`${store.getState().apiUrl}getAd`)
+      .then(response => {
+        dispatch({
+          type: InterfaceActionTypes.GET_AD,
+          ad: response.data.ad[0]
         });
       });
   }
@@ -464,6 +497,12 @@ export const keyPressedOnForm = (type,e) => {
 } else if(type.includes("coupon-")) {
    return {
      type: InterfaceActionTypes.TYPING_COUPON,
+     value: e.target.value,
+     propertyType: type
+   };
+} else if(type.includes("ad-")) {
+   return {
+     type: InterfaceActionTypes.TYPING_AD,
      value: e.target.value,
      propertyType: type
    };

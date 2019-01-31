@@ -41,6 +41,7 @@ class Website extends Component {
     const loadUsers = bindActionCreators(InterfaceActionCreators.usersListGet, dispatch);
     const loadPosts = bindActionCreators(InterfaceActionCreators.loadPosts, dispatch);
     const loadCoupons = bindActionCreators(InterfaceActionCreators.loadCoupons, dispatch);
+    const loadAd = bindActionCreators(InterfaceActionCreators.loadAd, dispatch);
     const signOut = bindActionCreators(InterfaceActionCreators.signOut, dispatch);
 
     loadLoggedInUser();
@@ -48,7 +49,7 @@ class Website extends Component {
     loadUsers();
     loadPosts();
     loadCoupons();
-
+    loadAd();
     this.setState({...this.state, signOut: signOut});
   }
   handleStyleButtonClick = () => {
@@ -88,6 +89,8 @@ class Website extends Component {
       this.setState({...this.state, currentAdminTab: 4});
     } else if (type === "settings") {
       this.setState({...this.state, currentAdminTab: 5});
+    } else if (type === "ad-settings") {
+      this.setState({...this.state, currentAdminTab: 6});
     }
   }
   render() {

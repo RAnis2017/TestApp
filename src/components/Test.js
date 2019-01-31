@@ -5,13 +5,14 @@ import { connect } from 'react-redux';
 import * as InterfaceActionCreators from '../actions/interface';
 import { Link } from 'react-router-dom'
 import Timer from './Timer';
+import Ad from './Ad';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import axios from "axios";
 import AdSense from 'react-adsense';
 
 const Test = (props) => {
 
-    const { dispatch, loggedInUser, selectedQuestion, apiUrl, markedForReview} = props;
+    const { dispatch, loggedInUser, selectedQuestion, apiUrl, markedForReview, ad} = props;
     const selectQuestion = bindActionCreators(InterfaceActionCreators.selectQuestion, dispatch);
     const selectAnswer = bindActionCreators(InterfaceActionCreators.selectAnswer, dispatch);
     const timeOver = bindActionCreators(InterfaceActionCreators.timeOver, dispatch);
@@ -121,13 +122,7 @@ const Test = (props) => {
                   </div>
                 </div>
                 <hr />
-                <AdSense.Google
-                  client='ca-pub-7576678146235861'
-                  slot='7806394673'
-                  style={{ display: 'block' }}
-                  format='auto'
-                  responsive='true'
-                />
+                <Ad ad={ad}/>
                 {currentQuestion}
                 <button type="button" className={"btn btn-success"+`${(parseInt(selectedQuestion) <= 1 && parseInt(selectedQuestion) > mcqQuantity) ? " disabled" : ""}`} onClick={(e)=>nextPrevQuestion("prev",e,null)}>Prev</button>
                 <button type="button" className={"btn btn-success float-right"+`${(parseInt(selectedQuestion) === mcqQuantity+1) ? " disabled" : ""}`} onClick={(e)=>nextPrevQuestion("next",e,currentCourse)}>{(parseInt(selectedQuestion) === mcqQuantity) ? " Finish" : "Next"}</button>
@@ -144,6 +139,7 @@ Test.propTypes = {
   selectedQuestion: PropTypes.number.isRequired,
   apiUrl: PropTypes.string.isRequired,
   markedForReview: PropTypes.array.isRequired,
+  ad: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = state => (
@@ -152,6 +148,7 @@ const mapStateToProps = state => (
     selectedQuestion: state.selectedQuestion,
     apiUrl: state.apiUrl,
     markedForReview: state.markedForReview,
+    ad: state.ad,
   }
 );
 

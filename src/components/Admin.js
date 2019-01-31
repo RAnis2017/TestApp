@@ -7,11 +7,12 @@ import AdminPosts from './AdminPosts';
 import UserSettings from './UserSettings';
 import AdminCoupons from './AdminCoupons';
 import AdminEditCourses from './AdminEditCourses';
+import AdSettings from './AdSettings';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 const Admin = (props) => {
     const { dispatch, loggedInUser } = props;
-    
+
     if(loggedInUser.admin !== true){
       props.history.push('/');
     }
@@ -37,6 +38,7 @@ const Admin = (props) => {
                 <a className="nav-link active" href="#" onClick={()=>props.changeTab("add-posts")}><i className="fas fa-book"></i> Add Posts</a>
                 <a className="nav-link" href="#" onClick={()=>props.changeTab("add-coupons")}><i className="fas fa-book"></i> Add Coupons</a>
                 <a className="nav-link" href="#" onClick={()=>props.changeTab("settings")}><i className="fas fa-cog"></i> Settings</a>
+                <a className="nav-link" href="#" onClick={()=>props.changeTab("ad-settings")}><i className="fas fa-cog"></i> Ad Settings</a>
                 <a className="nav-link" href="#" onClick={()=>props.theme()}><i className="fas fa-brush"></i> Change Theme to {props.currentTheme === "Light" ? "Night" : "Light"}</a>
                 <a className="nav-link" href="#" onClick={()=>props.signOut(()=>props.history.push('/'))}><i className="fas fa-sign-out-alt"></i> Sign Out</a>
               </nav>
@@ -44,7 +46,7 @@ const Admin = (props) => {
             <div className="col-sm-12 col-lg-9">
               <div className="tab">
               {
-                (props.currentTab == 1) ? <AdminCourses /> : (props.currentTab == 2) ? <AdminEditCourses /> : (props.currentTab == 3) ? <AdminPosts /> : (props.currentTab == 4) ? <AdminCoupons /> : <UserSettings />
+                (props.currentTab == 1) ? <AdminCourses /> : (props.currentTab == 2) ? <AdminEditCourses /> : (props.currentTab == 3) ? <AdminPosts /> : (props.currentTab == 4) ? <AdminCoupons /> : (props.currentTab == 5) ? <UserSettings /> : <AdSettings />
               }
               </div>
             </div>

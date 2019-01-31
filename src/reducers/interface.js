@@ -3,7 +3,7 @@ import axios from "axios";
 import md5 from "md5";
 
 const initialState = {
-  apiUrl: "http://localhost:80/vinodkatrelaapi/public/", // localhost:80 genesishexdevs.com
+  apiUrl: "http://genesishexdevs.com/vinodkatrelaapi/public/", // localhost:80 genesishexdevs.com
   selectedForm: "LOGIN",
   loggedInUser: {email: "", name: "", password: "", courses: []},
   signupDone: false,
@@ -30,6 +30,11 @@ const initialState = {
   coupons: [],
   postSaved: false,
   couponSaved: false,
+  adSaved: false,
+  ad: {
+    client: "",
+    slot: "",
+  },
   newTest: {
     name: "",
     availability: "",
@@ -169,7 +174,8 @@ export default function Interface(state=initialState, action) {
     case InterfaceActionTypes.EDIT_CONFIRM_PASSWORD: {
           return {
             ...state,
-    				confirmPassword: action.value
+    				confirmPassword: action.value,
+            loggedInUser: {...state.loggedInUser, password: action.value }
     		 	};
 	 	}
     case InterfaceActionTypes.EDIT_TYPING_PASSWORD: {
@@ -232,6 +238,19 @@ export default function Interface(state=initialState, action) {
     				newCoupon: {},
             coupons: action.coupons,
             couponSaved: true,
+    		 	};
+	 	}
+    case InterfaceActionTypes.SAVE_AD: {
+          return {
+            ...state,
+            ad: action.ad,
+            adSaved: true,
+    		 	};
+	 	}
+    case InterfaceActionTypes.GET_AD: {
+          return {
+            ...state,
+            ad: action.ad,
     		 	};
 	 	}
     case InterfaceActionTypes.GET_POSTS: {
@@ -512,6 +531,15 @@ export default function Interface(state=initialState, action) {
           return {
             ...state,
             newPost
+          };
+	 	}
+    case InterfaceActionTypes.TYPING_AD: {
+          let ad = state.ad;
+          ad[action.propertyType.split("-")[1]] = action.value;
+
+          return {
+            ...state,
+            ad
           };
 	 	}
     case InterfaceActionTypes.TYPING_COUPON: {

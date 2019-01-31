@@ -51,3 +51,6 @@ export const GET_COUPONS = 'interface/GET_COUPONS';
 export const TYPING_COUPON_CODE = 'interface/TYPING_COUPON_CODE';
 export const CHECK_COUPON_CODE = 'interface/CHECK_COUPON_CODE';
 export const CHECK_TOTAL = 'interface/CHECK_TOTAL';
+export const TYPING_AD = 'interface/TYPING_AD';
+export const SAVE_AD = 'interface/SAVE_AD';
+export const GET_AD = 'interface/GET_AD';
