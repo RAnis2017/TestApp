@@ -35,6 +35,27 @@ const Header = (props) => {
                         className="nav-link"> Home
                 </NavLink>
               </li>
+              {(loggedInUser.name.length < 1) ?
+                null
+                : (!loggedInUser.admin) ?
+                  <li className="nav-item">
+                    <NavLink
+                            exact
+                            to="/dashboard"
+                            activeClassName="active"
+                            className="nav-link"> Dashboard
+                    </NavLink>
+                  </li>
+                  :
+                  <li className="nav-item">
+                    <NavLink
+                            exact
+                            to="/admin-login"
+                            activeClassName="active"
+                            className="nav-link"> Admin
+                    </NavLink>
+                  </li>
+              }
               <li className="nav-item">
                 <NavLink
                         exact
@@ -76,24 +97,7 @@ const Header = (props) => {
                           className="nav-link"> SignIn/SignUp
                   </NavLink>
                 </li>
-                : (!loggedInUser.admin) ?
-                  <li className="nav-item">
-                    <NavLink
-                            exact
-                            to="/profile"
-                            activeClassName="active"
-                            className="nav-link"> Profile
-                    </NavLink>
-                  </li>
-                  :
-                  <li className="nav-item">
-                    <NavLink
-                            exact
-                            to="/admin-login"
-                            activeClassName="active"
-                            className="nav-link"> Admin
-                    </NavLink>
-                  </li>
+                : null
               }
               {(loggedInUser.name.length < 1) ?
               ""

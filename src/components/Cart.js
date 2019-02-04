@@ -12,8 +12,10 @@ const Cart = (props) => {
   const removeCartItem = bindActionCreators(InterfaceActionCreators.removeCartItem, dispatch);
 
   let ItemsJSX;
+  let inCartCount = 0;
   ItemsJSX = courses.map((course,index)=>{
       if(course.inCart){
+        inCartCount++;
         return (
           <li key={index}>
             <div className="cartItemLink">
@@ -58,9 +60,13 @@ const Cart = (props) => {
               </ul>
             </div>
           </div>
-          <Link className="btn btn-primary heading-min float-right" to="/checkout">
-            Checkout
-          </Link>
+          {(inCartCount > 0) ?
+            <Link className="btn btn-primary heading-min float-right" to="/checkout">
+              Checkout
+            </Link>
+            :
+            ""
+          }
         </div>
         </ReactCSSTransitionGroup>
       </div>

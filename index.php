@@ -248,7 +248,7 @@ $app->post('/login', function (Request $request, Response $response, array $args
           $date = date('Y-m-d H:i:s', strtotime('+1 day', $startDate));
 
           $token = Token::getToken('' . $decoded[0]['id'], 'se12!@2s23!=eT423*&', $date, 'razaanis');
-          echo '{"notice": {"text": "User Logged In"}, "id": ' . $decoded[0]['id'] . ', "success": "1", "user": ' . $data . ', "role": ' . $decoded[0]['role'] . ', "courses": '. $decoded[0]['coursesObj'] .' ,"token":"' . $token . '"}';
+          echo '{"notice": {"text": "User Authenticated"}, "success": "1", "user": ' . $data . ', "role": ' . $decoded[0]['role'] . ', "courseIds": "'.$decoded[0]['courses'].'", "courses": '. $decoded[0]['coursesObj'] .', "token": "'.$token.'"}';
         } else {
           echo '{"notice": {"text": "User Not Logged In"}, "success": "0"}';
         }
@@ -281,7 +281,7 @@ $app->post('/authenticate', function (Request $request, Response $response, arra
             $date = date('Y-m-d H:i:s', strtotime('+1 day', $startDate));
 
             $token = Token::getToken('' . $decoded[0]['id'], 'se12!@2s23!=eT423*&', $date, 'razaanis');
-            echo '{"notice": {"text": "User Authenticated"}, "success": "1", "user": ' . $data . ', "role": ' . $decoded[0]['role'] . ', "courses": '. $decoded[0]['coursesObj'] .'}';
+            echo '{"notice": {"text": "User Authenticated"}, "success": "1", "user": ' . $data . ', "role": ' . $decoded[0]['role'] . ', "courseIds": "'.$decoded[0]['courses'].'", "courses": '. $decoded[0]['coursesObj'] .'}';
 
         } catch (PDOException $e) {
             echo '{"error":{"text": ' . $e->getMessage() . '}}';
@@ -847,13 +847,13 @@ $app->post('/coursesBought', function (Request $request, Response $response, arr
     if ($result) {
         $result = Token::getPayload($token);
         $data = json_decode($result, true);
-        $sql = "UPDATE users SET
-            `courses`=:courses, `coursesObj`=:cObj WHERE id=" . $data['user_id'];
+        // $sql = "UPDATE users SET
+        //     `courses`=:courses, `coursesObj`=:cObj WHERE id=" . $data['user_id'];
+        $sql = "UPDATE users SET `coursesObj`=:cObj WHERE id=" . $data['user_id'];
         try {
             $db = new db();
             $db = $db->connect();
             $stmt = $db->prepare($sql);
-            $stmt->bindParam(':courses', $completeids);
             $stmt->bindParam(':cObj', $courses);
             $stmt->execute();
 
@@ -921,5 +921,62 @@ $app->post('/saveSetting', function (Request $request, Response $response, array
     return $response;
 });
 
+$app->post('/instaCheckout', function (Request $request, Response $response, array $args) {
+    $purpose =  $request->getParam('purpose');
+    $price =   $request->getParam('price');
+    $email =   $request->getParam('email');
+    $courseIds =   $request->getParam('courseIds');
+    $id =   $request->getParam('id');
+
+    $api = new Instamojo\Instamojo("test_8734e964df9b08e6c7718480c55", "test_86d9be9ae36ecd8cda07d4ac173", 'https://test.instamojo.com/api/1.1/');
+    $startDate = time();
+
+    $date = date('Y-m-d H:i:s', strtotime('+30 day', $startDate));
+
+    $token = Token::getToken('' . $id, 'se12!@2s23!=eT423*&', $date, 'razaanis');
+    try {
+        $res = $api->paymentRequestCreate(array(
+              "purpose" => $purpose,
+              "amount" => $price,
+              "send_email" => true,
+              "email" => $email,
+              "redirect_url" => "http://www.genesishexdevs.com/vinodkatrelaapi/public/confirm-course-bought/".$token."/".$courseIds."/"
+              ));
+        echo '{"notice": {"text": "Course Buy Link Sent"}, "success": "1"}';
+    }
+    catch (Exception $e) {
+        print('Error: ' . $e->getMessage());
+    }
+    return $response;
+});
+
+$app->get('/confirm-course-bought/{token}/{courseIds}/{extra}', function (Request $request, Response $response, array $args) {
+    $token = $request->getAttribute('token');
+    $courseIds = $request->getAttribute('courseIds');
+
+    $result = Token::validate($token, 'se12!@2s23!=eT423*&');
+    if ($result) {
+        $result = Token::getPayload($token);
+        $data = json_decode($result, true);
+
+        $sql = "UPDATE users SET
+            `courses`= CONCAT(`courses`, $courseIds) WHERE id=" . $data['user_id'];
+        try {
+            $db = new db();
+            $db = $db->connect();
+            $stmt = $db->query($sql);
+            $stmt->execute();
+            $db = null;
+            echo '<h3>Courses Bought Confirmed. Please visit your dashboard to see them. If any issues contact us.</a>';
+
+        } catch (PDOException $e) {
+            echo '{"error":{"text": ' . $e->getMessage() . '}}';
+        }
+
+    } else {
+        echo '{"notice": {"text": "User Not Authenticated"}, "success": "0"}';
+    }
+    return $response;
+});
 
 $app->run();

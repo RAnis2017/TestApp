@@ -3,7 +3,7 @@ import axios from "axios";
 import md5 from "md5";
 
 const initialState = {
-  apiUrl: "http://genesishexdevs.com/vinodkatrelaapi/public/", // localhost:80 genesishexdevs.com
+  apiUrl: "http://localhost:80/vinodkatrelaapi/public/", // localhost:80 genesishexdevs.com
   selectedForm: "LOGIN",
   loggedInUser: {email: "", name: "", password: "", courses: []},
   signupDone: false,
@@ -31,6 +31,7 @@ const initialState = {
   postSaved: false,
   couponSaved: false,
   adSaved: false,
+  instaMojoDone: false,
   ad: {
     client: "",
     slot: "",
@@ -145,7 +146,8 @@ export default function Interface(state=initialState, action) {
 	 	}
     case InterfaceActionTypes.MARK_REVIEW: {
           let markedForReview = state.markedForReview;
-          if (!markedForReview.includes(action.qID)) { markedForReview.push(action.qID) }
+          if (markedForReview.includes(action.qID)) { markedForReview = markedForReview.filter(e => e !== action.qID); }
+          else { markedForReview.push(action.qID) }
           let courses = state.loggedInUser.courses.map((outerCourse)=>{
             outerCourse.tests.map((course)=>{
 
@@ -289,6 +291,13 @@ export default function Interface(state=initialState, action) {
     				newTest
     		 	};
 	 	}
+    case InterfaceActionTypes.INSTA_CHECKOUT: {
+
+          return {
+            ...state,
+            instaMojoDone: true
+    		 	};
+	 	}
     case InterfaceActionTypes.DELETE_COURSE: {
 
           return {
@@ -400,11 +409,31 @@ export default function Interface(state=initialState, action) {
               if(course.id === action.courseid){
                 course.questions.map((question)=>{
                     if(question.id === action.qid){
-                      question.selectedAnswer = `${action.ansid}`;
-                      if(question.selectedAnswer === question.truthyOption){
-                        course.lastCorrect++;
+                      if(question.selectedAnswer === 0){
+                        question.selectedAnswer = `${action.ansid}`;
+                        if(question.selectedAnswer === question.truthyOption.replace(" ","")){
+                          course.lastCorrect++;
+                          console.log("INCREMENTED ",course.lastCorrect);
+                        } else {
+                          course.lastIncorrect++;
+                          console.log("DECREMENTED ",course.lastIncorrect);
+                        }
+                      } else if (question.selectedAnswer === `${action.ansid}`) {
+                        question.selectedAnswer = `${action.ansid}`;
                       } else {
-                        course.lastIncorrect++;
+                        if(question.selectedAnswer === question.truthyOption.replace(" ","") && `${action.ansid}` !== question.truthyOption.replace(" ","")){
+                          question.selectedAnswer = `${action.ansid}`;
+                          course.lastCorrect--;
+                          console.log("DECREMENTED ",course.lastCorrect);
+                          course.lastIncorrect++;
+                          console.log("INCREMENTED ",course.lastIncorrect);
+                        } else if (question.selectedAnswer !== question.truthyOption.replace(" ","") && `${action.ansid}` === question.truthyOption.replace(" ","")) {
+                          question.selectedAnswer = `${action.ansid}`;
+                          course.lastIncorrect--;
+                          console.log("DECREMENTED ",course.lastIncorrect);
+                          course.lastCorrect++;
+                          console.log("INCREMENTED ",course.lastCorrect);
+                        }
                       }
                       course.lastScore = (course.lastCorrect/course.mcqQuantity) * 100;
                       if(course.firstTimeCorrect === 0){

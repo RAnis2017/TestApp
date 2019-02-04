@@ -50,7 +50,7 @@ const Test = (props) => {
                 return (
                   <div key={key}>
                     <Timer timeOver={timeOver} path={path} loggedInUser={loggedInUser} testId={currentCourse}/>
-                    <h3  className="question">Q: {question.question} <a href="#" className="btn btn-info font-secondary" onClick={(e)=>markForReview(e,question.id)}>{(markedForReview.includes(question.id)) ? "Marked" : "Mark for Review"}</a></h3>
+                    <h3  className="question">Q: {question.question} <a href="#" className="btn btn-info font-secondary" onClick={(e)=>markForReview(e,question.id)}>{(markedForReview.includes(question.id)) ? "Un-Mark" : "Mark for Review"}</a></h3>
                     <hr />
                     <h5>Select Correct Answer:</h5>
                     {/*<h6 className={`${(question.selectedAnswer != question.truthyOption && question.selectedAnswer != 0) ? "wrong" : "not-visible"}`}>Wrong Answer</h6>*/}
@@ -114,7 +114,7 @@ const Test = (props) => {
                       <button type="button" className="btn btn-success">Attempted</button>
                     </div>
                     <div className="col-sm-4 col-lg-4 m-auto">
-                      <button type="button" className="btn btn-warning">Un-Attempted</button>
+                      <button type="button" className="btn unattemptedBg">Un-Attempted</button>
                     </div>
                     <div className="col-sm-4 col-lg-4 m-auto">
                       <button type="button" className="btn btn-info">Marked For Review</button>

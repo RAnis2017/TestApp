@@ -56,12 +56,18 @@ export const formSubmit = (e,type,callback: null, resetToken: null) => {
           if(response.data.success !== "0"){
             localStorage.setItem('genhex-auth-token', response.data.token);
             user = JSON.parse(response.data.user[0].obj);
+            user.id = JSON.parse(response.data.user[0].id);
+
             response.data.courses.map((course)=>{
               if (typeof course.objFull === 'string' || course.objFull instanceof String){
-                courses.push({id:parseInt(course.id),...JSON.parse(course.objFull)});
+                if(response.data.courseIds.includes(parseInt(course.id))){
+                  courses.push({id:parseInt(course.id),...JSON.parse(course.objFull)});
+                }
               }
               else {
-                courses.push({id:course.id,...course.objFull});
+                if(response.data.courseIds.includes(course.id)){
+                  courses.push({id:course.id,...course.objFull});
+                }
               }
               // console.log(JSON.parse(course.objFull));
 
@@ -88,7 +94,7 @@ export const formSubmit = (e,type,callback: null, resetToken: null) => {
             } else {
               user.admin = false;
               if(courses.length > 0){
-                callback("profile");
+                callback("dashboard");
               } else {
                 callback("courses");
               }
@@ -286,6 +292,26 @@ export const adminCouponDelete = (e,id) => {
   }
 }
 
+export const instaCheckout = (e,purpose,price,email,courseIds,callback: null) => {
+  e.preventDefault();
+  return function action(dispatch) {
+    console.log(purpose+" "+price);
+    axios
+      .post(`${store.getState().apiUrl}instaCheckout`, {
+        purpose,
+        price,
+        email,
+        courseIds
+      })
+      .then(response => {
+        console.log(response);
+        dispatch({
+          type: InterfaceActionTypes.INSTA_CHECKOUT,
+        });
+      });
+  }
+}
+
 export const checkCouponCode = (e) => {
   e.preventDefault();
   return function action(dispatch) {
@@ -348,12 +374,17 @@ export const loadLoggedInUser = () => {
         console.log(response);
         if(response.data.success !== "0"){
           user = JSON.parse(response.data.user[0].obj);
+          user.id = JSON.parse(response.data.user[0].id);
           response.data.courses.map((course)=>{
             if (typeof course.objFull === 'string' || course.objFull instanceof String){
-              courses.push({id:parseInt(course.id),...JSON.parse(course.objFull)});
+              if(response.data.courseIds.includes(parseInt(course.id))){
+                courses.push({id:parseInt(course.id),...JSON.parse(course.objFull)});
+              }
             }
             else {
-              courses.push({id:course.id,...course.objFull});
+              if(response.data.courseIds.includes(course.id)) {
+                courses.push({id:course.id,...course.objFull});
+              }
             }
           })
           user.password = "";

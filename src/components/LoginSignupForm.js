@@ -66,15 +66,22 @@ const Form = (props) => {
               </form>;
     }
     return(
-          <div>
-            <div className="loginChoiceDiv text-center">
-              <div className="btn-group " role="group" aria-label="Basic example">
-                <button type="button" className={`btn btn-secondary heading-min ${(selectedForm==="LOGIN")?" active":""}`} onClick={()=>changeForm("login")}>LOGIN</button>
-                <button type="button" className={`btn btn-secondary heading-min ${(selectedForm==="SIGNUP")?" active":""}`} onClick={()=>changeForm("signup")}>SIGNUP</button>
+
+            <div>
+            { (loggedInUser.name.length < 1) ?
+              <div>
+                <div className="loginChoiceDiv text-center">
+                  <div className="btn-group " role="group" aria-label="Basic example">
+                    <button type="button" className={`btn btn-secondary heading-min ${(selectedForm==="LOGIN")?" active":""}`} onClick={()=>changeForm("login")}>LOGIN</button>
+                    <button type="button" className={`btn btn-secondary heading-min ${(selectedForm==="SIGNUP")?" active":""}`} onClick={()=>changeForm("signup")}>SIGNUP</button>
+                  </div>
+                </div>
+                {formJSX}
               </div>
-            </div>
-            {formJSX}
+                : ""
+            }
           </div>
+
         );
 }
 

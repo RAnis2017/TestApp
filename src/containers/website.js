@@ -107,7 +107,7 @@ class Website extends Component {
           <Route path="/checkout" component={Checkout} />
           <Route path="/cart" component={Cart} />
           <Route path="/password-reset/:token" component={ResetPassword} />
-          <Route path="/profile"  render={(props) => (this.state.loggedIn) ? <Profile {...props} signOut={this.state.signOut} changeTab={this.changeTab} currentTab={this.state.currentTab} path={this.state.path} theme={this.handleStyleButtonClick} currentTheme={this.state.style}/> : <Redirect to="/"/>}/>
+          <Route path="/dashboard"  render={(props) => (this.state.loggedIn) ? <Profile {...props} signOut={this.state.signOut} changeTab={this.changeTab} currentTab={this.state.currentTab} path={this.state.path} theme={this.handleStyleButtonClick} currentTheme={this.state.style}/> : <Redirect to="/"/>}/>
           <Route path="/admin-login"  render={(props) => (this.state.loggedIn) ? <Admin {...props} signOut={this.state.signOut} changeTab={this.changeAdminTab} currentTab={this.state.currentAdminTab} theme={this.handleStyleButtonClick} currentTheme={this.state.style}/> : <Redirect to="/"/>}/>
           <Footer />
         </div>

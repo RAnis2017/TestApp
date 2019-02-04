@@ -42,7 +42,7 @@ const Test = (props) => {
         </div>
         <div className="container fullview">
           <hr />
-          <Link className="btn btn-primary" to={`/profile`}>Go Back!</Link>
+          <Link className="btn btn-primary" to={`/dashboard`}>Go Back!</Link>
           <div className="row test-content">
             <div className="col-sm-12 col-lg-12">
               <div className="tab">

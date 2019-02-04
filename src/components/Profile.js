@@ -18,7 +18,7 @@ const Profile = (props) => {
         transitionAppearTimeout={600}
         transitionEnterTimeout={600}
         transitionLeaveTimeout={200}
-        transitionName={props.match.path === '/profile' ? 'SlideIn' : 'SlideOut'}
+        transitionName={props.match.path === '/dashboard' ? 'SlideIn' : 'SlideOut'}
       >
         <div className="hero-sm-profile">
             <div className="row justify-content-center fullview-sm">

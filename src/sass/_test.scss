@@ -25,6 +25,9 @@
     .unattempted {
       color: $wrong-ans;
     }
+    .unattemptedBg {
+      background-color: $wrong-ans;
+    }
     .marked {
       color: $marked;
     }
