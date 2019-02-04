@@ -5,6 +5,9 @@ import Footer from '../components/Footer';
 import Home from '../components/Home';
 import Profile from '../components/Profile';
 import Courses from '../components/Courses';
+import Contact from '../components/Contact';
+import Privacy from '../components/Privacy';
+import NotFound from '../components/404';
 import Test from '../components/Test';
 import TestReview from '../components/TestReview';
 import TestReviewPdf from '../components/TestReviewPdf';
@@ -18,7 +21,8 @@ import * as InterfaceActionCreators from '../actions/interface';
 import {
   BrowserRouter,
   Route,
-  Redirect
+  Redirect,
+  Switch
 } from 'react-router-dom';
 
 class Website extends Component {
@@ -98,17 +102,22 @@ class Website extends Component {
       <BrowserRouter>
         <div className="app">
           <link href={`${this.state.styleVar}`} rel="stylesheet" />
-          <Route path="/" render={(props) => <Header {...props}/>}/>
-          <Route exact path="/" render={Home} />
-          <Route exact path="/courses" render={Courses} />
-          <Route path="/courses/:path" component={Test} />
-          <Route path="/testreview/:path" component={TestReview} />
-          <Route path="/testreviewpdf/:path" component={TestReviewPdf} />
-          <Route path="/checkout" component={Checkout} />
-          <Route path="/cart" component={Cart} />
-          <Route path="/password-reset/:token" component={ResetPassword} />
-          <Route path="/dashboard"  render={(props) => (this.state.loggedIn) ? <Profile {...props} signOut={this.state.signOut} changeTab={this.changeTab} currentTab={this.state.currentTab} path={this.state.path} theme={this.handleStyleButtonClick} currentTheme={this.state.style}/> : <Redirect to="/"/>}/>
-          <Route path="/admin-login"  render={(props) => (this.state.loggedIn) ? <Admin {...props} signOut={this.state.signOut} changeTab={this.changeAdminTab} currentTab={this.state.currentAdminTab} theme={this.handleStyleButtonClick} currentTheme={this.state.style}/> : <Redirect to="/"/>}/>
+          <Route path="/" render={(props) => {return (<Header {...props}/>);}}/>
+          <Switch>
+            <Route exact path="/" render={Home} />
+            <Route exact path="/courses" render={Courses} />
+            <Route exact path="/contact" render={Contact} />
+            <Route exact path="/privacypolicy" render={Privacy} />
+            <Route path="/courses/:path" component={Test} />
+            <Route path="/testreview/:path" component={TestReview} />
+            <Route path="/testreviewpdf/:path" component={TestReviewPdf} />
+            <Route path="/checkout" component={Checkout} />
+            <Route path="/cart" component={Cart} />
+            <Route path="/password-reset/:token" component={ResetPassword} />
+            <Route path="/dashboard"  render={(props) => (this.state.loggedIn) ? <Profile {...props} signOut={this.state.signOut} changeTab={this.changeTab} currentTab={this.state.currentTab} path={this.state.path} theme={this.handleStyleButtonClick} currentTheme={this.state.style}/> : <Redirect to="/"/>}/>
+            <Route path="/admin-login"  render={(props) => (this.state.loggedIn) ? <Admin {...props} signOut={this.state.signOut} changeTab={this.changeAdminTab} currentTab={this.state.currentAdminTab} theme={this.handleStyleButtonClick} currentTheme={this.state.style}/> : <Redirect to="/"/>}/>
+            <Route component={NotFound} />
+          </Switch>
           <Footer />
         </div>
       </BrowserRouter>

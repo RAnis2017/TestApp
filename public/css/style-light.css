@@ -103,8 +103,10 @@
   background-position: center;
   background-attachment: fixed;
 }
+.hero-bg-404 {
+  min-height: 100vh;
+}
 .hero-sm {
-  max-height: 30vh;
   background-image: url("../images/courses-banner-small.png");
   background-repeat: no-repeat;
   background-size: cover;
@@ -113,6 +115,20 @@
 .hero-sm-profile {
   max-height: 30vh;
   background-image: url("../images/profileImg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+.hero-sm-contact {
+  max-height: 60vh;
+  background-image: url("../images/contactpage_art.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+.hero-sm-privacy {
+  max-height: 60vh;
+  background-image: url("../images/privacy.jpeg");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -134,12 +150,15 @@ h1 {
 .fullview-sm {
   min-height: 30vh;
 }
+.fullview-md {
+  min-height: 60vh;
+}
 
 .heading-max {
-  font-size: 4.8em;
+  font-size: 4.8rem;
 }
 .heading-min {
-  font-size: 1.8em;
+  font-size: 1.8rem;
 }
 
 .font-primary {

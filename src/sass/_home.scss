@@ -14,9 +14,12 @@
       background-position: center;
       background-attachment: fixed;
     }
+    &-404{
+      @include fullscreendiv;
+
+    }
   }
   &-sm{
-    max-height: 30vh;
     background-image: url('../images/courses-banner-small.png');
     background-repeat: no-repeat;
     background-size: cover;
@@ -24,6 +27,20 @@
     &-profile{
       max-height: 30vh;
       background-image: url('../images/profileImg.jpg');
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+    }
+    &-contact{
+      max-height: 60vh;
+      background-image: url('../images/contactpage_art.png');
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+    }
+    &-privacy{
+      max-height: 60vh;
+      background-image: url('../images/privacy.jpeg');
       background-repeat: no-repeat;
       background-size: cover;
       background-position: center;
@@ -48,13 +65,16 @@ h1 {
   &-sm{
     min-height: 30vh;
   }
+  &-md{
+    min-height: 60vh;
+  }
 }
 .heading {
   &-max{
-    font-size: 4.8em;
+    font-size: 4.8rem;
   }
   &-min{
-    font-size: 1.8em;
+    font-size: 1.8rem;
   }
 }
 .font {
