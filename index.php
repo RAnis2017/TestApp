@@ -762,7 +762,7 @@ $app->post('/updateCourse', function (Request $request, Response $response, arra
               echo '{"error":{"text": ' . $e->getMessage() . '}}';
           }
         }
-        echo '{"notice": {"text": "Course Updated"}}';
+        echo '{"notice": {"text": "Course Updated"}, "success": "1"}';
     } catch (PDOException $e) {
         echo '{"error":{"text": ' . $e->getMessage() . '}}';
     }

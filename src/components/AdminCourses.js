@@ -81,6 +81,10 @@ const AdminCourses = (props) => {
                 <label htmlFor="questions">Test Questions CSV File</label>
                 <input type="file" className="form-control" id="questions" aria-describedby="questions" placeholder="Enter Test Questions" defaultValue={newTest.file} onChange={(e)=>convertFileToCSV(e)}/>
               </div>
+              <div className="form-group">
+                <label htmlFor="marks">Total Marks Per Question</label>
+                <input type="number" className="form-control" id="marks" aria-describedby="marks" placeholder="Enter Test Total Marks" defaultValue={newTest.marksPerQuestion} onChange={(e)=>keyPressedOnForm("test-marksPerQuestion",e)}/>
+              </div>
             </div>
             <div className="col-sm-12 col-lg-6">
               <div className="form-group">
@@ -102,6 +106,10 @@ const AdminCourses = (props) => {
                   <option value="no">No</option>
                   <option value="yes">Yes</option>
                 </select>
+              </div>
+              <div className="form-group">
+                <label htmlFor="negmarks">Negative marks in Decimal Points (eg: 0.33)</label>
+                <input type="number" step="0.01" min="0" className="form-control" id="negmarks" aria-describedby="negmarks" placeholder="Negative Marking" defaultValue={newTest.negMarking} onChange={(e)=>keyPressedOnForm("test-negMarking",e)}/>
               </div>
             </div>
           </div>

@@ -447,6 +447,7 @@ export const addCartItem = (id) => {
 };
 export const addTest = (e) => {
   e.preventDefault();
+  alert("Test is Changed");
   return {
     type: InterfaceActionTypes.ADD_TEST,
   };
@@ -617,10 +618,14 @@ export const adminCourseSubmit = (e) => {
       })
       .then(response => {
         console.log(response);
-
+        let success = false;
+        if(response.data.success === "1"){
+          success = true;
+          alert("Course is Saved");
+        }
         dispatch({
           type: InterfaceActionTypes.SAVE_COURSE,
-          success: response.data.success
+          success
         });
       });
 
@@ -636,11 +641,12 @@ export const adminUpdateCourseSubmit = (e) => {
     let userCoursesObj = [];
     let userCourses = [];
     store.getState().users.map((user)=>{
-      user.courses.map((course)=>{
+      user.courses = user.courses.map((course)=>{
         if(parseInt(course.id) === id){
           userIds.push(parseInt(user.id));
           course = objFull;
         }
+        return course;
       });
     });
     store.getState().users.map((user)=>{
@@ -666,10 +672,14 @@ export const adminUpdateCourseSubmit = (e) => {
       })
       .then(response => {
         console.log(response);
-
+        let success = false;
+        if(response.data.success === "1"){
+          success = true;
+          alert("Course is Updated");
+        }
         dispatch({
           type: InterfaceActionTypes.UPDATE_COURSE,
-          success: response.data.success
+          success
         });
       });
 

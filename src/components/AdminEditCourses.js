@@ -9,7 +9,7 @@ import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css' // Import css
 
 const AdminEditCourses = (props) => {
-    const { dispatch, loggedInUser, newCourse, newTest, courseSaved } = props;
+    const { dispatch, loggedInUser, newCourse, newTest, courseSaved, isTestUpdating } = props;
     const adminUpdateCourseSubmit = bindActionCreators(InterfaceActionCreators.adminUpdateCourseSubmit, dispatch);
     const keyPressedOnForm = bindActionCreators(InterfaceActionCreators.keyPressedOnForm, dispatch);
     const convertFileToCSV = bindActionCreators(InterfaceActionCreators.convertFileToCSV, dispatch);
@@ -91,6 +91,7 @@ const AdminEditCourses = (props) => {
           <hr />
           <div className="row">
             { testsEdit }
+            <div className="col-sm-4 col-lg-2"><button type="submit" className={`btn btn-block btn-info`} onClick={(e)=>adminTestSelect(e,"NEWTEST")}>New Test</button></div>
           </div>
           <div className="row">
             <div className="col-sm-12 col-lg-6">
@@ -114,6 +115,10 @@ const AdminEditCourses = (props) => {
                 <label htmlFor="questions">Test Questions CSV File</label>
                 <input type="file" className="form-control" id="questions" aria-describedby="questions" placeholder="Enter Test Questions" onChange={(e)=>convertFileToCSV(e)}/>
               </div>
+              <div className="form-group">
+                <label htmlFor="marks">Total Marks Per Question</label>
+                <input type="number" className="form-control" id="marks" aria-describedby="marks" placeholder="Enter Test Total Marks" defaultValue={newTest.marksPerQuestion} onChange={(e)=>keyPressedOnForm("test-marksPerQuestion",e)}/>
+              </div>
             </div>
             <div className="col-sm-12 col-lg-6">
               <div className="form-group">
@@ -136,10 +141,14 @@ const AdminEditCourses = (props) => {
                   <option value="yes">Yes</option>
                 </select>
               </div>
+              <div className="form-group">
+                <label htmlFor="negmarks">Negative marks in Decimal Points (eg: 0.33)</label>
+                <input type="number" step="0.01" min="0" className="form-control" id="negmarks" aria-describedby="negmarks" placeholder="Negative Marking" defaultValue={newTest.negMarking} onChange={(e)=>keyPressedOnForm("test-negMarking",e)}/>
+              </div>
             </div>
           </div>
           <h6>Make Sure to Add Tests first before Saving Changes</h6>
-          <button type="submit" className={`btn btn-block btn-warning ${(newTest.questions.length > 0) ? "" : "disabled"}`} onClick={(e)=>addTest(e)}>Update Test</button>
+          <button type="submit" className={`btn btn-block btn-warning ${(newTest.questions.length > 0) ? "" : "disabled"}`} onClick={(e)=>addTest(e)}>{(isTestUpdating) ? "Update" : "Add"} Test</button>
           <button type="submit" className={`btn btn-block btn-success`} onClick={(e)=>adminUpdateCourseSubmit(e)}>Update Changes</button>
           <button type="submit" className={`btn btn-block btn-danger`} onClick={(e)=>submit(e,newCourse.id)}>Delete</button>
           {(courseSaved) ? <h6 className="font-accent text-center">Changes have been saved.</h6> : ""}
@@ -153,6 +162,7 @@ AdminEditCourses.propTypes = {
   newCourse: PropTypes.object.isRequired,
   newTest: PropTypes.object.isRequired,
   courseSaved: PropTypes.bool.isRequired,
+  isTestUpdating: PropTypes.bool.isRequired,
 }
 
 const mapStateToProps = state => (
@@ -160,7 +170,8 @@ const mapStateToProps = state => (
     loggedInUser: state.loggedInUser,
     newCourse: state.newCourse,
     newTest: state.newTest,
-    courseSaved: state.courseSaved
+    courseSaved: state.courseSaved,
+    isTestUpdating: state.isTestUpdating,
   }
 );
 

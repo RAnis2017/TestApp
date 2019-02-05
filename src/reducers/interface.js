@@ -36,6 +36,7 @@ const initialState = {
     client: "",
     slot: "",
   },
+  isTestUpdating: false,
   newTest: {
     name: "",
     availability: "",
@@ -52,6 +53,8 @@ const initialState = {
     lastIncorrect: 0,
     timerOver: false,
     firstTimeCorrect: 0,
+    negMarking: 0.0,
+    marksPerQuestion: 0,
     timeOver: false,
     questions: [],
     file: ""
@@ -280,15 +283,42 @@ export default function Interface(state=initialState, action) {
     		 	};
 	 	}
     case InterfaceActionTypes.SELECT_TEST: {
-          let newTest;
+          let newTest = {
+            name: "",
+            availability: "",
+            mcqQuantity: "",
+            duration: "",
+            path: "",
+            passRequirementPercentage: "",
+            hours: 0,
+            mins: 0,
+            secs: 0,
+            lastTakenDate: "",
+            lastScore: 0,
+            lastCorrect: 0,
+            lastIncorrect: 0,
+            timerOver: false,
+            firstTimeCorrect: 0,
+            negMarking: 0.0,
+            marksPerQuestion: 0,
+            timeOver: false,
+            questions: [],
+            file: ""
+          };
+          let isTestUpdating;
           state.newCourse.tests.map((test)=>{
             if(test.id === action.tID){
               newTest = test;
+              isTestUpdating = true;
+            } else if (action.tID === "NEWTEST") {
+              isTestUpdating = false;
+
             }
           });
           return {
             ...state,
-    				newTest
+    				newTest,
+            isTestUpdating
     		 	};
 	 	}
     case InterfaceActionTypes.INSTA_CHECKOUT: {
@@ -326,6 +356,8 @@ export default function Interface(state=initialState, action) {
               lastIncorrect: 0,
               timerOver: false,
               firstTimeCorrect: 0,
+              negMarking: 0.0,
+              marksPerQuestion: 0,
               timeOver: false,
               questions: []
             }
@@ -608,13 +640,13 @@ export default function Interface(state=initialState, action) {
     case InterfaceActionTypes.SAVE_COURSE: {
           return {
             ...state,
-            courseSaved: (action.success === "1"),
+            courseSaved: action.success,
           };
 	 	}
     case InterfaceActionTypes.UPDATE_COURSE: {
           return {
             ...state,
-            courseSaved: (action.success === "1"),
+            courseSaved: action.success,
           };
 	 	}
     case InterfaceActionTypes.USER_SETTING_SAVE: {
