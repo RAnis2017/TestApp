@@ -9,7 +9,7 @@ import axios from "axios";
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 const Checkout = (props) => {
-    const { dispatch, courses, apiUrl, loggedInUser, coupon, couponOff, total, couponSuccess, instaMojoDone } = props;
+    const { dispatch, courses, apiUrl, loggedInUser, coupon, couponOff, total, couponSuccess, instaMojoDone, freeBoughtDone } = props;
     const coursesBought = bindActionCreators(InterfaceActionCreators.coursesBought, dispatch);
     const showCart = bindActionCreators(InterfaceActionCreators.showCart, dispatch);
     const checkCouponCode = bindActionCreators(InterfaceActionCreators.checkCouponCode, dispatch);
@@ -19,7 +19,7 @@ const Checkout = (props) => {
     showCart();
     checkTotal();
 
-    const onSuccess = () => {
+    const onSuccess = (free: 2) => {
         // Congratulation, it came here means everything's fine!
             let coursesIDs = "";
             let oldCourses = [];
@@ -41,6 +41,7 @@ const Checkout = (props) => {
                 data: JSON.stringify({
                   token: localStorage.getItem('genhex-auth-token'),
                   ids: coursesIDs,
+                  free,
                   completeids: completeCoursesIDs,
                   courses: oldCourses
                 })
@@ -118,10 +119,10 @@ const Checkout = (props) => {
       >
           <div className="hero-sm">
               <div className="row justify-content-center fullview-sm">
-                <h1 className="font-primary align-self-center">Add Courses to the cart to buy them. More courses upcoming soon!</h1>
               </div>
           </div>
           <div className="container fullview">
+            <h1 className="font-primary align-self-center">Add Courses to the cart to buy them. More courses upcoming soon!</h1>
             {ItemsJSX}
             <div className="float-right text-center">
             <h3 className="text-center font-secondary">Total:</h3><h5 className="text-center font-accent">{total} {currency}</h5>
@@ -132,7 +133,9 @@ const Checkout = (props) => {
               /*
               <PaypalExpressBtn env={env} client={client} currency={currency} total={total} onError={onError} onSuccess={onSuccess} onCancel={onCancel} shipping={1}/>
               */
-              <button type="submit" className={`btn btn-block btn-success ${(instaMojoDone) ? "disabled" : ""}`} onClick={(e)=>{instaCheckout(e,coursesName,total,loggedInUser.email,courseIds,loggedInUser.id); onSuccess();}}>{(instaMojoDone) ? "Done. Please Check Your Email" : "Buy Using Instamojo"}</button>
+              (total > 0) ? <button type="submit" className={`btn btn-block btn-success ${(instaMojoDone) ? "disabled" : ""}`} onClick={(e)=>{instaCheckout(e,coursesName,total,loggedInUser.email,courseIds,loggedInUser.id); onSuccess();}}>{(instaMojoDone) ? "Done. Please Check Your Email" : "Buy Using Instamojo"}</button>
+              : (couponOff.length > 0) ? <button type="submit" className={`btn btn-block btn-success ${(freeBoughtDone) ? "disabled" : ""}`} onClick={(e)=>{onSuccess(1);}}>{(freeBoughtDone) ? "Done. Please Refresh to See Courses in Dashboard" : "Add Courses To Dashboard"}</button>
+              : ""
             }
             <hr />
             {(inCartCount > 0) ? <input type="text" className="form-control" id="coupon" aria-describedby="coupon" placeholder="Coupon Code" value={coupon} onChange={(e)=>keyPressedOnForm("coupon",e)}/> : "" }
@@ -155,6 +158,7 @@ Checkout.propTypes = {
   loggedInUser: PropTypes.object.isRequired,
   total: PropTypes.number.isRequired,
   instaMojoDone: PropTypes.bool.isRequired,
+  freeBoughtDone: PropTypes.bool.isRequired,
 }
 
 const mapStateToProps = state => (
@@ -167,6 +171,7 @@ const mapStateToProps = state => (
     couponSuccess: state.couponSuccess,
     total: state.total,
     instaMojoDone: state.instaMojoDone,
+    freeBoughtDone: state.freeBoughtDone,
   }
 );
 

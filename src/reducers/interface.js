@@ -32,6 +32,8 @@ const initialState = {
   couponSaved: false,
   adSaved: false,
   instaMojoDone: false,
+  freeBoughtDone: false,
+  addedToCart: [],
   ad: {
     client: "",
     slot: "",
@@ -372,6 +374,8 @@ export default function Interface(state=initialState, action) {
                 if(parseInt(state.selectedQuestion) === parseInt(course.mcqQuantity)){
                   course.timeOver = true;
                   makeRequest = true;
+                  course.lastScore = course.lastScore - (course.lastIncorrect * parseFloat(course.negMarking)) * parseInt(course.marksPerQuestion);
+                  course.lastScore = Math.round(course.lastScore * 100) / 100;
                   if(course.firstTimeCorrect === 0){
                     course.firstTimeCorrect = course.lastCorrect;
                   }
@@ -420,6 +424,7 @@ export default function Interface(state=initialState, action) {
         outerCourse.tests.map((course)=>{
           if(course.id === action.cid){
             course.timeOver = true;
+
           }
 
         });
@@ -467,7 +472,7 @@ export default function Interface(state=initialState, action) {
                           console.log("INCREMENTED ",course.lastCorrect);
                         }
                       }
-                      course.lastScore = (course.lastCorrect/course.mcqQuantity) * 100;
+                      course.lastScore = course.lastCorrect * parseInt(course.marksPerQuestion);
                       if(course.firstTimeCorrect === 0){
                         accuracy += ((course.lastCorrect)/course.mcqQuantity)*100;
                         console.log("Accuracy should change ",accuracy);
@@ -692,19 +697,26 @@ export default function Interface(state=initialState, action) {
           });
           return {
             ...state,
-    				courses: courses
+    				courses: courses,
+            freeBoughtDone: true,
     		 	};
 	 	}
     case InterfaceActionTypes.REMOVE_CART_ITEM: {
+          let addedToCart = state.addedToCart;
+          addedToCart = addedToCart.filter((item) => item !== action.id);
           return {
             ...state,
-    				courses: state.courses.map((course)=> (course.id == action.id) ? {...course,inCart:false} : course)
+    				courses: state.courses.map((course)=> (course.id == action.id) ? {...course,inCart:false} : course),
+            addedToCart
     		 	};
 	 	}
     case InterfaceActionTypes.ADD_CART_ITEM: {
+          let addedToCart = state.addedToCart;
+          addedToCart.push(action.id);
           return {
             ...state,
-    				courses: state.courses.map((course)=> (course.id == action.id) ? {...course,inCart:true} : course)
+    				courses: state.courses.map((course)=> (course.id == action.id) ? {...course,inCart:true} : course),
+            addedToCart,
     		 	};
 	 	}
     default:

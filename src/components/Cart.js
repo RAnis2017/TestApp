@@ -49,10 +49,10 @@ const Cart = (props) => {
     >
         <div className="hero-sm">
             <div className="row justify-content-center fullview-sm">
-              <h1 className="font-primary align-self-center">Add Courses to the cart to buy them. More courses upcoming soon!</h1>
             </div>
         </div>
         <div className="container fullview">
+          <h1 className="font-primary align-self-center">Add Courses to the cart to buy them. More courses upcoming soon!</h1>
           <div className="cart">
             <div className="cartDiv">
               <ul>

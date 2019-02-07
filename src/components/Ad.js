@@ -7,14 +7,19 @@ export default class AdComponent extends React.Component {
           this.state = {
         curTime : null
       }
+      let interval;
+
     }
     componentDidMount() {
       (window.adsbygoogle = window.adsbygoogle || []).push({});
-      setInterval( () => {
+      this.interval = setInterval( () => {
         this.setState({
           curTime : new Date().toLocaleString()
         })
       },30000)
+    }
+    componentWillUnmount(){
+      clearInterval(this.interval);
     }
     render () {
         return (

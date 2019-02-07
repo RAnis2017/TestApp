@@ -82,7 +82,7 @@ const Test = (props) => {
                                    <i className="fas fa-check unattempted heading-min"></i> {markedForReview.length} Marked for Review
                                   </div>
                                   <div className="col-lg-4">
-                                    <i className="fas fa-crosshairs attempted heading-min"></i> {score}% SCORE
+                                    <i className="fas fa-crosshairs attempted heading-min"></i> {score} SCORE
                                   </div>
                                  </div>
                                 <Link className="btn btn-primary" to={`/testreview/${path}`}>Review Results</Link>

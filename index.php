@@ -820,6 +820,7 @@ $app->post('/coursesBought', function (Request $request, Response $response, arr
     $completeids = $data['completeids'];
     $token = $data['token'];
     $allCourses = $data['courses'];
+    $free = $data['free'];
     $courseIds = substr($data['ids'], 0, -1);
     $courses = json_encode([]);
     if(strlen($courseIds) > 0){
@@ -847,22 +848,41 @@ $app->post('/coursesBought', function (Request $request, Response $response, arr
     if ($result) {
         $result = Token::getPayload($token);
         $data = json_decode($result, true);
-        // $sql = "UPDATE users SET
-        //     `courses`=:courses, `coursesObj`=:cObj WHERE id=" . $data['user_id'];
-        $sql = "UPDATE users SET `coursesObj`=:cObj WHERE id=" . $data['user_id'];
-        try {
-            $db = new db();
-            $db = $db->connect();
-            $stmt = $db->prepare($sql);
-            $stmt->bindParam(':cObj', $courses);
-            $stmt->execute();
+        if($free == 1){
+          $sql = "UPDATE users SET
+               `courses`=:courses, `coursesObj`=:cObj WHERE id=" . $data['user_id'];
+           try {
+               $db = new db();
+               $db = $db->connect();
+               $stmt = $db->prepare($sql);
+               $stmt->bindParam(':courses', $courseIds);
+               $stmt->bindParam(':cObj', $courses);
+               $stmt->execute();
 
-            $db = null;
+               $db = null;
 
-            echo '{"notice": {"text": "User Courses Bought"}}';
-        } catch (PDOException $e) {
-            echo '{"error":{"text": ' . $e->getMessage() . '}}';
+               echo '{"notice": {"text": "User Courses Bought"}}';
+           } catch (PDOException $e) {
+               echo '{"error":{"text": ' . $e->getMessage() . '}}';
+           }
+        } elseif ($free == 2) {
+          $sql = "UPDATE users SET `coursesObj`=:cObj WHERE id=" . $data['user_id'];
+          try {
+              $db = new db();
+              $db = $db->connect();
+              $stmt = $db->prepare($sql);
+              $stmt->bindParam(':cObj', $courses);
+              $stmt->execute();
+
+              $db = null;
+
+              echo '{"notice": {"text": "User Courses Bought"}}';
+          } catch (PDOException $e) {
+              echo '{"error":{"text": ' . $e->getMessage() . '}}';
+          }
         }
+
+
 
     } else {
         echo '{"notice": {"text": "User Courses Not Bought"}, "success": "0"}';

@@ -28,7 +28,7 @@ const UserDashboard = (props) => {
     let usersList = usersSorted.map((user,key)=>{
       if(key < 5){
         return(
-          <div className="row">
+          <div className="row" key={key}>
             <div className="col-lg-4">
               {key} . <i className="fas fa-user-circle heading-min"></i>
             </div>
