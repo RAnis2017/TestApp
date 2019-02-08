@@ -960,7 +960,7 @@ $app->post('/instaCheckout', function (Request $request, Response $response, arr
               "amount" => $price,
               "send_email" => true,
               "email" => $email,
-              "redirect_url" => "http://www.genesishexdevs.com/vinodkatrelaapi/public/confirm-course-bought/".$token."/".$courseIds."/"
+              "redirect_url" => "http://www.genesishexdevs.com/vinodkatrelaapi/public/confirm-course-bought/".$token."/".$courseIds
               ));
         echo '{"notice": {"text": "Course Buy Link Sent"}, "success": "1"}';
     }
@@ -970,17 +970,126 @@ $app->post('/instaCheckout', function (Request $request, Response $response, arr
     return $response;
 });
 
-$app->get('/confirm-course-bought/{token}/{courseIds}/{extra}', function (Request $request, Response $response, array $args) {
+$app->get('/confirm-course-bought/{token}/{courseIds}', function (Request $request, Response $response, array $args) {
     $token = $request->getAttribute('token');
     $courseIds = $request->getAttribute('courseIds');
+    //$courseIds = substr($courseIds, 0, strpos($courseIds, "?"));
+    $result = Token::validate($token, 'se12!@2s23!=eT423*&');
+    if ($result) {
+        $result = Token::getPayload($token);
+        $data = json_decode($result, true);
+        $sql = "UPDATE users SET courses= CONCAT(courses, '".$courseIds."') WHERE id=" . $data['user_id'];
+        try {
+            $db = new db();
+            $db = $db->connect();
+            $stmt = $db->query($sql);
+            $stmt->execute();
+            $db = null;
+            echo '<h3>Courses Bought Confirmed. Please visit your dashboard to see them. If any issues contact us.</a>';
+
+        } catch (PDOException $e) {
+            echo '{"error":{"text": ' . $e->getMessage() . '}}';
+        }
+
+    } else {
+        echo '{"notice": {"text": "User Not Authenticated"}, "success": "0"}';
+    }
+    return $response;
+});
+
+function generateRandomString($length = 10) {
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $randomString = '';
+    for ($i = 0; $i < $length; $i++) {
+        $randomString .= $characters[rand(0, $charactersLength - 1)];
+    }
+    return $randomString;
+}
+
+$app->post('/paytm', function (Request $request, Response $response, array $args) {
+    require_once("encdec_paytm.php");
+
+    $price =   $request->getParam('price');
+    $email =   $request->getParam('email');
+    $courseIds =   $request->getParam('courseIds');
+    $id =   $request->getParam('id');
+    $startDate = time();
+
+    $date = date('Y-m-d H:i:s', strtotime('+30 day', $startDate));
+
+    $token = Token::getToken('' . $id, 'se12!@2s23!=eT423*&', $date, 'razaanis');
+
+    define("merchantMid", "HAwJKD21156769470409");
+    // Key in your staging and production MID available in your dashboard
+    define("merchantKey", "Nkc2HC_6kIz396qq");
+    // Key in your staging and production merchant key available in your dashboard
+    define("orderId", generateRandomString());
+    define("channelId", "WEB");
+    define("custId", "".$id);
+    define("mobileNo", "");
+    define("email", $email);
+    define("txnAmount", $price);
+    define("website", "WEBSTAGING");
+    // This is the staging value. Production value is available in your dashboard
+    define("industryTypeId", "Retail");
+    // This is the staging value. Production value is available in your dashboard
+    define("callbackUrl", "http://www.genesishexdevs.com/vinodkatrelaapi/public/confirm-course-bought-paytm/".$token."/".$courseIds);
+    $paytmParams = array();
+    $paytmParams["MID"] = merchantMid;
+    $paytmParams["ORDER_ID"] = orderId;
+    $paytmParams["CUST_ID"] = custId;
+    $paytmParams["MOBILE_NO"] = mobileNo;
+    $paytmParams["EMAIL"] = email;
+    $paytmParams["CHANNEL_ID"] = channelId;
+    $paytmParams["TXN_AMOUNT"] = txnAmount;
+    $paytmParams["WEBSITE"] = website;
+    $paytmParams["INDUSTRY_TYPE_ID"] = industryTypeId;
+    $paytmParams["CALLBACK_URL"] = callbackUrl;
+    $paytmChecksum = getChecksumFromArray($paytmParams, merchantKey);
+    $transactionURL = "https://securegw-stage.paytm.in/theia/processTransaction";
+    // $transactionURL = "https://securegw.paytm.in/theia/processTransaction"; // for production
+
+    $html = '<html>
+              <head>
+                  <title>Merchant Checkout Page</title>
+              </head>
+              <body>
+                  <center><h1>Please do not refresh this page...</h1></center>
+                  <form method="post" action="'.$transactionURL.'" name="f1">';
+
+    foreach($paytmParams as $name => $value) {
+        $html .= '<input type="hidden" name="' . $name .'" value="' . $value . '">';
+    }
+    $html .=   '<input type="hidden" name="CHECKSUMHASH" value="'.$paytmChecksum.'">
+                  </form>
+                  <script type="text/javascript">
+                      document.f1.submit();
+                  </script>
+                  </body>
+              </html>';
+    echo json_encode($html);
+
+    return $response;
+});
+
+$app->post('/confirm-course-bought-paytm/{token}/{courseIds}', function (Request $request, Response $response, array $args) {
+    require_once("encdec_paytm.php");
+
+    $token = $request->getAttribute('token');
+    $courseIds = $request->getAttribute('courseIds');
+
+    $paytmParams = $_POST;
+    $merchantKey="Nkc2HC_6kIz396qq";
+    $paytmChecksum = isset($_POST["CHECKSUMHASH"]) ? $_POST["CHECKSUMHASH"] : "";
+    $isValidChecksum = verifychecksum_e($paytmParams, $merchantKey, $paytmChecksum);
 
     $result = Token::validate($token, 'se12!@2s23!=eT423*&');
     if ($result) {
         $result = Token::getPayload($token);
         $data = json_decode($result, true);
 
-        $sql = "UPDATE users SET
-            `courses`= CONCAT(`courses`, $courseIds) WHERE id=" . $data['user_id'];
+        $sql = "UPDATE users SET courses= CONCAT(courses, '".$courseIds."') WHERE id=" . $data['user_id'];
         try {
             $db = new db();
             $db = $db->connect();

@@ -55,3 +55,4 @@ export const TYPING_AD = 'interface/TYPING_AD';
 export const SAVE_AD = 'interface/SAVE_AD';
 export const GET_AD = 'interface/GET_AD';
 export const INSTA_CHECKOUT = 'interface/INSTA_CHECKOUT';
+export const PAYTM_CHECKOUT = 'interface/PAYTM_CHECKOUT';

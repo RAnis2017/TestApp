@@ -3,7 +3,7 @@ import axios from "axios";
 import md5 from "md5";
 
 const initialState = {
-  apiUrl: "http://localhost:80/vinodkatrelaapi/public/", // localhost:80 genesishexdevs.com
+  apiUrl: "http://genesishexdevs.com/vinodkatrelaapi/public/", // localhost:80 genesishexdevs.com
   selectedForm: "LOGIN",
   loggedInUser: {email: "", name: "", password: "", courses: []},
   signupDone: false,
@@ -32,6 +32,7 @@ const initialState = {
   couponSaved: false,
   adSaved: false,
   instaMojoDone: false,
+  paytmDone: false,
   freeBoughtDone: false,
   addedToCart: [],
   ad: {
@@ -328,6 +329,13 @@ export default function Interface(state=initialState, action) {
           return {
             ...state,
             instaMojoDone: true
+    		 	};
+	 	}
+    case InterfaceActionTypes.PAYTM_CHECKOUT: {
+
+          return {
+            ...state,
+            paytmDone: true
     		 	};
 	 	}
     case InterfaceActionTypes.DELETE_COURSE: {

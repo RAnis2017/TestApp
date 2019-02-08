@@ -9,17 +9,18 @@ import axios from "axios";
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 const Checkout = (props) => {
-    const { dispatch, courses, apiUrl, loggedInUser, coupon, couponOff, total, couponSuccess, instaMojoDone, freeBoughtDone } = props;
+    const { dispatch, courses, apiUrl, loggedInUser, coupon, couponOff, total, couponSuccess, paytmDone, instaMojoDone, freeBoughtDone } = props;
     const coursesBought = bindActionCreators(InterfaceActionCreators.coursesBought, dispatch);
     const showCart = bindActionCreators(InterfaceActionCreators.showCart, dispatch);
     const checkCouponCode = bindActionCreators(InterfaceActionCreators.checkCouponCode, dispatch);
     const checkTotal = bindActionCreators(InterfaceActionCreators.checkTotal, dispatch);
     const instaCheckout = bindActionCreators(InterfaceActionCreators.instaCheckout, dispatch);
+    const paytmCheckout = bindActionCreators(InterfaceActionCreators.paytmCheckout, dispatch);
     const keyPressedOnForm = bindActionCreators(InterfaceActionCreators.keyPressedOnForm, dispatch);
     showCart();
     checkTotal();
 
-    const onSuccess = (free: 2) => {
+    const onSuccess = (free: null) => {
         // Congratulation, it came here means everything's fine!
             let coursesIDs = "";
             let oldCourses = [];
@@ -36,12 +37,15 @@ const Checkout = (props) => {
                   completeCoursesIDs += `${course.id},`;
                 }
             });
+            if(free != 1){
+              free = 2;
+            }
             axios
               .post(`${apiUrl}coursesBought`, {
                 data: JSON.stringify({
                   token: localStorage.getItem('genhex-auth-token'),
                   ids: coursesIDs,
-                  free,
+                  free: free,
                   completeids: completeCoursesIDs,
                   courses: oldCourses
                 })
@@ -133,7 +137,11 @@ const Checkout = (props) => {
               /*
               <PaypalExpressBtn env={env} client={client} currency={currency} total={total} onError={onError} onSuccess={onSuccess} onCancel={onCancel} shipping={1}/>
               */
-              (total > 0) ? <button type="submit" className={`btn btn-block btn-success ${(instaMojoDone) ? "disabled" : ""}`} onClick={(e)=>{instaCheckout(e,coursesName,total,loggedInUser.email,courseIds,loggedInUser.id); onSuccess();}}>{(instaMojoDone) ? "Done. Please Check Your Email" : "Buy Using Instamojo"}</button>
+              (total > 0 || instaMojoDone || paytmDone) ?
+              <div>
+                <button type="submit" className={`btn btn-block btn-success ${(instaMojoDone) ? "disabled" : ""}`} onClick={(e)=>{instaCheckout(e,coursesName,total,loggedInUser.email,courseIds,loggedInUser.id); onSuccess();}}>{(instaMojoDone) ? "Done. Please Check Your Email" : "Buy Using Instamojo"}</button>
+                <button type="submit" className={`btn btn-block btn-success ${(paytmDone) ? "disabled" : ""}`} onClick={(e)=>{paytmCheckout(e,coursesName,total,loggedInUser.email,courseIds,loggedInUser.id); onSuccess();}}>{(paytmDone) ? "Done. Please Check Your Email" : "Buy Using Paytm"}</button>
+              </div>
               : (couponOff.length > 0) ? <button type="submit" className={`btn btn-block btn-success ${(freeBoughtDone) ? "disabled" : ""}`} onClick={(e)=>{onSuccess(1);}}>{(freeBoughtDone) ? "Done. Please Refresh to See Courses in Dashboard" : "Add Courses To Dashboard"}</button>
               : ""
             }
@@ -158,6 +166,7 @@ Checkout.propTypes = {
   loggedInUser: PropTypes.object.isRequired,
   total: PropTypes.number.isRequired,
   instaMojoDone: PropTypes.bool.isRequired,
+  paytmDone: PropTypes.bool.isRequired,
   freeBoughtDone: PropTypes.bool.isRequired,
 }
 
@@ -171,6 +180,7 @@ const mapStateToProps = state => (
     couponSuccess: state.couponSuccess,
     total: state.total,
     instaMojoDone: state.instaMojoDone,
+    paytmDone: state.paytmDone,
     freeBoughtDone: state.freeBoughtDone,
   }
 );

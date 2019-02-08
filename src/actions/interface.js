@@ -301,12 +301,39 @@ export const instaCheckout = (e,purpose,price,email,courseIds,callback: null) =>
         purpose,
         price,
         email,
-        courseIds
+        courseIds,
+        id: store.getState().loggedInUser.id,
       })
       .then(response => {
         console.log(response);
         dispatch({
           type: InterfaceActionTypes.INSTA_CHECKOUT,
+        });
+      });
+  }
+}
+
+export const paytmCheckout = (e,purpose,price,email,courseIds,callback: null) => {
+  e.preventDefault();
+  return function action(dispatch) {
+    console.log(purpose+" "+price);
+    axios
+      .post(`${store.getState().apiUrl}paytm`, {
+        purpose,
+        price,
+        email,
+        courseIds,
+        id: store.getState().loggedInUser.id,
+      })
+      .then(response => {
+        console.log(response);
+        let x=window.open();
+            x.document.open();
+            x.document.write(response.data);
+            x.document.close();
+
+        dispatch({
+          type: InterfaceActionTypes.PAYTM_CHECKOUT,
         });
       });
   }
