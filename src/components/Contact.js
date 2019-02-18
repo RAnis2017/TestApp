@@ -15,10 +15,11 @@ const Contact = (props) => {
         >
           <div className="hero-sm-contact">
               <div className="row justify-content-center fullview-md">
-                <h1 className=" home-heading align-self-center">Want to know more about us? Or have something to ask? <br /> Contact Us Now & We'll get in touch as soon as possible!</h1>
               </div>
           </div>
           <div className="container fullview">
+            <h1 className="font-primary text-center">Want to know more about us? Or have something to ask? <br /> Contact Us Now & We'll get in touch as soon as possible!</h1>
+
             <div className="row">
               <div className="col-lg-12">
                 <hr />

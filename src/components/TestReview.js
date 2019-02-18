@@ -22,11 +22,11 @@ const Test = (props) => {
                 <h3  className="question">Q: {question.question}</h3>
                 <hr />
                 <h5>Answers (Correct Marked in Green):</h5>
-                <h6 className={`${(question.selectedAnswer != question.truthyOption && question.selectedAnswer != 0) ? "wrong" : "not-visible"}`}>Wrong Answer</h6>
-                <p className={`answer ${(question.truthyOption === "1") ? "correct disabled" : ""} ${(question.selectedAnswer === 0) ? "disabled" : "disabled" }`}>{question.answer1}</p>
-                <p className={`answer ${(question.truthyOption === "2") ? "correct disabled" : ""} ${(question.selectedAnswer === 0) ? "disabled" : "disabled" }`}>{question.answer2}</p>
-                <p className={`answer ${(question.truthyOption === "3") ? "correct disabled" : ""} ${(question.selectedAnswer === 0) ? "disabled" : "disabled" }`}>{question.answer3}</p>
-                <p className={`answer ${(question.truthyOption === "4") ? "correct disabled" : ""} ${(question.selectedAnswer === 0) ? "disabled" : "disabled" }`}>{question.answer4}</p>
+                <h6 className={`${(question.selectedAnswer != question.truthyOption.replace(" ","") && question.selectedAnswer != 0) ? "wrong" : "not-visible"}`}>Wrong Answer</h6>
+                <p className={`answer ${(question.truthyOption.replace(" ","") === "1") ? "correct disabled" : ""} ${(question.selectedAnswer === 0) ? "disabled" : "disabled" }`}>{question.answer1}</p>
+                <p className={`answer ${(question.truthyOption.replace(" ","") === "2") ? "correct disabled" : ""} ${(question.selectedAnswer === 0) ? "disabled" : "disabled" }`}>{question.answer2}</p>
+                <p className={`answer ${(question.truthyOption.replace(" ","") === "3") ? "correct disabled" : ""} ${(question.selectedAnswer === 0) ? "disabled" : "disabled" }`}>{question.answer3}</p>
+                <p className={`answer ${(question.truthyOption.replace(" ","") === "4") ? "correct disabled" : ""} ${(question.selectedAnswer === 0) ? "disabled" : "disabled" }`}>{question.answer4}</p>
                 <p className={``}>Explanation: {question.explanation}</p>
               </div>
             );

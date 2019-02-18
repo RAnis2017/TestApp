@@ -36,11 +36,11 @@ const UserTests = (props) => {
                 <div className="row">
                   <div className="col col-lg-12">
                     <div className="courseDetails font-primary">
-                      <h4> <i className="fas fa-percent font-accent"></i> Passing Percentage: {test.passRequirementPercentage}%</h4>
-                      <h4> <i className="fas fa-calendar-day font-accent"></i> Last Date Taken: {test.lastTakenDate}</h4>
-                      <h4> <i className="fas fa-sort-numeric-up font-accent"></i> Last Score: {test.lastScore}</h4>
-                      <h4> <i className="fas fa-check font-accent"></i> Last Correct: {test.lastCorrect}</h4>
-                      <h4> <i className="fas fa-times font-accent"></i> Last Incorrect: {test.lastIncorrect}</h4>
+                      <h6> <i className="fas fa-percent font-accent"></i> Passing Percentage: {test.passRequirementPercentage}%</h6>
+                      <h6> <i className="fas fa-calendar-day font-accent"></i> Last Date Taken: {test.lastTakenDate}</h6>
+                      <h6> <i className="fas fa-sort-numeric-up font-accent"></i> Last Score: {test.lastScore}</h6>
+                      <h6> <i className="fas fa-check font-accent"></i> Last Correct: {test.lastCorrect}</h6>
+                      <h6> <i className="fas fa-times font-accent"></i> Last Incorrect: {test.lastIncorrect}</h6>
                       <hr />
                     </div>
                     <div className="coursePriceCartAdd font-secondary">
@@ -48,7 +48,7 @@ const UserTests = (props) => {
 
                       {(test.availability === "released") ? (test.timeOver === false) ? <Link className={`btn btn-primary float-left`} to={`/courses/${test.path}`}>Take Test!</Link> : <button className="btn btn-primary" onClick={()=>resetTest(test.id)}>Retake Test</button>
                         : <Link className={`btn btn-primary disabled`} to={`/courses/${test.path}`}>Upcoming</Link>}
-                      {(test.pdf === "yes" && test.firstTimeCorrect !== 0) ? <Link className="btn btn-primary" to={`/testreviewpdf/${test.path}`}>Pdf Download</Link> : <Link className="btn btn-primary disabled" to={`/testreviewpdf/${test.path}`}>Pdf Download</Link>}
+                      {(test.pdf === "yes" && test.firstTimeCorrect !== 0) ? <Link className="btn btn-primary" to={`/testreviewpdf/${test.path}`}>Pdf Download</Link> : ""}
                     </div>
                   </div>
                 </div>

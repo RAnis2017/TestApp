@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css?family=Merriweather|Rubik');
 
 @mixin shadow {
   -webkit-box-shadow: 0px 0px 34px 1px rgba(0,0,0,0.7);
@@ -26,9 +27,17 @@ box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.4);
 
 body {
   background-color: $background-color;
+  font-family: 'Rubik', sans-serif;
+}
+
+h1,h2,h3,h4,h5 {
+  font-family: 'Merriweather', serif;
 }
 
 .btn {
+  &-margin {
+    margin: 10px 0;
+  }
   &-primary {
     background-color: $accent-color;
     border-color: $accent-color;

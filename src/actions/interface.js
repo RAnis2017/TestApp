@@ -128,12 +128,17 @@ export const formSubmit = (e,type,callback: null, resetToken: null) => {
 export const coursesMinGet = () => {
   return function action(dispatch) {
     let courses = [];
+    let loggedInUserCourses = store.getState().loggedInUser.courses.map((course)=>{
+      return course.id;
+    });
     axios
       .get(`${store.getState().apiUrl}getMinCourses`)
       .then(response => {
         console.log(response);
         response.data.map((course)=>{
-          courses.push({id:course.id,...JSON.parse(course.objMin)});
+          if(!loggedInUserCourses.includes(parseInt(course.id))){
+            courses.push({id:course.id,...JSON.parse(course.objMin)});
+          }
           // console.log(JSON.parse(course.objMin));
         })
         console.log(courses);
@@ -386,7 +391,7 @@ export const loadAd = () => {
   }
 }
 
-export const loadLoggedInUser = () => {
+export const loadLoggedInUser = (callback) => {
   return function action(dispatch) {
     let user = {email: "", name: "", password: "", courses: []};
     let courses = [];
@@ -441,6 +446,7 @@ export const loadLoggedInUser = () => {
           type: InterfaceActionTypes.LOAD_USER,
           user
         });
+        callback();
       });
   }
 }

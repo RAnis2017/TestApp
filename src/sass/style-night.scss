@@ -29,6 +29,9 @@ body {
 }
 
 .btn {
+  &-margin {
+    margin: 10px 0;
+  }
   &-primary {
     background-color: $accent-color;
     border-color: $accent-color;

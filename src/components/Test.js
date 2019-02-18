@@ -43,22 +43,24 @@ const Test = (props) => {
             currentCourse = course.id;
 
             sideNav = course.questions.map((question,key) => {
-              return (<a className={` nav-link `} href="#" key={key} onClick={(e)=>selectQuestion(e,question.id)}>{(question.selectedAnswer === 0) ? <i className={`fas fa-square ${(markedForReview.includes(question.id)) ? "marked" : ""} unattempted`} onClick={(e)=>markForReview(e,question.id)}></i> : <i className={`fas fa-square attempted ${(markedForReview.includes(question.id)) ? "marked" : ""}`} ></i> } {question.id} - {question.title}</a>);
+              return (
+                <div className={`col-xs-1 col-sm-1 col-lg-2 grid-circle text-center ${(markedForReview.includes(question.id)) ? "marked" : ""} ${(question.selectedAnswer === 0) ? "unattempted" : "attempted"}`} key={key} onClick={(e)=>selectQuestion(e,question.id)}><p className="align-self-center">{question.id}</p></div>
+              );
             });
             currentQuestion = course.questions.map((question,key) => {
               if(parseInt(question.id) === parseInt(selectedQuestion)){
                 return (
                   <div key={key}>
                     <Timer timeOver={timeOver} path={path} loggedInUser={loggedInUser} testId={currentCourse}/>
-                    <h3  className="question">Q: {question.question} <a href="#" className="btn btn-info font-secondary" onClick={(e)=>markForReview(e,question.id)}>{(markedForReview.includes(question.id)) ? "Un-Mark" : "Mark for Review"}</a></h3>
+                    <h3  className="question">Q {question.id}: <br /> {question.question} <a href="#" className="btn btn-info font-secondary" onClick={(e)=>markForReview(e,question.id)}>{(markedForReview.includes(question.id)) ? "Un-Mark" : "Mark for Review"}</a></h3>
                     <hr />
                     <h5>Select Correct Answer:</h5>
                     {/*<h6 className={`${(question.selectedAnswer != question.truthyOption && question.selectedAnswer != 0) ? "wrong" : "not-visible"}`}>Wrong Answer</h6>*/}
                     {/*<p className={`answer ${(question.selectedAnswer === question.truthyOption && question.truthyOption === "1") ? "correct disabled" : ""} ${(question.selectedAnswer === 0) ? "" : "disabled" }`} onClick={()=>selectAnswer(course.id,question.id,1)}>{question.answer1}</p>*/}
-                    <p className={`answer ${(question.selectedAnswer === "1") ? "selected" : "" }`} onClick={()=>selectAnswer(course.id,question.id,1)}>{question.answer1}</p>
-                    <p className={`answer ${(question.selectedAnswer === "2") ? "selected" : "" }`} onClick={()=>selectAnswer(course.id,question.id,2)}>{question.answer2}</p>
-                    <p className={`answer ${(question.selectedAnswer === "3") ? "selected" : "" }`} onClick={()=>selectAnswer(course.id,question.id,3)}>{question.answer3}</p>
-                    <p className={`answer ${(question.selectedAnswer === "4") ? "selected" : "" }`} onClick={()=>selectAnswer(course.id,question.id,4)}>{question.answer4}</p>
+                    <p className={`answer ${(question.selectedAnswer === "1") ? "selected" : "" }`} onClick={()=>selectAnswer(course.id,question.id,1)}><span>A</span> {question.answer1}</p>
+                    <p className={`answer ${(question.selectedAnswer === "2") ? "selected" : "" }`} onClick={()=>selectAnswer(course.id,question.id,2)}><span>B</span> {question.answer2}</p>
+                    <p className={`answer ${(question.selectedAnswer === "3") ? "selected" : "" }`} onClick={()=>selectAnswer(course.id,question.id,3)}><span>C</span> {question.answer3}</p>
+                    <p className={`answer ${(question.selectedAnswer === "4") ? "selected" : "" }`} onClick={()=>selectAnswer(course.id,question.id,4)}><span>D</span> {question.answer4}</p>
                   </div>
                 );
               }
@@ -100,27 +102,28 @@ const Test = (props) => {
         </div>
         <div className="container fullview">
           <div className="row test-content">
-            <div className="col-sm-12 col-lg-3">
-              <nav className="nav">
-                {sideNav}
-              </nav>
-            </div>
-            <div className="col-sm-12 col-lg-9">
-              <div className="tab">
+            <div className="col-xs-12 col-sm-12 col-lg-3">
+              <div className="row grid">
                 <div className="guide">
                   <h4>Different colors of Questions Represent their State as Follows:</h4>
                   <div className="row">
-                    <div className="col-sm-4 col-lg-4 m-auto">
-                      <button type="button" className="btn btn-success">Attempted</button>
+                    <div className="m-auto grid-circle-guide attempted">
                     </div>
-                    <div className="col-sm-4 col-lg-4 m-auto">
-                      <button type="button" className="btn unattemptedBg">Un-Attempted</button>
+                    <span>Attempted</span>
+                    <div className="m-auto grid-circle-guide unattemptedBg">
                     </div>
-                    <div className="col-sm-4 col-lg-4 m-auto">
-                      <button type="button" className="btn btn-info">Marked For Review</button>
+                    <span>Unattempted</span>
+                    <div className="m-auto grid-circle-guide marked">
                     </div>
+                    <span>Marked for Review</span>
                   </div>
                 </div>
+                {sideNav}
+              </div>
+            </div>
+            <div className="col-sm-12 col-lg-9">
+              <div className="tab">
+
                 <hr />
                 <Ad ad={ad}/>
                 {currentQuestion}

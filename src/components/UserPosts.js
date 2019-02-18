@@ -22,7 +22,8 @@ const UserPosts = (props) => {
                   </div>
                   <div className="col col-lg-10">
                     <div className="courseName font-primary">
-                      <h4>{post.title} | Date: {post.date}</h4>
+                      <h4>{post.title}</h4>
+                      <h6>Date: {post.date}</h6>
                       <hr />
                       <h6>{post.description}</h6>
                     </div>

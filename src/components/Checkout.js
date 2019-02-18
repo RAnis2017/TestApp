@@ -71,7 +71,7 @@ const Checkout = (props) => {
     }
 
     let env = 'sandbox'; // you can set here to 'production' for production
-    let currency = 'USD'; // or you can set this value from your props or state
+    let currency = 'INR'; // or you can set this value from your props or state
 
     const client = {
         sandbox:    'AacmqqN9sJph2Dx3BFj5GfGkiAeyqwLYCcVtZcJ6PFrNzOY7sAjhMOUCnQf_kYG0LXYSlb0NnQxpuJB_',
@@ -126,10 +126,15 @@ const Checkout = (props) => {
               </div>
           </div>
           <div className="container fullview">
-            <h1 className="font-primary align-self-center">Add Courses to the cart to buy them. More courses upcoming soon!</h1>
+            <h3 className="font-primary align-self-center">Add Courses to the cart to buy them. More courses upcoming soon!</h3>
             {ItemsJSX}
             <div className="float-right text-center">
             <h3 className="text-center font-secondary">Total:</h3><h5 className="text-center font-accent">{total} {currency}</h5>
+            {(inCartCount > 0) ? <input type="text" className="form-control" id="coupon" aria-describedby="coupon" placeholder="Coupon Code" value={coupon} onChange={(e)=>keyPressedOnForm("coupon",e)}/> : "" }
+             {(inCartCount > 0) ? (couponOff.length > 0) ? "" : <button type="submit" className={`btn btn-block btn-margin btn-success`} onClick={(e)=>checkCouponCode(e)}>Apply</button> : ""}
+             {(couponSuccess === "1") ? <p className="text-center font-primary">Coupon Applied</p> : (couponSuccess === "0") ? <p className="text-center font-primary">Coupon Invalid</p> : ""}
+             <hr />
+
             {
 
               (loggedInUser.name.length < 1) ? <Link className={`btn btn-success`} to={`/`}>Login or Sign up first!</Link>
@@ -145,10 +150,6 @@ const Checkout = (props) => {
               : (couponOff.length > 0) ? <button type="submit" className={`btn btn-block btn-success ${(freeBoughtDone) ? "disabled" : ""}`} onClick={(e)=>{onSuccess(1);}}>{(freeBoughtDone) ? "Done. Please Refresh to See Courses in Dashboard" : "Add Courses To Dashboard"}</button>
               : ""
             }
-            <hr />
-            {(inCartCount > 0) ? <input type="text" className="form-control" id="coupon" aria-describedby="coupon" placeholder="Coupon Code" value={coupon} onChange={(e)=>keyPressedOnForm("coupon",e)}/> : "" }
-             {(inCartCount > 0) ? (couponOff.length > 0) ? "" : <button type="submit" className={`btn btn-block btn-success`} onClick={(e)=>checkCouponCode(e)}>Apply</button> : ""}
-             {(couponSuccess === "1") ? <p className="text-center font-primary">Coupon Applied</p> : (couponSuccess === "0") ? <p className="text-center font-primary">Coupon Invalid</p> : ""}
             </div>
 
           </div>

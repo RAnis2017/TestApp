@@ -62,7 +62,7 @@ const Form = (props) => {
                     </div>
                     <button type="submit" className="btn btn-block btn-primary">Send Recovery Email</button>
                   </div>
-                : <h4 className="text-center">If Email is present on our Website we will send you an Email with reset link.</h4>}
+                : <h4 className="text-center"> If you are a registered user, You will recieve a password rest link into you Email, Please also Check Spam Folder.</h4>}
               </form>;
     }
     return(

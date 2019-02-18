@@ -1,11 +1,8 @@
 .hero {
   &-bg{
     @include fullscreendiv;
-    background-image: url('../images/illustrationHome.png');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
+    // background-color: $background-color;
+    background-image: url('../images/white-waves.png');
     &-resetPass{
       @include fullscreendiv;
       background-image: url('../images/forgotpass.jpg');
@@ -87,4 +84,11 @@ h1 {
   &-accent{
     color: $accent-color;
   }
+  &-white{
+    color: white !important;
+  }
+  &-complementary{
+    color: $complementary-color;
+  }
+
 }

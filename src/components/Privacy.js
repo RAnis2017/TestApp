@@ -15,10 +15,11 @@ const Privacy = (props) => {
         >
           <div className="hero-sm-privacy">
               <div className="row justify-content-center fullview-md">
-                <h1 className="font-accent heading-max home-heading align-self-center">Privacy Policy</h1>
               </div>
           </div>
           <div className="container fullview">
+            <h1 className="font-accent heading-max text-center">Privacy Policy</h1>
+
             <div className="row">
               <div className="col-lg-12">
                 <hr />

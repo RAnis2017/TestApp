@@ -19,10 +19,10 @@ const UserCourse = (props) => {
                   <img src={course.imgSrc} className="img-fluid" />
                 </div>
                 <div className="courseName font-primary">
-                  <h4>{course.name}</h4>
+                  <h5>{course.name}</h5>
                 </div>
                 <div className="coursePriceCartAdd font-secondary">
-                  <h4>{course.price} {course.currency}</h4>
+                  <h5>{course.price} {course.currency}</h5>
                   <hr/>
                   {
                     (course.availability == "released") ?

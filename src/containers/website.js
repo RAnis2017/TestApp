@@ -48,7 +48,7 @@ class Website extends Component {
     const loadAd = bindActionCreators(InterfaceActionCreators.loadAd, dispatch);
     const signOut = bindActionCreators(InterfaceActionCreators.signOut, dispatch);
 
-    loadLoggedInUser();
+    loadLoggedInUser(()=>{coursesMinGet();});
     coursesMinGet();
     loadUsers();
     loadPosts();

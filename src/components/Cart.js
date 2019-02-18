@@ -52,7 +52,7 @@ const Cart = (props) => {
             </div>
         </div>
         <div className="container fullview">
-          <h1 className="font-primary align-self-center">Add Courses to the cart to buy them. More courses upcoming soon!</h1>
+          <h3 className="font-primary align-self-center">Your Courses are added to Cart, Click Checkout and Proceed to the Payment Page</h3>
           <div className="cart">
             <div className="cartDiv">
               <ul>
@@ -61,7 +61,7 @@ const Cart = (props) => {
             </div>
           </div>
           {(inCartCount > 0) ?
-            <Link className="btn btn-primary heading-min float-right" to="/checkout">
+            <Link className="btn btn-primary btn-margin heading-min float-right" to="/checkout">
               Checkout
             </Link>
             :
