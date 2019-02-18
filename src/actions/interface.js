@@ -723,34 +723,33 @@ export const adminDeleteCourseSubmit = (e,cID) => {
   e.preventDefault();
   console.log(cID);
   return function action(dispatch) {
-    let userIds = [];
-    let userCoursesObj = [];
-    let userCourses = [];
+    let userIds = "";
+    // let userCoursesObj = [];
+    // let userCourses = [];
     store.getState().users.map((user)=>{
       user.courses.map((course)=>{
         if(parseInt(course.id) === parseInt(cID)){
-          userIds.push(parseInt(user.id));
+          userIds += ""+parseInt(user.id)+",";
         }
       });
     });
-    store.getState().users.map((user)=>{
-      if(userIds.includes(parseInt(user.id))) {
-        user.courses.map((course)=>{
-          if(parseInt(course.id) !== parseInt(cID)){
-            userCoursesObj.push({id:parseInt(course.id), objFull:course});
-          }
-        });
-        userCourses.push(userCoursesObj);
-      }
-    });
+    // store.getState().users.map((user)=>{
+    //   if(userIds.includes(parseInt(user.id))) {
+    //     user.courses.map((course)=>{
+    //       if(parseInt(course.id) !== parseInt(cID)){
+    //         userCoursesObj.push({id:parseInt(course.id), objFull:course});
+    //       }
+    //     });
+    //     userCourses.push(userCoursesObj);
+    //   }
+    // });
     console.log(userIds);
-    console.log(userCourses);
+    // console.log(userCourses);
     axios
       .post(`${store.getState().apiUrl}deleteCourse`, {
         data: JSON.stringify({
           cID,
           userIds,
-          userCourses,
         })
       })
       .then(response => {
