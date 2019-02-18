@@ -687,8 +687,7 @@ $app->post('/checkCoupon', function (Request $request, Response $response, array
 
 $app->post('/deleteCourse', function (Request $request, Response $response, array $args) {
   $data = json_decode($request->getParam('data'), true);
-  $userIds = $data['userIds'];
-  $userCourses = $data['userCourses'];
+  $userIds = substr($data['userIds'], 0, -1);
   $id = $data['cID'];
   $sql = "DELETE FROM courses WHERE `id`=:id";
   try {
@@ -699,24 +698,18 @@ $app->post('/deleteCourse', function (Request $request, Response $response, arra
       $stmt->execute();
 
       $db = null;
-      $i = 0;
-      foreach ($userIds as $uid) {
-        $sql = "UPDATE users SET
-            `coursesObj`=:cObj WHERE id=" . $uid;
-        try {
-          $courseObj = json_encode($userCourses[$i]);
-          $db = new db();
-          $db = $db->connect();
-          $stmt = $db->prepare($sql);
-          $stmt->bindParam(':cObj', $courseObj);
-          $stmt->execute();
+      $sql = "UPDATE users SET courses=REPLACE(courses, '".$id.",', '')";
+      try {
+        $db = new db();
+        $db = $db->connect();
+        $stmt = $db->query($sql);
+        $stmt->execute();
+        $db = null;
 
-          $db = null;
-          $i++;
-        } catch (PDOException $e) {
-            echo '{"error":{"text": ' . $e->getMessage() . '}}';
-        }
+      } catch (PDOException $e) {
+          echo '{"error":{"text": ' . $e->getMessage() . '}}';
       }
+
       echo '{"notice": {"text": "Course Deleted"}}';
   } catch (PDOException $e) {
       echo '{"error":{"text": ' . $e->getMessage() . '}}';
@@ -855,7 +848,7 @@ $app->post('/coursesBought', function (Request $request, Response $response, arr
                $db = new db();
                $db = $db->connect();
                $stmt = $db->prepare($sql);
-               $stmt->bindParam(':courses', $courseIds);
+               $stmt->bindParam(':courses', $completeids);
                $stmt->bindParam(':cObj', $courses);
                $stmt->execute();
 

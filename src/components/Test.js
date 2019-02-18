@@ -12,7 +12,7 @@ import AdSense from 'react-adsense';
 
 const Test = (props) => {
 
-    const { dispatch, loggedInUser, selectedQuestion, apiUrl, markedForReview, ad} = props;
+    const { dispatch, loggedInUser, selectedQuestion, apiUrl, markedForReview, ad, ad1, ad2} = props;
     const selectQuestion = bindActionCreators(InterfaceActionCreators.selectQuestion, dispatch);
     const selectAnswer = bindActionCreators(InterfaceActionCreators.selectAnswer, dispatch);
     const timeOver = bindActionCreators(InterfaceActionCreators.timeOver, dispatch);
@@ -101,6 +101,11 @@ const Test = (props) => {
             </div>
         </div>
         <div className="container fullview">
+          <div className="row">
+            <div className="col-lg-12">
+              <Ad ad={ad1}/>
+            </div>
+          </div>
           <div className="row test-content">
             <div className="col-xs-12 col-sm-12 col-lg-3">
               <div className="row grid">
@@ -132,6 +137,11 @@ const Test = (props) => {
               </div>
             </div>
           </div>
+          <div className="row">
+            <div className="col-lg-12">
+              <Ad ad={ad1}/>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -143,6 +153,8 @@ Test.propTypes = {
   apiUrl: PropTypes.string.isRequired,
   markedForReview: PropTypes.array.isRequired,
   ad: PropTypes.object.isRequired,
+  ad1: PropTypes.object.isRequired,
+  ad2: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = state => (
@@ -152,6 +164,8 @@ const mapStateToProps = state => (
     apiUrl: state.apiUrl,
     markedForReview: state.markedForReview,
     ad: state.ad,
+    ad1: state.ad1,
+    ad2: state.ad2,
   }
 );
 

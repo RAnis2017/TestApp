@@ -39,6 +39,14 @@ const initialState = {
     client: "",
     slot: "",
   },
+  ad1: {
+    client: "1",
+    slot: "1",
+  },
+  ad2: {
+    client: "1",
+    slot: "2",
+  },
   isTestUpdating: false,
   newTest: {
     name: "",
