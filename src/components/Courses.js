@@ -19,7 +19,7 @@ const Courses = (props) => {
               </div>
           </div>
           <div className="container fullview">
-              <h3 className="font-primary align-self-center">Add Courses to the cart to buy them. More courses upcoming soon!</h3>
+              <h3 className="font-primary align-self-center">Add Courses to the cart to buy them. More courses coming soon!</h3>
               <CourseItems />
           </div>
         </ReactCSSTransitionGroup>

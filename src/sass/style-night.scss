@@ -1,8 +1,8 @@
 
 @mixin shadow {
-  -webkit-box-shadow: 0px 0px 34px 1px rgba(0,0,0,0.7);
--moz-box-shadow: 0px 0px 34px 1px rgba(0,0,0,0.7);
-box-shadow: 0px 0px 34px 1px rgba(0,0,0,0.7);
+  -webkit-box-shadow: 0px 0px 34px 1px rgba(0,0,0,0.8);
+-moz-box-shadow: 0px 0px 34px 1px rgba(0,0,0,0.8);
+box-shadow: 0px 0px 34px 1px rgba(0,0,0,0.8);
 }
 @mixin shadow-light {
   -webkit-box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.4);
@@ -14,6 +14,7 @@ box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.4);
 }
 
 @import "variables-dark",
+        "breakpoints",
         "header",
         "footer",
         "home",
@@ -31,6 +32,15 @@ body {
 .btn {
   &-margin {
     margin: 10px 0;
+  }
+  &-left-margin {
+    margin-left: 10px;
+  }
+  &-right-margin {
+    margin-right: 10px;
+  }
+  &-margin-2x {
+    margin-bottom: 30px;
   }
   &-primary {
     background-color: $accent-color;

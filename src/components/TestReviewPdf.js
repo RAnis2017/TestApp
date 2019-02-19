@@ -63,16 +63,19 @@ const Test = (props) => {
       for (let i = 1; i <= totalPages; i++) {
         doc.setPage(i);
         //doc.addImage(imgData, 'PNG', 40, 40, 75, 75);
-        doc.setTextColor(147,147,147);
+        doc.setTextColor(0,0,0);
         doc.setFontSize(20);
         doc.text('Veda IAS',30, doc.internal.pageSize.height-18 );
         doc.setFontSize(12);
         doc.text('http://www.genesishexdevs.com',doc.internal.pageSize.width - 190, doc.internal.pageSize.height-40 );
         doc.text('Score',doc.internal.pageSize.width - 190, doc.internal.pageSize.height-28 );
-        doc.text(`${score} / ${totalScore}`,doc.internal.pageSize.width - 190, doc.internal.pageSize.height-15 );
-        doc.addImage(dataUrl, "png", 30, 20, 150, 37, "image"+i, "NONE", 0);
+        doc.text(`${score}    /    ${totalScore}`,doc.internal.pageSize.width - 190, doc.internal.pageSize.height-15 );
+        doc.addImage(dataUrl, "png", 30, 20, 130, 24.47, "image"+i, "NONE", 0);
         doc.text('Exam Title: '+examTitle,doc.internal.pageSize.width - 150, 35 );
         doc.text('Email: '+email,doc.internal.pageSize.width - 150, 50 );
+        doc.setLineWidth(1);
+        doc.line(0, 55, doc.internal.pageSize.width, 55);
+        doc.line(0, doc.internal.pageSize.height-55, doc.internal.pageSize.width, doc.internal.pageSize.height-55);
       }
       callback();
       // return doc;
@@ -86,7 +89,7 @@ const Test = (props) => {
             }
         };
       let margins = {
-        top: 40,
+        top: 60,
         bottom: 50,
         left: 40,
         width: 522

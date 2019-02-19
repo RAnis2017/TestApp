@@ -17,7 +17,7 @@ const Home = (props) => {
           <div className="row justify-content-center fullview">
             <div className="col-lg-4 align-self-center text-center">
               <h1 className="heading-max font-secondary"><span className="font-accent">P</span>repare. <br /><span className="font-accent"> E</span>valuate.<br /><span className="font-accent"> S</span>ucceed!</h1>
-              <Link className="btn btn-primary heading-min" to="/courses">
+              <Link className="btn btn-primary heading-min btn-margin-2x" to="/courses">
                 Check Out Our Courses!
               </Link>
             </div>

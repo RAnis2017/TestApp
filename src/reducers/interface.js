@@ -13,7 +13,7 @@ const initialState = {
   confirmPassword: "",
   name: "",
   cartToggle: false,
-  selectedQuestion: 0,
+  selectedQuestion: 1,
   timeout: false,
   users: [],
   total: 0,

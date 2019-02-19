@@ -47,7 +47,7 @@ const UserTests = (props) => {
                       <hr/>
 
                       {(test.availability === "released") ? (test.timeOver === false) ? <Link className={`btn btn-primary float-left`} to={`/courses/${test.path}`}>Take Test!</Link> : <button className="btn btn-primary" onClick={()=>resetTest(test.id)}>Retake Test</button>
-                        : <Link className={`btn btn-primary disabled`} to={`/courses/${test.path}`}>Upcoming</Link>}
+                        : <Link className={`btn btn-primary disabled`} to={`/courses/${test.path}`}>Coming Soon</Link>}
                       {(test.pdf === "yes" && test.firstTimeCorrect !== 0) ? <Link className="btn btn-primary" to={`/testreviewpdf/${test.path}`}>Pdf Download</Link> : ""}
                     </div>
                   </div>

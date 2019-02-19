@@ -1,9 +1,12 @@
 
 .navbar {
-  background-color: $primary-color;
+  background-color: $text-screen-bg;
   @include shadow;
+  .nav-link , .navbar-brand{
+    color: $primary-color;
+  }
   button {
-    color: $text-color;
+    color: $primary-color;
     &:hover {
       color: $accent-color;
     }
@@ -13,6 +16,11 @@
   li {
     margin-left: 1.4em;
   }
+}
+.userpic {
+  background-image: url('../images/user.png');
+  width: 30px;
+  height: 30px;
 }
 .cartFilled {
   animation-name: cartPulse;

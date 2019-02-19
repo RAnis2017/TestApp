@@ -65,7 +65,7 @@ const AdminEditCourses = (props) => {
                 <select className="form-control" id="availability" aria-describedby="availability" defaultValue={newCourse.availability} onChange={(e)=>keyPressedOnForm("course-availability",e)}>
                   <option value="">Select a option</option>
                   <option value="released" >Released</option>
-                  <option value="upcoming" >Upcoming</option>
+                  <option value="upcoming" >Coming Soon</option>
                 </select>
               </div>
               <div className="form-group">
@@ -104,7 +104,7 @@ const AdminEditCourses = (props) => {
                 <select className="form-control" id="availability" aria-describedby="availability" defaultValue={newTest.availability} onChange={(e)=>keyPressedOnForm("test-availability",e)}>
                   <option value="">Select an option</option>
                   <option value="released" >Released</option>
-                  <option value="upcoming">Upcoming</option>
+                  <option value="upcoming">Coming Soon</option>
                 </select>
               </div>
               <div className="form-group">

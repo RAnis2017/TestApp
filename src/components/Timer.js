@@ -125,9 +125,8 @@ class Timer extends Component {
 
   render() {
     return (
-      <div className="timer">
-        <h3>{`${this.state.hours+":"+this.state.mins+":"+this.state.secs}`}</h3>
-        <h5>Total Time is {this.state.ogTime} Hours</h5>
+      <div className="timer m-auto">
+        <h3>Total Time is {this.state.ogTime} Hours &nbsp;&nbsp;&nbsp;&nbsp; {`${this.state.hours+":"+this.state.mins+":"+this.state.secs}`}</h3>
       </div>
     );
   }

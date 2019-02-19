@@ -20,7 +20,7 @@ const Header = (props) => {
         <div>
           <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
             <Link className="navbar-brand" to="/">
-              VinodKatrela
+              VedaIAS
             </Link>
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
@@ -116,6 +116,19 @@ const Header = (props) => {
                         <span className="cartAmount">{itemsCount}</span>
                 </NavLink>
               </li>
+              {(loggedInUser.name.length < 1) ?
+              ""
+              :
+              <li className="nav-item">
+                <NavLink
+                        exact
+                        to="/dashboard"
+                        activeClassName="active"
+                        className="">
+                        <a className="nav-link" href="#"><i className="fas fa-user-circle" style={{fontSize: "20px"}}></i></a>
+                </NavLink>
+              </li>
+              }
             </ul>
             </div>
           </nav>

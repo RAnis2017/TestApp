@@ -51,7 +51,9 @@ const Test = (props) => {
               if(parseInt(question.id) === parseInt(selectedQuestion)){
                 return (
                   <div key={key}>
-                    <Timer timeOver={timeOver} path={path} loggedInUser={loggedInUser} testId={currentCourse}/>
+                    <div>
+                      <Timer timeOver={timeOver} path={path} loggedInUser={loggedInUser} testId={currentCourse}/>
+                    </div>
                     <h3  className="question">Q {question.id}: <br /> {question.question} <a href="#" className="btn btn-info font-secondary" onClick={(e)=>markForReview(e,question.id)}>{(markedForReview.includes(question.id)) ? "Un-Mark" : "Mark for Review"}</a></h3>
                     <hr />
                     <h5>Select Correct Answer:</h5>
@@ -87,8 +89,8 @@ const Test = (props) => {
                                     <i className="fas fa-crosshairs attempted heading-min"></i> {score} SCORE
                                   </div>
                                  </div>
-                                <Link className="btn btn-primary" to={`/testreview/${path}`}>Review Results</Link>
-                                <Link className="btn btn-primary" to={`/testreviewpdf/${path}`}>Pdf Download</Link>
+                                <Link className="btn btn-primary btn-right-margin" to={`/testreview/${path}`}>Review Results</Link>
+                                <Link className="btn btn-primary btn-left-margin" to={`/testreviewpdf/${path}`}>Pdf Download</Link>
                               </div>;
           }
         }
@@ -112,15 +114,35 @@ const Test = (props) => {
                 <div className="guide">
                   <h4>Different colors of Questions Represent their State as Follows:</h4>
                   <div className="row">
-                    <div className="m-auto grid-circle-guide attempted">
+                    <div className="col-lg-12">
+                      <div className="row">
+                        <div className="col-lg-2">
+                          <span className="grid-circle-guide attempted">
+                          </span>
+                        </div>
+                        <div className="col-lg-8">
+                          Attempted
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-lg-2">
+                          <span className="grid-circle-guide unattemptedBg">
+                          </span>
+                        </div>
+                        <div className="col-lg-8">
+                          Unattempted
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-lg-2">
+                          <span className="grid-circle-guide marked">
+                          </span>
+                        </div>
+                        <div className="col-lg-8">
+                          Marked for Review
+                        </div>
+                      </div>
                     </div>
-                    <span>Attempted</span>
-                    <div className="m-auto grid-circle-guide unattemptedBg">
-                    </div>
-                    <span>Unattempted</span>
-                    <div className="m-auto grid-circle-guide marked">
-                    </div>
-                    <span>Marked for Review</span>
                   </div>
                 </div>
                 {sideNav}
@@ -132,8 +154,8 @@ const Test = (props) => {
                 <hr />
                 <Ad ad={ad}/>
                 {currentQuestion}
-                <button type="button" className={"btn btn-success"+`${(parseInt(selectedQuestion) <= 1 && parseInt(selectedQuestion) > mcqQuantity) ? " disabled" : ""}`} onClick={(e)=>nextPrevQuestion("prev",e,null)}>Prev</button>
-                <button type="button" className={"btn btn-success float-right"+`${(parseInt(selectedQuestion) === mcqQuantity+1) ? " disabled" : ""}`} onClick={(e)=>nextPrevQuestion("next",e,currentCourse)}>{(parseInt(selectedQuestion) === mcqQuantity) ? " Finish" : "Next"}</button>
+                <button type="button" className={"btn btn-success btn-margin"+`${(parseInt(selectedQuestion) <= 1 && parseInt(selectedQuestion) > mcqQuantity) ? " disabled" : ""}`} onClick={(e)=>nextPrevQuestion("prev",e,null)}>Prev</button>
+                <button type="button" className={"btn btn-success btn-margin float-right"+`${(parseInt(selectedQuestion) === mcqQuantity+1) ? " disabled" : ""}`} onClick={(e)=>nextPrevQuestion("next",e,currentCourse)}>{(parseInt(selectedQuestion) === mcqQuantity) ? " Finish" : "Next"}</button>
               </div>
             </div>
           </div>
